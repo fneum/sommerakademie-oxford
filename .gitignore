@@ -1,0 +1,14 @@
+.ipynb-checkpoints
+gasunie-workshop/data
+*.geojson
+*.nc
+*.tiff
+*.tif
+*.html
+gasunie-workshop/tmp/
+gasunie-workshop/_build/
+gasunie-workshop/tmp.csv
+*cleared.ipynb
+
+data
+data-preparation.ipynb
