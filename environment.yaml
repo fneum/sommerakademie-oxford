@@ -18,7 +18,7 @@ dependencies:
 - libgdal-netcdf
 - cartopy>=0.22
 - matplotlib>=3.6
-- plotly
+- plotly<6
 - ipython
 - jupyterlab
 - jupyter-book
