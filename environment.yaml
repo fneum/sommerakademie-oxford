@@ -1,4 +1,4 @@
-name: gasunie
+name: dare
 channels:
 - conda-forge
 dependencies:

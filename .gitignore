@@ -1,13 +1,13 @@
 .ipynb-checkpoints
-gasunie-workshop/data
+dare-workshop/data
 *.geojson
 *.nc
 *.tiff
 *.tif
 *.html
-gasunie-workshop/tmp/
-gasunie-workshop/_build/
-gasunie-workshop/tmp.csv
+dare-workshop/tmp/
+dare-workshop/_build/
+dare-workshop/tmp.csv
 *cleared.ipynb
 
 data
