@@ -1,14 +1,16 @@
 .ipynb-checkpoints
-dare-workshop/data
+sommerakademie-oxford/data
 *.geojson
 *.nc
 *.tiff
 *.tif
 *.html
-dare-workshop/tmp/
-dare-workshop/_build/
-dare-workshop/tmp.csv
+sommerakademie-oxford/tmp/
+sommerakademie-oxford/_build/
+sommerakademie-oxford/tmp.csv
 *cleared.ipynb
 
 data
 data-preparation.ipynb
+
+.venv

@@ -29,11 +29,11 @@ jobs:
     # Build the book
     - name: Build the book
       run: |
-        jupyter-book build dare-workshop
+        jupyter-book build sommerakademie-oxford
 
     # Deploy the book's HTML to gh-pages branch
     - name: GitHub Pages action
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: dare-workshop/_build/html
+        publish_dir: sommerakademie-oxford/_build/html
