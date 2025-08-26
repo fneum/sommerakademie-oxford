@@ -1,16 +1,19 @@
 # Material for Sommerakademie Oxford
 
-## Usage
+## Installation
 
-### Building the book
+```sh
+uv venv
+source .venv/bin/activate
+uv pip install -r requirements.txt
+```
 
-If you'd like to develop and/or build the Data Science for Energy System Modelling book, you should:
+## Build
 
-1. Clone this repository
-2. Run `pip install -r requirements.txt` (it is recommended you do this within a virtual environment)
-3. (Optional) Edit the books source files located in the `sommerakademie-oxford/` directory
-4. Run `jupyter-book clean sommerakademie-oxford/` to remove any existing builds
-5. Run `jupyter-book build sommerakademie-oxford/`
+```sh
+jupyter-book clean sommerakademie-oxford/
+jupyter-book build sommerakademie-oxford/
+```
 
 A fully-rendered HTML version of the book will be built in `sommerakademie-oxford/_build/html/`.
 
