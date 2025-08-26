@@ -6,7 +6,7 @@
 #######################################################################################
 # Book settings
 title: PyPSA Introduction                    # The title of the book. Will be placed in the left navbar.
-author: Fabian Neumann                        # The author of the book
+author: Fabian Neumann and Jonas Finke                       # The author of the book
 copyright: "2022-2025"                     # Copyright year to be placed in the footer
 logo: logo.png                          # A path to the book logo
 
