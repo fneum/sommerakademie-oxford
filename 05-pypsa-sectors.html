@@ -445,6 +445,7 @@ Then install the following packages by executing the following command in a Jupy
 <span class="kn">import</span><span class="w"> </span><span class="nn">plotly.offline</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pypsa.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">annuity</span>
+
 <span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">backend</span> <span class="o">=</span> <span class="s2">&quot;plotly&quot;</span>
 </pre></div>
 </div>
@@ -462,30 +463,10 @@ and/or output (i.e. <code class="docutils literal notranslate"><span class="pre"
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:pypsa.network.io:Imported network &#39;Unnamed Network&#39; has buses, carriers, generators, global_constraints, loads, storage_units, sub_networks
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PyPSA Network &#39;Unnamed Network&#39;
--------------------------------
-Components:
- - Bus: 1
- - Carrier: 6
- - Generator: 3
- - GlobalConstraint: 1
- - Load: 1
- - StorageUnit: 2
- - SubNetwork: 1
-Snapshots: 2920
 </pre></div>
 </div>
 </div>
@@ -505,7 +486,7 @@ Snapshots: 2920
 <p>Add a separate <code class="docutils literal notranslate"><span class="pre">Bus</span></code> for the hydrogen energy carrier:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Bus&quot;</span><span class="p">,</span> <span class="s2">&quot;hydrogen&quot;</span><span class="p">,</span> <span class="n">carrier</span><span class="o">=</span><span class="s1">&#39;hydrogen&#39;</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Bus&quot;</span><span class="p">,</span> <span class="s2">&quot;hydrogen&quot;</span><span class="p">,</span> <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;hydrogen&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -521,13 +502,8 @@ Snapshots: 2920
     <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;electrolysis&quot;</span><span class="p">,</span>
     <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">efficiency</span><span class="o">=</span><span class="mf">0.65</span><span class="p">,</span>
-    <span class="n">capital_cost</span><span class="o">=</span><span class="n">annuity</span><span class="p">(</span><span class="mf">0.07</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1_500_000</span><span class="p">,</span> <span class="c1"># €/MW/a</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">annuity</span><span class="p">(</span><span class="mf">0.07</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1_500_000</span><span class="p">,</span>  <span class="c1"># €/MW/a</span>
 <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;electrolysis&#39;], dtype=&#39;object&#39;)
 </pre></div>
 </div>
 </div>
@@ -543,7 +519,7 @@ Snapshots: 2920
     <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;fuel cell&quot;</span><span class="p">,</span>
     <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">efficiency</span><span class="o">=</span><span class="mf">0.45</span><span class="p">,</span>
-    <span class="n">capital_cost</span><span class="o">=</span><span class="n">annuity</span><span class="p">(</span><span class="mf">0.07</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span> <span class="o">*</span> <span class="mi">550_000</span><span class="p">,</span> <span class="c1"># €/MW/a</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">annuity</span><span class="p">(</span><span class="mf">0.07</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span> <span class="o">*</span> <span class="mi">550_000</span><span class="p">,</span>  <span class="c1"># €/MW/a</span>
 <span class="p">);</span>
 </pre></div>
 </div>
@@ -574,11 +550,6 @@ Snapshots: 2920
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(7564.622045662099)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -593,7 +564,7 @@ Snapshots: 2920
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
     <span class="s2">&quot;Carrier&quot;</span><span class="p">,</span>
     <span class="p">[</span><span class="s2">&quot;hydrogen&quot;</span><span class="p">,</span> <span class="s2">&quot;electrolysis&quot;</span><span class="p">,</span> <span class="s2">&quot;fuel cell&quot;</span><span class="p">,</span> <span class="s2">&quot;hydrogen storage&quot;</span><span class="p">,</span> <span class="s2">&quot;hydrogen demand&quot;</span><span class="p">],</span>
-    <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="s2">&quot;magenta&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;purple&quot;</span><span class="p">,</span> <span class="s2">&quot;cyan&quot;</span><span class="p">]</span>
+    <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="s2">&quot;magenta&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;purple&quot;</span><span class="p">,</span> <span class="s2">&quot;cyan&quot;</span><span class="p">],</span>
 <span class="p">);</span>
 </pre></div>
 </div>
@@ -606,34 +577,6 @@ Snapshots: 2920
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
-INFO:linopy.model:Solver options:
- - log_to_console: False
-INFO:linopy.io:Writing objective.
-Writing constraints.: 100%|██████████| 20/20 [00:00&lt;00:00, 80.81it/s]
-Writing continuous variables.: 100%|██████████| 11/11 [00:00&lt;00:00, 275.35it/s]
-INFO:linopy.io: Writing time: 0.3s
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running HiGHS 1.11.0 (git hash: 364c83a): Copyright (c) 2025 HiGHS under MIT licence terms
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.constants: Optimization successful: 
-Status: ok
-Termination condition: optimal
-Solution: 29207 primals, 64248 duals
-Objective: 1.24e+10
-Solver model: available
-Solver message: Optimal
-
-INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-ext-p-lower, Generator-ext-p-upper, Link-ext-p-lower, Link-ext-p-upper, Store-ext-e-lower, Store-ext-e-upper, StorageUnit-ext-p_dispatch-lower, StorageUnit-ext-p_dispatch-upper, StorageUnit-ext-p_store-lower, StorageUnit-ext-p_store-upper, StorageUnit-ext-state_of_charge-lower, StorageUnit-ext-state_of_charge-upper, StorageUnit-energy_balance, Store-energy_balance were not assigned to the network.
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;ok&#39;, &#39;optimal&#39;)
-</pre></div>
-</div>
-</div>
 </div>
 <p>…we can see the individual sizing of the electrolyser, fuel cell and hydrogen storage:</p>
 <div class="cell docutils container">
@@ -642,27 +585,13 @@ INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>component    carrier         
-Generator    solar                 64.22
-             wind                  58.56
-Link         electrolysis          20.09
-             fuel cell              9.50
-StorageUnit  battery storage       13.85
-Store        hydrogen storage    4596.07
-dtype: float64
-</pre></div>
-</div>
-</div>
 </div>
 <p>Furthermore, we might want to explore the storage state of charge of the hydrogen storage and the balancing patterns:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">stores_t</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span> <span class="c1"># TWh</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">stores_t</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>  <span class="c1"># TWh</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 <p>The energy balance we can now inspect by different bus carriers:</p>
@@ -672,16 +601,12 @@ dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="o">.</span><span class="n">iplot</span><span class="o">.</span><span class="n">area</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s2">&quot;hydrogen&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 </section>
@@ -690,7 +615,7 @@ dtype: float64
 <p>For modelling simple heating systems, we create another bus and connect a load with the heat demand time series to it.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Bus&quot;</span><span class="p">,</span> <span class="s2">&quot;heat&quot;</span><span class="p">,</span> <span class="n">carrier</span><span class="o">=</span><span class="s1">&#39;heat&#39;</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Bus&quot;</span><span class="p">,</span> <span class="s2">&quot;heat&quot;</span><span class="p">,</span> <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;heat&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -715,8 +640,6 @@ dtype: float64
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">loads_t</span><span class="o">.</span><span class="n">p_set</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e3</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 <p>What is now missing are a few heat supply options…</p>
@@ -754,8 +677,6 @@ COP(\Delta T) = 6.81 - 0.121 \Delta T + 0.00063^\Delta T^2
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -764,12 +685,6 @@ COP(\Delta T) = 6.81 - 0.121 \Delta T + 0.00063^\Delta T^2
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;COP [-]&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;COP [-]&#39;)
-</pre></div>
-</div>
-<img alt="_images/6b343b4691c40bd6d3311d663adaf059215ee4f4d1d7a24efc16cff8a10f352d.png" src="_images/6b343b4691c40bd6d3311d663adaf059215ee4f4d1d7a24efc16cff8a10f352d.png" />
 </div>
 </div>
 <p>Once we have calculated the heat pump coefficient of performance, we can add the heat pump to the network as a <code class="docutils literal notranslate"><span class="pre">Link</span></code>. We use the parameter <code class="docutils literal notranslate"><span class="pre">efficiency</span></code> to incorporate the COP.</p>
@@ -811,7 +726,7 @@ COP(\Delta T) = 6.81 - 0.121 \Delta T + 0.00063^\Delta T^2
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
     <span class="s2">&quot;Carrier&quot;</span><span class="p">,</span>
     <span class="p">[</span><span class="s2">&quot;heat&quot;</span><span class="p">,</span> <span class="s2">&quot;heat demand&quot;</span><span class="p">,</span> <span class="s2">&quot;heat pump&quot;</span><span class="p">,</span> <span class="s2">&quot;resistive heater&quot;</span><span class="p">],</span>
-    <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;firebrick&quot;</span><span class="p">,</span> <span class="s2">&quot;firebrick&quot;</span><span class="p">,</span> <span class="s2">&quot;lime&quot;</span><span class="p">,</span> <span class="s2">&quot;khaki&quot;</span><span class="p">]</span>
+    <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;firebrick&quot;</span><span class="p">,</span> <span class="s2">&quot;firebrick&quot;</span><span class="p">,</span> <span class="s2">&quot;lime&quot;</span><span class="p">,</span> <span class="s2">&quot;khaki&quot;</span><span class="p">],</span>
 <span class="p">);</span>
 </pre></div>
 </div>
@@ -898,11 +813,7 @@ COP(\Delta T) = 6.81 - 0.121 \Delta T + 0.00063^\Delta T^2
 <p>And we should not forget to add the carriers for plotting:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-    <span class="s2">&quot;Carrier&quot;</span><span class="p">,</span>
-    <span class="p">[</span><span class="s2">&quot;gas&quot;</span><span class="p">,</span> <span class="s2">&quot;gas storage&quot;</span><span class="p">,</span> <span class="s2">&quot;CHP&quot;</span><span class="p">],</span>
-    <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;peru&quot;</span><span class="p">,</span> <span class="s2">&quot;tan&quot;</span><span class="p">,</span> <span class="s2">&quot;sienna&quot;</span><span class="p">]</span>
-<span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Carrier&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;gas&quot;</span><span class="p">,</span> <span class="s2">&quot;gas storage&quot;</span><span class="p">,</span> <span class="s2">&quot;CHP&quot;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;peru&quot;</span><span class="p">,</span> <span class="s2">&quot;tan&quot;</span><span class="p">,</span> <span class="s2">&quot;sienna&quot;</span><span class="p">]);</span>
 </pre></div>
 </div>
 </div>
@@ -911,34 +822,6 @@ COP(\Delta T) = 6.81 - 0.121 \Delta T + 0.00063^\Delta T^2
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">log_to_console</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
-INFO:linopy.model:Solver options:
- - log_to_console: False
-INFO:linopy.io:Writing objective.
-Writing constraints.: 100%|██████████| 21/21 [00:00&lt;00:00, 68.30it/s]
-Writing continuous variables.: 100%|██████████| 11/11 [00:00&lt;00:00, 209.14it/s]
-INFO:linopy.io: Writing time: 0.37s
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running HiGHS 1.11.0 (git hash: 364c83a): Copyright (c) 2025 HiGHS under MIT licence terms
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.constants: Optimization successful: 
-Status: ok
-Termination condition: optimal
-Solution: 43810 primals, 96370 duals
-Objective: 1.65e+10
-Solver model: available
-Solver message: Optimal
-
-INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-ext-p-lower, Generator-ext-p-upper, Link-ext-p-lower, Link-ext-p-upper, Store-fix-e-lower, Store-fix-e-upper, Store-ext-e-lower, Store-ext-e-upper, StorageUnit-ext-p_dispatch-lower, StorageUnit-ext-p_dispatch-upper, StorageUnit-ext-p_store-lower, StorageUnit-ext-p_store-upper, StorageUnit-ext-state_of_charge-lower, StorageUnit-ext-state_of_charge-upper, StorageUnit-energy_balance, Store-energy_balance were not assigned to the network.
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;ok&#39;, &#39;optimal&#39;)
 </pre></div>
 </div>
 </div>
@@ -951,46 +834,18 @@ INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16.457437155719962
-</pre></div>
-</div>
-</div>
 </div>
 <p>The heat energy balance (positive is supply, negative is consumption):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s1">&#39;heat&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>component  carrier    bus_carrier
-Link       heat pump  heat           62.1
-           CHP        heat            3.6
-Load       heat       heat          -65.7
-dtype: float64
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s2">&quot;heat&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s1">&#39;electricity&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>component    carrier          bus_carrier
-Link         electrolysis     electricity   -102.4
-Load         -                electricity    -66.3
-Link         heat pump        electricity    -28.7
-StorageUnit  battery storage  electricity     -1.2
-Link         fuel cell        electricity      0.1
-             CHP              electricity      3.6
-Generator    solar            electricity     69.7
-             wind             electricity    125.2
-dtype: float64
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -998,20 +853,16 @@ dtype: float64
 <p>The heat energy balance as a time series:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="o">.</span><span class="n">iplot</span><span class="o">.</span><span class="n">area</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s1">&#39;heat&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="o">.</span><span class="n">iplot</span><span class="o">.</span><span class="n">area</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s2">&quot;heat&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="o">.</span><span class="n">iplot</span><span class="o">.</span><span class="n">area</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s1">&#39;electricity&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="o">.</span><span class="n">iplot</span><span class="o">.</span><span class="n">area</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 </section>
@@ -1029,7 +880,7 @@ We want to see how that influences the optimal design decisions in the heating s
     <span class="s2">&quot;heat storage&quot;</span><span class="p">,</span>
     <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;heat&quot;</span><span class="p">,</span>
     <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;heat storage&quot;</span><span class="p">,</span>
-    <span class="n">capital_cost</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="c1"># roughly annuity of 3 €/kWh/a</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>  <span class="c1"># roughly annuity of 3 €/kWh/a</span>
     <span class="n">standing_loss</span><span class="o">=</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">24</span> <span class="o">/</span> <span class="mi">180</span><span class="p">),</span>
     <span class="n">e_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">);</span>
@@ -1043,45 +894,10 @@ We want to see how that influences the optimal design decisions in the heating s
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;heat storage&#39;], dtype=&#39;object&#39;)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">log_to_console</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following stores have carriers which are not defined:
-Index([&#39;heat storage&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
-INFO:linopy.model: Solve problem using Highs solver
-INFO:linopy.model:Solver options:
- - log_to_console: False
-INFO:linopy.io:Writing objective.
-Writing constraints.: 100%|██████████| 21/21 [00:00&lt;00:00, 58.16it/s]
-Writing continuous variables.: 100%|██████████| 11/11 [00:00&lt;00:00, 186.84it/s]
-INFO:linopy.io: Writing time: 0.44s
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running HiGHS 1.11.0 (git hash: 364c83a): Copyright (c) 2025 HiGHS under MIT licence terms
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.constants: Optimization successful: 
-Status: ok
-Termination condition: optimal
-Solution: 49651 primals, 105131 duals
-Objective: 1.46e+10
-Solver model: available
-Solver message: Optimal
-
-INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-ext-p-lower, Generator-ext-p-upper, Link-ext-p-lower, Link-ext-p-upper, Store-fix-e-lower, Store-fix-e-upper, Store-ext-e-lower, Store-ext-e-upper, StorageUnit-ext-p_dispatch-lower, StorageUnit-ext-p_dispatch-upper, StorageUnit-ext-p_store-lower, StorageUnit-ext-p_store-upper, StorageUnit-ext-state_of_charge-lower, StorageUnit-ext-state_of_charge-upper, StorageUnit-energy_balance, Store-energy_balance were not assigned to the network.
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;ok&#39;, &#39;optimal&#39;)
 </pre></div>
 </div>
 </div>
@@ -1093,47 +909,18 @@ INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14.627672117694456
-</pre></div>
-</div>
-</div>
 </div>
 <p>The heat energy balance shows the additional losses of the heat storage and the added supply:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s1">&#39;heat&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>component  carrier       bus_carrier
-Link       heat pump     heat           66.1
-           CHP           heat            1.0
-Load       heat          heat          -65.7
-Store      heat storage  heat           -1.3
-dtype: float64
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s2">&quot;heat&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s1">&#39;electricity&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>component    carrier          bus_carrier
-Generator    solar            electricity     63.4
-             wind             electricity    133.2
-Link         electrolysis     electricity   -103.0
-             heat pump        electricity    -27.9
-             CHP              electricity      1.0
-             fuel cell        electricity      0.3
-Load         -                electricity    -66.3
-StorageUnit  battery storage  electricity     -0.7
-dtype: float64
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1141,20 +928,16 @@ dtype: float64
 <p>The heat and electricity energy balance as a time series:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="o">.</span><span class="n">iplot</span><span class="o">.</span><span class="n">area</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s1">&#39;heat&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="o">.</span><span class="n">iplot</span><span class="o">.</span><span class="n">area</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s2">&quot;heat&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="o">.</span><span class="n">iplot</span><span class="o">.</span><span class="n">area</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s1">&#39;electricity&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="o">.</span><span class="n">iplot</span><span class="o">.</span><span class="n">area</span><span class="p">(</span><span class="n">bus_carrier</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 <p>The different storage state of charge time series:</p>
@@ -1164,8 +947,6 @@ dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <p>And it can tell you statistics about the capital expenditures:</p>
 <div class="cell docutils container">
@@ -1174,8 +955,6 @@ dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <p>And it can tell you statistics about the operational expenditures:</p>
 <div class="cell docutils container">
@@ -1183,8 +962,6 @@ dtype: float64
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">opex</span><span class="o">.</span><span class="n">iplot</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 </section>
@@ -1208,16 +985,16 @@ dtype: float64
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: ""
         },
         kernelOptions: {
-            name: "python3",
+            name: "",
             path: "./."
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = ''</script>
 
                 </article>
               

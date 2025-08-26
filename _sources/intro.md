@@ -65,7 +65,7 @@ If you chose a local installation, you can run the notebooks in the terminal wit
 
     # first navigate to the notebook directory with cd
     cd path/to/your/notebook
-    
+
     # then start jupyter lab
     jupyter lab
 

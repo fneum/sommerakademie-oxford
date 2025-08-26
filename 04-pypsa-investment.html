@@ -502,6 +502,7 @@ in the <em>objective function</em> and <em>new constraints for their expansion l
 <span class="kn">import</span><span class="w"> </span><span class="nn">plotly.offline</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">plotly.subplots</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_subplots</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pypsa.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">annuity</span>
+
 <span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">backend</span> <span class="o">=</span> <span class="s2">&quot;plotly&quot;</span>
 </pre></div>
 </div>
@@ -513,9 +514,7 @@ in the <em>objective function</em> and <em>new constraints for their expansion l
 <p>We are also going to need some time series for wind, solar and load.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s2">&quot;https://tubcloud.tu-berlin.de/s/9toBssWEdaLgHzq/download/time-series.csv&quot;</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://tubcloud.tu-berlin.de/s/9toBssWEdaLgHzq/download/time-series.csv&quot;</span>
 <span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -527,58 +526,6 @@ in the <em>objective function</em> and <em>new constraints for their expansion l
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>load_mw</th>
-      <th>pv_pu</th>
-      <th>wind_pu</th>
-    </tr>
-    <tr>
-      <th>timestamp</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2019-01-01 00:00:00</th>
-      <td>5719.26</td>
-      <td>0.0</td>
-      <td>0.1846</td>
-    </tr>
-    <tr>
-      <th>2019-01-01 01:00:00</th>
-      <td>5677.73</td>
-      <td>0.0</td>
-      <td>0.2293</td>
-    </tr>
-    <tr>
-      <th>2019-01-01 02:00:00</th>
-      <td>5622.20</td>
-      <td>0.0</td>
-      <td>0.2718</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>We are also going to adapt the temporal resolution of the time series, e.g. sample only every other hour, to save some time:</p>
 <div class="cell docutils container">
@@ -589,107 +536,6 @@ in the <em>objective function</em> and <em>new constraints for their expansion l
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>load_mw</th>
-      <th>pv_pu</th>
-      <th>wind_pu</th>
-    </tr>
-    <tr>
-      <th>timestamp</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2019-01-01 00:00:00</th>
-      <td>5719.26</td>
-      <td>0.000</td>
-      <td>0.1846</td>
-    </tr>
-    <tr>
-      <th>2019-01-01 03:00:00</th>
-      <td>5474.74</td>
-      <td>0.000</td>
-      <td>0.3146</td>
-    </tr>
-    <tr>
-      <th>2019-01-01 06:00:00</th>
-      <td>5413.39</td>
-      <td>0.000</td>
-      <td>0.4957</td>
-    </tr>
-    <tr>
-      <th>2019-01-01 09:00:00</th>
-      <td>5891.23</td>
-      <td>0.059</td>
-      <td>0.6824</td>
-    </tr>
-    <tr>
-      <th>2019-01-01 12:00:00</th>
-      <td>6662.42</td>
-      <td>0.063</td>
-      <td>0.7519</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>2019-12-31 09:00:00</th>
-      <td>7029.73</td>
-      <td>0.195</td>
-      <td>0.3049</td>
-    </tr>
-    <tr>
-      <th>2019-12-31 12:00:00</th>
-      <td>7342.83</td>
-      <td>0.135</td>
-      <td>0.3944</td>
-    </tr>
-    <tr>
-      <th>2019-12-31 15:00:00</th>
-      <td>7267.22</td>
-      <td>0.000</td>
-      <td>0.3788</td>
-    </tr>
-    <tr>
-      <th>2019-12-31 18:00:00</th>
-      <td>6821.12</td>
-      <td>0.000</td>
-      <td>0.3157</td>
-    </tr>
-    <tr>
-      <th>2019-12-31 21:00:00</th>
-      <td>6191.86</td>
-      <td>0.000</td>
-      <td>0.2636</td>
-    </tr>
-  </tbody>
-</table>
-<p>2920 rows × 3 columns</p>
-</div></div></div>
 </div>
 </section>
 <section id="model-initialisation">
@@ -709,11 +555,6 @@ in the <em>objective function</em> and <em>new constraints for their expansion l
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;electricity&#39;], dtype=&#39;object&#39;)
-</pre></div>
-</div>
-</div>
 </div>
 <p>…and tell the <code class="docutils literal notranslate"><span class="pre">pypsa.Network</span></code> object <code class="docutils literal notranslate"><span class="pre">n</span></code> what the snapshots of the model will be using the utility function <code class="docutils literal notranslate"><span class="pre">n.set_snapshots()</span></code>.</p>
 <div class="cell docutils container">
@@ -726,14 +567,6 @@ in the <em>objective function</em> and <em>new constraints for their expansion l
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">snapshots</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatetimeIndex([&#39;2019-01-01 00:00:00&#39;, &#39;2019-01-01 03:00:00&#39;,
-               &#39;2019-01-01 06:00:00&#39;, &#39;2019-01-01 09:00:00&#39;,
-               &#39;2019-01-01 12:00:00&#39;],
-              dtype=&#39;datetime64[ns]&#39;, name=&#39;snapshot&#39;, freq=&#39;3h&#39;)
 </pre></div>
 </div>
 </div>
@@ -752,58 +585,6 @@ in the <em>objective function</em> and <em>new constraints for their expansion l
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>objective</th>
-      <th>stores</th>
-      <th>generators</th>
-    </tr>
-    <tr>
-      <th>snapshot</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2019-01-01 00:00:00</th>
-      <td>3.0</td>
-      <td>3.0</td>
-      <td>3.0</td>
-    </tr>
-    <tr>
-      <th>2019-01-01 03:00:00</th>
-      <td>3.0</td>
-      <td>3.0</td>
-      <td>3.0</td>
-    </tr>
-    <tr>
-      <th>2019-01-01 06:00:00</th>
-      <td>3.0</td>
-      <td>3.0</td>
-      <td>3.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 </section>
 <section id="adding-components">
@@ -851,8 +632,6 @@ in the <em>objective function</em> and <em>new constraints for their expansion l
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <p>We are going to add one dispatchable generation technology to the model. This is an open-cycle gas turbine (OCGT) with CO<span class="math notranslate nohighlight">\(_2\)</span> emissions of 0.2 t/MWh<span class="math notranslate nohighlight">\(_{th}\)</span>.</p>
 <div class="cell docutils container">
@@ -867,11 +646,6 @@ in the <em>objective function</em> and <em>new constraints for their expansion l
     <span class="n">efficiency</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
     <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;OCGT&#39;], dtype=&#39;object&#39;)
 </pre></div>
 </div>
 </div>
@@ -916,8 +690,6 @@ in the <em>objective function</em> and <em>new constraints for their expansion l
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <section id="model-run">
 <h3>Model Run<a class="headerlink" href="#model-run" title="Link to this heading">#</a></h3>
@@ -925,29 +697,6 @@ in the <em>objective function</em> and <em>new constraints for their expansion l
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">log_to_console</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
-INFO:linopy.model:Solver options:
- - log_to_console: False
-INFO:linopy.io: Writing time: 0.08s
-INFO:linopy.constants: Optimization successful: 
-Status: ok
-Termination condition: optimal
-Solution: 8763 primals, 20443 duals
-Objective: 3.89e+09
-Solver model: available
-Solver message: Optimal
-
-INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-ext-p-lower, Generator-ext-p-upper were not assigned to the network.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running HiGHS 1.11.0 (git hash: 364c83a): Copyright (c) 2025 HiGHS under MIT licence terms
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;ok&#39;, &#39;optimal&#39;)
 </pre></div>
 </div>
 </div>
@@ -962,25 +711,11 @@ INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.88757918749457
-</pre></div>
-</div>
-</div>
 </div>
 <p>The optimised capacities in GW:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">generators</span><span class="o">.</span><span class="n">p_nom_opt</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e3</span><span class="p">)</span>  <span class="c1"># GW</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>name
-OCGT     10.103965
-wind     12.685117
-solar    14.186638
-Name: p_nom_opt, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -992,30 +727,11 @@ Name: p_nom_opt, dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>component  carrier  bus_carrier
-Load       -        electricity   -66.266089
-Generator  solar    electricity    16.237620
-           wind     electricity    21.988632
-           OCGT     electricity    28.039837
-dtype: float64
-</pre></div>
-</div>
-</div>
 </div>
 <p>While we get the objective value through <code class="docutils literal notranslate"><span class="pre">n.objective</span></code>, in many cases we want to know how the costs are distributed across the technologies. We can use the statistics module for this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">capex</span><span class="p">()</span> <span class="o">+</span> <span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">opex</span><span class="p">())</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>component  carrier
-Generator  OCGT       2229.710534
-           solar       511.407233
-           wind       1146.461421
-dtype: float64
 </pre></div>
 </div>
 </div>
@@ -1038,19 +754,12 @@ dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(14.019918660988745)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="o">.</span><span class="n">iplot</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 </section>
@@ -1068,18 +777,12 @@ dtype: float64
     <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
     <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;battery storage&quot;</span><span class="p">,</span>
     <span class="n">max_hours</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-    <span class="n">capital_cost</span><span class="o">=</span><span class="n">annuity</span><span class="p">(</span><span class="mf">0.07</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mi">150_000</span>
-    <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">annuity</span><span class="p">(</span><span class="mf">0.07</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="o">*</span> <span class="mi">150_000</span><span class="p">,</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">annuity</span><span class="p">(</span><span class="mf">0.07</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mi">150_000</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">annuity</span><span class="p">(</span><span class="mf">0.07</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="o">*</span> <span class="mi">150_000</span><span class="p">,</span>
     <span class="n">efficiency_store</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
     <span class="n">efficiency_dispatch</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
     <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">cyclic_state_of_charge</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;battery storage&#39;], dtype=&#39;object&#39;)
 </pre></div>
 </div>
 </div>
@@ -1111,45 +814,11 @@ dtype: float64
 </div>
 <p>Ok, lets run the again, now with storage, and see what’s changed.</p>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">log_to_console</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<details class="admonition hide below-input">
-<summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell output</p>
-<p class="expanded admonition-title">Hide code cell output</p>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
-INFO:linopy.model:Solver options:
- - log_to_console: False
-INFO:linopy.io:Writing objective.
-Writing constraints.: 100%|██████████| 12/12 [00:00&lt;00:00, 62.33it/s]
-Writing continuous variables.: 100%|██████████| 6/6 [00:00&lt;00:00, 187.61it/s]
-INFO:linopy.io: Writing time: 0.24s
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running HiGHS 1.11.0 (git hash: 364c83a): Copyright (c) 2025 HiGHS under MIT licence terms
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.constants: Optimization successful: 
-Status: ok
-Termination condition: optimal
-Solution: 26285 primals, 61325 duals
-Objective: 3.88e+09
-Solver model: available
-Solver message: Optimal
-
-INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-ext-p-lower, Generator-ext-p-upper, StorageUnit-ext-p_dispatch-lower, StorageUnit-ext-p_dispatch-upper, StorageUnit-ext-p_store-lower, StorageUnit-ext-p_store-upper, StorageUnit-ext-state_of_charge-lower, StorageUnit-ext-state_of_charge-upper, StorageUnit-energy_balance were not assigned to the network.
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;ok&#39;, &#39;optimal&#39;)
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1157,100 +826,28 @@ INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>component    carrier        
-Generator    OCGT                9.845568
-             solar              14.354007
-             wind               12.835198
-StorageUnit  battery storage     0.257372
-dtype: float64
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)</span>  <span class="c1"># .sum()  # TWh</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)</span><span class="c1">#.sum()  # TWh</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;capex&quot;</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">capex</span><span class="p">(),</span>
+        <span class="s2">&quot;opex&quot;</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">opex</span><span class="p">(),</span>
+    <span class="p">},</span>
+    <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e9</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+    <span class="mi">2</span>
+<span class="p">)</span>  <span class="c1"># bn€/a</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>component    carrier          bus_carrier
-Load         -                electricity   -66.266089
-StorageUnit  battery storage  electricity    -0.022762
-Generator    solar            electricity    16.477184
-             wind             electricity    22.279308
-             OCGT             electricity    27.532359
-dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">({</span>
-    <span class="s2">&quot;capex&quot;</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">capex</span><span class="p">(),</span>
-    <span class="s2">&quot;opex&quot;</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">opex</span><span class="p">(),</span>
-<span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e9</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># bn€/a</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>capex</th>
-      <th>opex</th>
-    </tr>
-    <tr>
-      <th>component</th>
-      <th>carrier</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th rowspan="3" valign="top">Generator</th>
-      <th>OCGT</th>
-      <td>0.40</td>
-      <td>1.79</td>
-    </tr>
-    <tr>
-      <th>solar</th>
-      <td>0.51</td>
-      <td>0.01</td>
-    </tr>
-    <tr>
-      <th>wind</th>
-      <td>1.14</td>
-      <td>0.02</td>
-    </tr>
-    <tr>
-      <th>StorageUnit</th>
-      <th>battery storage</th>
-      <td>0.02</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1259,8 +856,6 @@ dtype: float64
 <span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;price duration curve [€/MWh]&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 <section id="adding-emission-limits">
@@ -1281,59 +876,15 @@ dtype: float64
 </div>
 <p>When we run the model now…</p>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">log_to_console</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<details class="admonition hide below-input">
-<summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell output</p>
-<p class="expanded admonition-title">Hide code cell output</p>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
-INFO:linopy.model:Solver options:
- - log_to_console: False
-INFO:linopy.io:Writing objective.
-Writing constraints.: 100%|██████████| 13/13 [00:00&lt;00:00, 64.23it/s]
-Writing continuous variables.: 100%|██████████| 6/6 [00:00&lt;00:00, 164.94it/s]
-INFO:linopy.io: Writing time: 0.26s
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running HiGHS 1.11.0 (git hash: 364c83a): Copyright (c) 2025 HiGHS under MIT licence terms
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.constants: Optimization successful: 
-Status: ok
-Termination condition: optimal
-Solution: 26285 primals, 61326 duals
-Objective: 5.92e+09
-Solver model: available
-Solver message: Optimal
-
-INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-ext-p-lower, Generator-ext-p-upper, StorageUnit-ext-p_dispatch-lower, StorageUnit-ext-p_dispatch-upper, StorageUnit-ext-p_store-lower, StorageUnit-ext-p_store-upper, StorageUnit-ext-state_of_charge-lower, StorageUnit-ext-state_of_charge-upper, StorageUnit-energy_balance were not assigned to the network.
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;ok&#39;, &#39;optimal&#39;)
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">optimal_capacity</span><span class="p">()</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e3</span><span class="p">)</span>  <span class="c1"># GW</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>component    carrier                     
-Generator    solar                           24.510751
-             wind                            33.953472
-StorageUnit  battery storage                  4.971099
-             hydrogen storage underground     7.103009
-dtype: float64
 </pre></div>
 </div>
 </div>
@@ -1344,95 +895,25 @@ dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>component    carrier                       bus_carrier
-Load         -                             electricity   -66.266089
-StorageUnit  hydrogen storage underground  electricity   -15.178400
-             battery storage               electricity    -0.425633
-Generator    solar                         electricity    28.943986
-             wind                          electricity    52.926136
-dtype: float64
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">({</span>
-    <span class="s2">&quot;capex&quot;</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">capex</span><span class="p">(),</span>
-    <span class="s2">&quot;opex&quot;</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">opex</span><span class="p">(),</span>
-<span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e9</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># bn€/a</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;capex&quot;</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">capex</span><span class="p">(),</span>
+        <span class="s2">&quot;opex&quot;</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">opex</span><span class="p">(),</span>
+    <span class="p">},</span>
+    <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e9</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+    <span class="mi">2</span>
+<span class="p">)</span>  <span class="c1"># bn€/a</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>capex</th>
-      <th>opex</th>
-    </tr>
-    <tr>
-      <th>component</th>
-      <th>carrier</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th rowspan="2" valign="top">Generator</th>
-      <th>solar</th>
-      <td>0.87</td>
-      <td>0.01</td>
-    </tr>
-    <tr>
-      <th>wind</th>
-      <td>3.01</td>
-      <td>0.05</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">StorageUnit</th>
-      <th>battery storage</th>
-      <td>0.39</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>hydrogen storage underground</th>
-      <td>1.58</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">storage_units</span><span class="o">.</span><span class="n">p_nom_opt</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mf">1e3</span><span class="p">)</span> <span class="o">*</span> <span class="n">n</span><span class="o">.</span><span class="n">storage_units</span><span class="o">.</span><span class="n">max_hours</span>  <span class="c1"># GWh</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>name
-battery storage                   19.884394
-hydrogen storage underground    2386.610887
-dtype: float64
 </pre></div>
 </div>
 </div>
@@ -1443,8 +924,6 @@ dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1454,18 +933,11 @@ dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <p>Finally, we will export this network so that we can build on it when adding further sectors (e.g. electric vehicles and heat pumps) in the next tutorial:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">export_to_netcdf</span><span class="p">(</span><span class="s2">&quot;electricity-network.nc&quot;</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:pypsa.network.io:Exported network &#39;Unnamed Network&#39; saved to &#39;electricity-network.nc contains: sub_networks, loads, carriers, global_constraints, generators, buses, storage_units
 </pre></div>
 </div>
 </div>
@@ -1494,16 +966,16 @@ dtype: float64
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: ""
         },
         kernelOptions: {
-            name: "python3",
+            name: "",
             path: "./."
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = ''</script>
 
                 </article>
               

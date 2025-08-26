@@ -587,11 +587,6 @@ d_{i,t} &amp;= \sum_s g_{i,s,t} + \sum_r g_{i,r,t,\text{discharge}} - \sum_r g_{
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;B&#39;], dtype=&#39;object&#39;)
-</pre></div>
-</div>
-</div>
 </div>
 <p>For each class of components, the data describing the components is stored in a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>. For example, all static data for buses is stored in <code class="docutils literal notranslate"><span class="pre">n.buses</span></code></p>
 <div class="cell docutils container">
@@ -600,92 +595,6 @@ d_{i,t} &amp;= \sum_s g_{i,s,t} + \sum_r g_{i,r,t,\text{discharge}} - \sum_r g_{
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>v_nom</th>
-      <th>type</th>
-      <th>x</th>
-      <th>y</th>
-      <th>carrier</th>
-      <th>unit</th>
-      <th>location</th>
-      <th>v_mag_pu_set</th>
-      <th>v_mag_pu_min</th>
-      <th>v_mag_pu_max</th>
-      <th>control</th>
-      <th>generator</th>
-      <th>sub_network</th>
-    </tr>
-    <tr>
-      <th>name</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>A</th>
-      <td>380.0</td>
-      <td></td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>AC</td>
-      <td></td>
-      <td></td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>inf</td>
-      <td>PQ</td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <th>B</th>
-      <td>380.0</td>
-      <td></td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>AC</td>
-      <td></td>
-      <td></td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>inf</td>
-      <td>PQ</td>
-      <td></td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>You see there are many more attributes than we specified while adding the buses; many of them are filled with default parameters which were added. You can look up the field description, defaults and status (required input, optional input, output) for buses here <a class="reference external" href="https://pypsa.readthedocs.io/en/latest/components.html#bus">https://pypsa.readthedocs.io/en/latest/components.html#bus</a>, and analogous for all other components.</p>
 <p>The method <code class="docutils literal notranslate"><span class="pre">n.add()</span></code> also allows you to add multiple components at once. For instance, multiple <strong>carriers</strong> for the fuels with information on specific carbon dioxide emissions, a nice name, and colors for plotting. For this, the function takes the component name as the first argument and then a list of component names and then optional arguments for the parameters. Here, scalar values, lists, dictionary or <code class="docutils literal notranslate"><span class="pre">pandas.Series</span></code> are allowed. The latter two needs keys or indices with the component names.</p>
@@ -701,11 +610,6 @@ d_{i,t} &amp;= \sum_s g_{i,s,t} + \sum_r g_{i,r,t,\text{discharge}} - \sum_r g_{
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;coal&#39;, &#39;gas&#39;, &#39;oil&#39;, &#39;hydro&#39;, &#39;wind&#39;], dtype=&#39;object&#39;)
-</pre></div>
-</div>
-</div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">n.add()</span></code> function is very general. It lets you add any component to the network object <code class="docutils literal notranslate"><span class="pre">n</span></code>. For instance, in the next step we add <strong>generators</strong> for all the different power plants.</p>
 <p>In Region B:</p>
@@ -718,11 +622,6 @@ d_{i,t} &amp;= \sum_s g_{i,s,t} + \sum_r g_{i,r,t,\text{discharge}} - \sum_r g_{
     <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;hydro&quot;</span><span class="p">,</span>
     <span class="n">p_nom</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>  <span class="c1"># MW</span>
 <span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;B hydro&#39;], dtype=&#39;object&#39;)
 </pre></div>
 </div>
 </div>
@@ -743,30 +642,11 @@ d_{i,t} &amp;= \sum_s g_{i,s,t} + \sum_r g_{i,r,t,\text{discharge}} - \sum_r g_{
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.network.io:The following generators are already defined and will be skipped (use overwrite=True to overwrite): A coal
-WARNING:pypsa.network.io:The following generators are already defined and will be skipped (use overwrite=True to overwrite): A wind
-WARNING:pypsa.network.io:The following generators are already defined and will be skipped (use overwrite=True to overwrite): A gas
-WARNING:pypsa.network.io:The following generators are already defined and will be skipped (use overwrite=True to overwrite): A oil
-</pre></div>
-</div>
-</div>
 </div>
 <p>As a result, the <code class="docutils literal notranslate"><span class="pre">n.generators</span></code> DataFrame looks like this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">generators</span><span class="p">[</span><span class="s2">&quot;marginal_cost&quot;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>name
-B hydro      0.000000
-A coal      24.242424
-A wind       0.000000
-A gas      172.413793
-A oil      137.142857
-Name: marginal_cost, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -781,11 +661,6 @@ Name: marginal_cost, dtype: float64
     <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
     <span class="n">p_set</span><span class="o">=</span><span class="n">loads</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span>
 <span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.network.io:The following loads are already defined and will be skipped (use overwrite=True to overwrite): A electricity demand
 </pre></div>
 </div>
 </div>
@@ -808,68 +683,6 @@ Name: marginal_cost, dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>bus</th>
-      <th>carrier</th>
-      <th>type</th>
-      <th>p_set</th>
-      <th>q_set</th>
-      <th>sign</th>
-      <th>active</th>
-    </tr>
-    <tr>
-      <th>name</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>A electricity demand</th>
-      <td>A</td>
-      <td></td>
-      <td></td>
-      <td>42000.0</td>
-      <td>0.0</td>
-      <td>-1.0</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>B electricity demand</th>
-      <td>B</td>
-      <td></td>
-      <td></td>
-      <td>650.0</td>
-      <td>0.0</td>
-      <td>-1.0</td>
-      <td>True</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>Finally, we add the connection between Region B and Region A with a 500 MW line:</p>
 <div class="cell docutils container">
@@ -886,11 +699,6 @@ Name: marginal_cost, dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.network.io:The following lines are already defined and will be skipped (use overwrite=True to overwrite): A-B
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -898,101 +706,6 @@ Name: marginal_cost, dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>bus0</th>
-      <th>bus1</th>
-      <th>type</th>
-      <th>x</th>
-      <th>r</th>
-      <th>g</th>
-      <th>b</th>
-      <th>s_nom</th>
-      <th>s_nom_mod</th>
-      <th>s_nom_extendable</th>
-      <th>...</th>
-      <th>v_ang_min</th>
-      <th>v_ang_max</th>
-      <th>sub_network</th>
-      <th>x_pu</th>
-      <th>r_pu</th>
-      <th>g_pu</th>
-      <th>b_pu</th>
-      <th>x_pu_eff</th>
-      <th>r_pu_eff</th>
-      <th>s_nom_opt</th>
-    </tr>
-    <tr>
-      <th>name</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>A-B</th>
-      <td>A</td>
-      <td>B</td>
-      <td></td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>500.0</td>
-      <td>0.0</td>
-      <td>False</td>
-      <td>...</td>
-      <td>-inf</td>
-      <td>inf</td>
-      <td></td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-  </tbody>
-</table>
-<p>1 rows × 31 columns</p>
-</div></div></div>
 </div>
 </section>
 <section id="optimisation">
@@ -1000,48 +713,11 @@ Name: marginal_cost, dtype: float64
 <p>With all input data transferred into PyPSA’s data structure, we can now build and run the resulting optimisation problem. In PyPSA, building, solving and retrieving results from the optimisation model is contained in a single function call <code class="docutils literal notranslate"><span class="pre">n.optimize()</span></code>. This function optimizes dispatch and investment decisions for least cost.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">n.optimize()</span></code> function can take a variety of arguments. The most relevant for the moment is the choice of the solver (e.g. “highs” and “gurobi”). They need to be installed on your computer, to use them here!</p>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">log_to_console</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<details class="admonition hide below-input">
-<summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell output</p>
-<p class="expanded admonition-title">Hide code cell output</p>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following buses have carriers which are not defined:
-Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
-WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
-Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
-INFO:linopy.model: Solve problem using Highs solver
-INFO:linopy.model:Solver options:
- - log_to_console: False
-INFO:linopy.io: Writing time: 0.01s
-INFO:linopy.constants: Optimization successful: 
-Status: ok
-Termination condition: optimal
-Solution: 6 primals, 14 duals
-Objective: 1.38e+06
-Solver model: available
-Solver message: Optimal
-
-INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Line-fix-s-lower, Line-fix-s-upper were not assigned to the network.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running HiGHS 1.11.0 (git hash: 364c83a): Copyright (c) 2025 HiGHS under MIT licence terms
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;ok&#39;, &#39;optimal&#39;)
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 <p>Let’s have a look at the results.</p>
 <p>Since the power flow and dispatch are generally time-varying quantities, these are stored in a different location than e.g. <code class="docutils literal notranslate"><span class="pre">n.generators</span></code>. They are stored in <code class="docutils literal notranslate"><span class="pre">n.generators_t</span></code>. Thus, to find out the dispatch of the generators, run</p>
@@ -1051,52 +727,6 @@ INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>name</th>
-      <th>B hydro</th>
-      <th>A coal</th>
-      <th>A wind</th>
-      <th>A gas</th>
-      <th>A oil</th>
-    </tr>
-    <tr>
-      <th>snapshot</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>now</th>
-      <td>1150.0</td>
-      <td>35000.0</td>
-      <td>3000.0</td>
-      <td>1500.0</td>
-      <td>2000.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>or if you prefer it in relation to the generators nominal capacity</p>
 <div class="cell docutils container">
@@ -1105,52 +735,6 @@ INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>name</th>
-      <th>B hydro</th>
-      <th>A coal</th>
-      <th>A wind</th>
-      <th>A gas</th>
-      <th>A oil</th>
-    </tr>
-    <tr>
-      <th>snapshot</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>now</th>
-      <td>0.958333</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>0.1875</td>
-      <td>1.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>You see that the time index has the value ‘now’. This is the default index when no time series data has been specified and the network only covers a single state (e.g. a particular hour).</p>
 <p>Similarly you will find the power flow in transmission lines at</p>
@@ -1160,40 +744,6 @@ INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>name</th>
-      <th>A-B</th>
-    </tr>
-    <tr>
-      <th>snapshot</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>now</th>
-      <td>-500.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1201,40 +751,6 @@ INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>name</th>
-      <th>A-B</th>
-    </tr>
-    <tr>
-      <th>snapshot</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>now</th>
-      <td>500.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">p0</span></code> will tell you the flow from <code class="docutils literal notranslate"><span class="pre">bus0</span></code> to <code class="docutils literal notranslate"><span class="pre">bus1</span></code>. <code class="docutils literal notranslate"><span class="pre">p1</span></code> will tell you the flow from <code class="docutils literal notranslate"><span class="pre">bus1</span></code> to <code class="docutils literal notranslate"><span class="pre">bus0</span></code>.</p>
 <p>What about the <em>market clearing prices</em> in the electricity market?</p>
@@ -1244,43 +760,6 @@ INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>name</th>
-      <th>A</th>
-      <th>B</th>
-    </tr>
-    <tr>
-      <th>snapshot</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>now</th>
-      <td>172.413793</td>
-      <td>-0.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 </section>
 <section id="modifying-networks">
@@ -1299,158 +778,13 @@ INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>bus0</th>
-      <th>bus1</th>
-      <th>type</th>
-      <th>x</th>
-      <th>r</th>
-      <th>g</th>
-      <th>b</th>
-      <th>s_nom</th>
-      <th>s_nom_mod</th>
-      <th>s_nom_extendable</th>
-      <th>...</th>
-      <th>v_ang_max</th>
-      <th>sub_network</th>
-      <th>x_pu</th>
-      <th>r_pu</th>
-      <th>g_pu</th>
-      <th>b_pu</th>
-      <th>x_pu_eff</th>
-      <th>r_pu_eff</th>
-      <th>s_nom_opt</th>
-      <th>v_nom</th>
-    </tr>
-    <tr>
-      <th>name</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>A-B</th>
-      <td>A</td>
-      <td>B</td>
-      <td></td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>400.0</td>
-      <td>0.0</td>
-      <td>False</td>
-      <td>...</td>
-      <td>inf</td>
-      <td>0</td>
-      <td>0.000007</td>
-      <td>0.000007</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.000007</td>
-      <td>0.000007</td>
-      <td>500.0</td>
-      <td>380.0</td>
-    </tr>
-  </tbody>
-</table>
-<p>1 rows × 32 columns</p>
-</div></div></div>
 </div>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">solver_name</span><span class="o">=</span><span class="s2">&quot;highs&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<details class="admonition hide below-input">
-<summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell output</p>
-<p class="expanded admonition-title">Hide code cell output</p>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following buses have carriers which are not defined:
-Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
-WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
-Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
-WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
-INFO:linopy.model: Solve problem using Highs solver
-INFO:linopy.io: Writing time: 0.02s
-INFO:linopy.constants: Optimization successful: 
-Status: ok
-Termination condition: optimal
-Solution: 6 primals, 14 duals
-Objective: 1.40e+06
-Solver model: available
-Solver message: Optimal
-
-INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Line-fix-s-lower, Line-fix-s-upper were not assigned to the network.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running HiGHS 1.11.0 (git hash: 364c83a): Copyright (c) 2025 HiGHS under MIT licence terms
-LP   linopy-problem-5njb0ln1 has 14 rows; 6 cols; 19 nonzeros
-Coefficient ranges:
-  Matrix [1e+00, 1e+00]
-  Cost   [2e+01, 2e+02]
-  Bound  [0e+00, 0e+00]
-  RHS    [4e+02, 4e+04]
-Presolving model
-1 rows, 2 cols, 2 nonzeros  0s
-0 rows, 0 cols, 0 nonzeros  0s
-Presolve : Reductions: rows 0(-14); columns 0(-6); elements 0(-19) - Reduced to empty
-Solving the original LP from the solution after postsolve
-Model name          : linopy-problem-5njb0ln1
-Model status        : Optimal
-Objective value     :  1.3986326317e+06
-P-D objective error :  1.6647013314e-16
-HiGHS run time      :          0.00
-Writing the solution to /tmp/linopy-solve-nv9k4973.sol
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;ok&#39;, &#39;optimal&#39;)
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 <p>You can see that the production of the hydro power plant was reduced and that of the gas power plant increased owing to the reduced transmission capacity.</p>
 <div class="cell docutils container">
@@ -1459,52 +793,6 @@ Writing the solution to /tmp/linopy-solve-nv9k4973.sol
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>name</th>
-      <th>B hydro</th>
-      <th>A coal</th>
-      <th>A wind</th>
-      <th>A gas</th>
-      <th>A oil</th>
-    </tr>
-    <tr>
-      <th>snapshot</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>now</th>
-      <td>1050.0</td>
-      <td>35000.0</td>
-      <td>3000.0</td>
-      <td>1600.0</td>
-      <td>2000.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 </section>
 <section id="exploring-the-optimization-model">
@@ -1515,44 +803,10 @@ Writing the solution to /tmp/linopy-solve-nv9k4973.sol
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Linopy LP model
-===============
-
-Variables:
-----------
- * Generator-p (snapshot, name)
- * Line-s (snapshot, name)
-
-Constraints:
-------------
- * Generator-fix-p-lower (snapshot, name)
- * Generator-fix-p-upper (snapshot, name)
- * Line-fix-s-lower (snapshot, name)
- * Line-fix-s-upper (snapshot, name)
- * Bus-nodal_balance (name, snapshot)
-
-Status:
--------
-ok
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="s2">&quot;Generator-fix-p-upper&quot;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Constraint `Generator-fix-p-upper` [snapshot: 1, name: 5]:
-----------------------------------------------------------
-[now, B hydro]: +1 Generator-p[now, B hydro] ≤ 1200.0
-[now, A coal]: +1 Generator-p[now, A coal]   ≤ 35000.0
-[now, A wind]: +1 Generator-p[now, A wind]   ≤ 3000.0
-[now, A gas]: +1 Generator-p[now, A gas]     ≤ 8000.0
-[now, A oil]: +1 Generator-p[now, A oil]     ≤ 2000.0
 </pre></div>
 </div>
 </div>
@@ -1563,27 +817,10 @@ ok
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Constraint `Bus-nodal_balance` [name: 2, snapshot: 1]:
-------------------------------------------------------
-[A, now]: +1 Generator-p[now, A coal] + 1 Generator-p[now, A wind] + 1 Generator-p[now, A gas] + 1 Generator-p[now, A oil] - 1 Line-s[now, A-B] = 42000.0
-[B, now]: +1 Generator-p[now, B hydro] + 1 Line-s[now, A-B]                                                                                     = 650.0
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">objective</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Objective:
-----------
-LinearExpression: +0 Generator-p[now, B hydro] + 24.24 Generator-p[now, A coal] + 0 Generator-p[now, A wind] + 172.4 Generator-p[now, A gas] + 137.1 Generator-p[now, A oil]
-Sense: min
-Value: 1398632.6317348
 </pre></div>
 </div>
 </div>
@@ -1599,97 +836,12 @@ Value: 1398632.6317348
 <p class="expanded admonition-title">Hide code cell content</p>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="s2">&quot;s_nom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="s2">&quot;s_nom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="n">n</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">log_to_console</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">n</span><span class="o">.</span><span class="n">generators_t</span><span class="o">.</span><span class="n">p</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Line&#39;)
-WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
-Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;SubNetwork&#39;)
-WARNING:pypsa.consistency:The following buses have carriers which are not defined:
-Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;Bus&#39;)
-INFO:linopy.model: Solve problem using Highs solver
-INFO:linopy.io: Writing time: 0.01s
-INFO:linopy.constants: Optimization successful: 
-Status: ok
-Termination condition: optimal
-Solution: 6 primals, 14 duals
-Objective: 1.47e+06
-Solver model: available
-Solver message: Optimal
-
-INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Line-fix-s-lower, Line-fix-s-upper were not assigned to the network.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running HiGHS 1.10.0 (git hash: n/a): Copyright (c) 2025 HiGHS under MIT licence terms
-LP   linopy-problem-ddklmkon has 14 rows; 6 cols; 19 nonzeros
-Coefficient ranges:
-  Matrix [1e+00, 1e+00]
-  Cost   [2e+01, 2e+02]
-  Bound  [0e+00, 0e+00]
-  RHS    [6e+02, 4e+04]
-Presolving model
-1 rows, 2 cols, 2 nonzeros  0s
-0 rows, 0 cols, 0 nonzeros  0s
-Presolve : Reductions: rows 0(-14); columns 0(-6); elements 0(-19) - Reduced to empty
-Solving the original LP from the solution after postsolve
-Model name          : linopy-problem-ddklmkon
-Model status        : Optimal
-Objective value     :  1.4675981490e+06
-Relative P-D gap    :  0.0000000000e+00
-HiGHS run time      :          0.00
-Writing the solution to /tmp/linopy-solve-w8mazs5w.sol
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>Generator</th>
-      <th>B hydro</th>
-      <th>A coal</th>
-      <th>A wind</th>
-      <th>A gas</th>
-      <th>A oil</th>
-    </tr>
-    <tr>
-      <th>snapshot</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>now</th>
-      <td>650.0</td>
-      <td>35000.0</td>
-      <td>3000.0</td>
-      <td>2000.0</td>
-      <td>2000.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </details>
 </div>
 <p><strong>Task 2:</strong> Double the wind capacity. How is the electricity price affected? What generator is price-setting?</p>
@@ -1706,90 +858,6 @@ Writing the solution to /tmp/linopy-solve-w8mazs5w.sol
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Line&#39;)
-WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
-Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;SubNetwork&#39;)
-WARNING:pypsa.consistency:The following buses have carriers which are not defined:
-Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;Bus&#39;)
-INFO:linopy.model: Solve problem using Highs solver
-INFO:linopy.io: Writing time: 0.01s
-INFO:linopy.constants: Optimization successful: 
-Status: ok
-Termination condition: optimal
-Solution: 6 primals, 14 duals
-Objective: 9.86e+05
-Solver model: available
-Solver message: Optimal
-
-INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Line-fix-s-lower, Line-fix-s-upper were not assigned to the network.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running HiGHS 1.10.0 (git hash: n/a): Copyright (c) 2025 HiGHS under MIT licence terms
-LP   linopy-problem-7ralscm0 has 14 rows; 6 cols; 19 nonzeros
-Coefficient ranges:
-  Matrix [1e+00, 1e+00]
-  Cost   [2e+01, 2e+02]
-  Bound  [0e+00, 0e+00]
-  RHS    [6e+02, 4e+04]
-Presolving model
-1 rows, 3 cols, 3 nonzeros  0s
-Dependent equations search running on 1 equations with time limit of 1000.00s
-Dependent equations search removed 0 rows and 0 nonzeros in 0.00s (limit = 1000.00s)
-1 rows, 3 cols, 3 nonzeros  0s
-Presolve : Reductions: rows 1(-13); columns 3(-3); elements 3(-16)
-Solving the presolved LP
-Using EKK dual simplex solver - serial
-  Iteration        Objective     Infeasibilities num(sum)
-          0     0.0000000000e+00 Pr: 1(36000) 0s
-          1     9.8562770563e+05 Pr: 0(0) 0s
-Solving the original LP from the solution after postsolve
-Model name          : linopy-problem-7ralscm0
-Model status        : Optimal
-Simplex   iterations: 1
-Objective value     :  9.8562770563e+05
-Relative P-D gap    :  9.4490299867e-16
-HiGHS run time      :          0.00
-Writing the solution to /tmp/linopy-solve-zdev71ms.sol
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>Bus</th>
-      <th>A</th>
-      <th>B</th>
-    </tr>
-    <tr>
-      <th>snapshot</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>now</th>
-      <td>137.142857</td>
-      <td>-0.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </details>
 </div>
 <p><strong>Task 3:</strong> Region A brings a new 1000 MW nuclear power plant into operation with an estimated marginal electricity generation cost of 20 €/MWh. Will that affect the electricity price?</p>
@@ -1813,84 +881,6 @@ Writing the solution to /tmp/linopy-solve-zdev71ms.sol
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Line&#39;)
-WARNING:pypsa.consistency:The following generators have carriers which are not defined:
-Index([&#39;A nuclear&#39;], dtype=&#39;object&#39;, name=&#39;Generator&#39;)
-WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
-Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;SubNetwork&#39;)
-WARNING:pypsa.consistency:The following buses have carriers which are not defined:
-Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;Bus&#39;)
-INFO:linopy.model: Solve problem using Highs solver
-INFO:linopy.io: Writing time: 0.01s
-INFO:linopy.constants: Optimization successful: 
-Status: ok
-Termination condition: optimal
-Solution: 7 primals, 16 duals
-Objective: 8.68e+05
-Solver model: available
-Solver message: Optimal
-
-INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Line-fix-s-lower, Line-fix-s-upper were not assigned to the network.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running HiGHS 1.10.0 (git hash: n/a): Copyright (c) 2025 HiGHS under MIT licence terms
-LP   linopy-problem-2mpxbso6 has 16 rows; 7 cols; 22 nonzeros
-Coefficient ranges:
-  Matrix [1e+00, 1e+00]
-  Cost   [2e+01, 2e+02]
-  Bound  [0e+00, 0e+00]
-  RHS    [6e+02, 4e+04]
-Presolving model
-1 rows, 3 cols, 3 nonzeros  0s
-0 rows, 0 cols, 0 nonzeros  0s
-Presolve : Reductions: rows 0(-16); columns 0(-7); elements 0(-22) - Reduced to empty
-Solving the original LP from the solution after postsolve
-Model name          : linopy-problem-2mpxbso6
-Model status        : Optimal
-Objective value     :  8.6848484848e+05
-Relative P-D gap    :  0.0000000000e+00
-HiGHS run time      :          0.00
-Writing the solution to /tmp/linopy-solve-0dlwsrnz.sol
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>Bus</th>
-      <th>A</th>
-      <th>B</th>
-    </tr>
-    <tr>
-      <th>snapshot</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>now</th>
-      <td>24.242424</td>
-      <td>-0.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </details>
 </div>
 </section>
@@ -1905,16 +895,16 @@ Writing the solution to /tmp/linopy-solve-0dlwsrnz.sol
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: ""
         },
         kernelOptions: {
-            name: "python3",
+            name: "",
             path: "./."
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = ''</script>
 
                 </article>
               

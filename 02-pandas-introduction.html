@@ -471,14 +471,6 @@ Then install <code class="docutils literal notranslate"><span class="pre">pandas
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Neckarwestheim    1269
-Isar 2            1365
-Emsland           1290
-dtype: int64
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -492,27 +484,11 @@ dtype: int64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Neckarwestheim    1269
-Isar 2            1365
-Emsland           1290
-dtype: int64
-</pre></div>
-</div>
-</div>
 </div>
 <p>Arithmetic operations can be applied to the whole <code class="docutils literal notranslate"><span class="pre">pd.Series</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">**</span><span class="mf">0.5</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Neckarwestheim    35.623026
-Isar 2            36.945906
-Emsland           35.916570
-dtype: float64
 </pre></div>
 </div>
 </div>
@@ -524,21 +500,11 @@ dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;Neckarwestheim&#39;, &#39;Isar 2&#39;, &#39;Emsland&#39;], dtype=&#39;object&#39;)
-</pre></div>
-</div>
-</div>
 </div>
 <p>We can get values back out using the index via the <code class="docutils literal notranslate"><span class="pre">.loc</span></code> attribute</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;Isar 2&quot;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1365
 </pre></div>
 </div>
 </div>
@@ -550,23 +516,11 @@ dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1290
-</pre></div>
-</div>
-</div>
 </div>
 <p>We can pass a list or array to loc to get multiple rows back:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s2">&quot;Neckarwestheim&quot;</span><span class="p">,</span> <span class="s2">&quot;Emsland&quot;</span><span class="p">]]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Neckarwestheim    1269
-Emsland           1290
-dtype: int64
 </pre></div>
 </div>
 </div>
@@ -588,56 +542,6 @@ dtype: int64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>capacity</th>
-      <th>type</th>
-      <th>start_year</th>
-      <th>end_year</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Neckarwestheim</th>
-      <td>1269</td>
-      <td>PWR</td>
-      <td>1989</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>Isar 2</th>
-      <td>1365</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>Emsland</th>
-      <td>1290</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>A wide range of statistical functions are available on both Series and DataFrames.</p>
 <div class="cell docutils container">
@@ -646,27 +550,10 @@ dtype: int64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>capacity      1269
-type           PWR
-start_year    1988
-end_year       NaN
-dtype: object
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">numeric_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>capacity      1308.000000
-start_year    1988.333333
-end_year              NaN
-dtype: float64
 </pre></div>
 </div>
 </div>
@@ -678,14 +565,6 @@ dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Neckarwestheim    1269
-Isar 2            1365
-Emsland           1290
-Name: capacity, dtype: int64
-</pre></div>
-</div>
-</div>
 </div>
 <p>Indexing works very similar to series</p>
 <div class="cell docutils container">
@@ -694,25 +573,11 @@ Name: capacity, dtype: int64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>capacity      1290
-type           PWR
-start_year    1988
-end_year       NaN
-Name: Emsland, dtype: object
-</pre></div>
-</div>
-</div>
 </div>
 <p>But we can also specify the column(s) and row(s) we want to access</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;Emsland&quot;</span><span class="p">,</span> <span class="s2">&quot;start_year&quot;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1988
 </pre></div>
 </div>
 </div>
@@ -725,60 +590,6 @@ Name: Emsland, dtype: object
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>capacity</th>
-      <th>type</th>
-      <th>start_year</th>
-      <th>end_year</th>
-      <th>reduced_capacity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Neckarwestheim</th>
-      <td>1269</td>
-      <td>PWR</td>
-      <td>1989</td>
-      <td>NaN</td>
-      <td>1015.2</td>
-    </tr>
-    <tr>
-      <th>Isar 2</th>
-      <td>1365</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1092.0</td>
-    </tr>
-    <tr>
-      <th>Emsland</th>
-      <td>1290</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1032.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>We can also remove columns or rows from a DataFrame:</p>
 <div class="admonition note">
@@ -791,14 +602,6 @@ Name: Emsland, dtype: object
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;bound method DataFrame.min of                 capacity type  start_year  end_year  reduced_capacity
-Neckarwestheim      1269  PWR        1989       NaN            1015.2
-Isar 2              1365  PWR        1988       NaN            1092.0
-Emsland             1290  PWR        1988       NaN            1032.0&gt;
-</pre></div>
-</div>
-</div>
 </div>
 <p>We can also drop columns with only NaN values</p>
 <div class="cell docutils container">
@@ -807,56 +610,6 @@ Emsland             1290  PWR        1988       NaN            1032.0&gt;
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>capacity</th>
-      <th>type</th>
-      <th>start_year</th>
-      <th>reduced_capacity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Neckarwestheim</th>
-      <td>1269</td>
-      <td>PWR</td>
-      <td>1989</td>
-      <td>1015.2</td>
-    </tr>
-    <tr>
-      <th>Isar 2</th>
-      <td>1365</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>1092.0</td>
-    </tr>
-    <tr>
-      <th>Emsland</th>
-      <td>1290</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>1032.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>Or fill it up with default “fallback” data:</p>
 <div class="cell docutils container">
@@ -865,60 +618,6 @@ Emsland             1290  PWR        1988       NaN            1032.0&gt;
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>capacity</th>
-      <th>type</th>
-      <th>start_year</th>
-      <th>end_year</th>
-      <th>reduced_capacity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Neckarwestheim</th>
-      <td>1269</td>
-      <td>PWR</td>
-      <td>1989</td>
-      <td>2023.0</td>
-      <td>1015.2</td>
-    </tr>
-    <tr>
-      <th>Isar 2</th>
-      <td>1365</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>2023.0</td>
-      <td>1092.0</td>
-    </tr>
-    <tr>
-      <th>Emsland</th>
-      <td>1290</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>2023.0</td>
-      <td>1032.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 </section>
 <section id="sorting-data">
@@ -930,60 +629,6 @@ Emsland             1290  PWR        1988       NaN            1032.0&gt;
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>capacity</th>
-      <th>type</th>
-      <th>start_year</th>
-      <th>end_year</th>
-      <th>reduced_capacity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Emsland</th>
-      <td>1290</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1032.0</td>
-    </tr>
-    <tr>
-      <th>Isar 2</th>
-      <td>1365</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1092.0</td>
-    </tr>
-    <tr>
-      <th>Neckarwestheim</th>
-      <td>1269</td>
-      <td>PWR</td>
-      <td>1989</td>
-      <td>NaN</td>
-      <td>1015.2</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -991,60 +636,6 @@ Emsland             1290  PWR        1988       NaN            1032.0&gt;
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>capacity</th>
-      <th>type</th>
-      <th>start_year</th>
-      <th>end_year</th>
-      <th>reduced_capacity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Neckarwestheim</th>
-      <td>1269</td>
-      <td>PWR</td>
-      <td>1989</td>
-      <td>NaN</td>
-      <td>1015.2</td>
-    </tr>
-    <tr>
-      <th>Emsland</th>
-      <td>1290</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1032.0</td>
-    </tr>
-    <tr>
-      <th>Isar 2</th>
-      <td>1365</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1092.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 </section>
 <section id="filtering-data">
@@ -1056,14 +647,6 @@ Emsland             1290  PWR        1988       NaN            1032.0&gt;
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Neckarwestheim    False
-Isar 2             True
-Emsland           False
-Name: capacity, dtype: bool
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1071,44 +654,6 @@ Name: capacity, dtype: bool
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>capacity</th>
-      <th>type</th>
-      <th>start_year</th>
-      <th>end_year</th>
-      <th>reduced_capacity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Isar 2</th>
-      <td>1365</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1092.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>We can also combine multiple conditions, but we need to wrap the conditions with brackets!</p>
 <div class="cell docutils container">
@@ -1117,44 +662,6 @@ Name: capacity, dtype: bool
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>capacity</th>
-      <th>type</th>
-      <th>start_year</th>
-      <th>end_year</th>
-      <th>reduced_capacity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Isar 2</th>
-      <td>1365</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1092.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>Or we make <a class="reference external" href="https://en.wikipedia.org/wiki/SQL">SQL-like</a> queries:</p>
 <div class="cell docutils container">
@@ -1163,52 +670,6 @@ Name: capacity, dtype: bool
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>capacity</th>
-      <th>type</th>
-      <th>start_year</th>
-      <th>end_year</th>
-      <th>reduced_capacity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Isar 2</th>
-      <td>1365</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1092.0</td>
-    </tr>
-    <tr>
-      <th>Emsland</th>
-      <td>1290</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1032.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1217,44 +678,6 @@ Name: capacity, dtype: bool
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>capacity</th>
-      <th>type</th>
-      <th>start_year</th>
-      <th>end_year</th>
-      <th>reduced_capacity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Isar 2</th>
-      <td>1365</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1092.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 </section>
 <section id="modifying-values">
@@ -1267,60 +690,6 @@ Name: capacity, dtype: bool
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>capacity</th>
-      <th>type</th>
-      <th>start_year</th>
-      <th>end_year</th>
-      <th>reduced_capacity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Neckarwestheim</th>
-      <td>1269</td>
-      <td>PWR</td>
-      <td>1989</td>
-      <td>NaN</td>
-      <td>1015.2</td>
-    </tr>
-    <tr>
-      <th>Isar 2</th>
-      <td>1366</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1092.0</td>
-    </tr>
-    <tr>
-      <th>Emsland</th>
-      <td>1290</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1032.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>Sometimes it can be useful to rename columns:</p>
 <div class="cell docutils container">
@@ -1329,60 +698,6 @@ Name: capacity, dtype: bool
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>capacity</th>
-      <th>reactor</th>
-      <th>start_year</th>
-      <th>end_year</th>
-      <th>reduced_capacity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Neckarwestheim</th>
-      <td>1269</td>
-      <td>PWR</td>
-      <td>1989</td>
-      <td>NaN</td>
-      <td>1015.2</td>
-    </tr>
-    <tr>
-      <th>Isar 2</th>
-      <td>1366</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1092.0</td>
-    </tr>
-    <tr>
-      <th>Emsland</th>
-      <td>1290</td>
-      <td>PWR</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1032.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>Sometimes it can be useful to replace values:</p>
 <div class="cell docutils container">
@@ -1391,60 +706,6 @@ Name: capacity, dtype: bool
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>capacity</th>
-      <th>type</th>
-      <th>start_year</th>
-      <th>end_year</th>
-      <th>reduced_capacity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Neckarwestheim</th>
-      <td>1269</td>
-      <td>Pressurized water reactor</td>
-      <td>1989</td>
-      <td>NaN</td>
-      <td>1015.2</td>
-    </tr>
-    <tr>
-      <th>Isar 2</th>
-      <td>1366</td>
-      <td>Pressurized water reactor</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1092.0</td>
-    </tr>
-    <tr>
-      <th>Emsland</th>
-      <td>1290</td>
-      <td>Pressurized water reactor</td>
-      <td>1988</td>
-      <td>NaN</td>
-      <td>1032.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 </section>
 <section id="time-series">
@@ -1461,25 +722,11 @@ Name: capacity, dtype: bool
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://tubcloud.tu-berlin.de/s/pKttFadrbTKSJKF/download/time-series-lecture-2.csv&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;https://tubcloud.tu-berlin.de/s/pKttFadrbTKSJKF/download/time-series-lecture-2.csv&quot;</span>
+<span class="p">)</span>
 <span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">ts</span><span class="o">.</span><span class="n">index</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatetimeIndex([&#39;2015-01-01 00:00:00&#39;, &#39;2015-01-01 01:00:00&#39;,
-               &#39;2015-01-01 02:00:00&#39;, &#39;2015-01-01 03:00:00&#39;,
-               &#39;2015-01-01 04:00:00&#39;, &#39;2015-01-01 05:00:00&#39;,
-               &#39;2015-01-01 06:00:00&#39;, &#39;2015-01-01 07:00:00&#39;,
-               &#39;2015-01-01 08:00:00&#39;, &#39;2015-01-01 09:00:00&#39;,
-               ...
-               &#39;2015-12-31 14:00:00&#39;, &#39;2015-12-31 15:00:00&#39;,
-               &#39;2015-12-31 16:00:00&#39;, &#39;2015-12-31 17:00:00&#39;,
-               &#39;2015-12-31 18:00:00&#39;, &#39;2015-12-31 19:00:00&#39;,
-               &#39;2015-12-31 20:00:00&#39;, &#39;2015-12-31 21:00:00&#39;,
-               &#39;2015-12-31 22:00:00&#39;, &#39;2015-12-31 23:00:00&#39;],
-              dtype=&#39;datetime64[ns]&#39;, length=8760, freq=None)
 </pre></div>
 </div>
 </div>
@@ -1491,24 +738,12 @@ Name: capacity, dtype: bool
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
-</pre></div>
-</div>
-<img alt="_images/1aebc3808c898a28b2768a499e5c866f5ec72ba4c6b9280eaa3a158aba7f0b7e.png" src="_images/1aebc3808c898a28b2768a499e5c866f5ec72ba4c6b9280eaa3a158aba7f0b7e.png" />
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;2015-05-01&quot;</span><span class="p">,</span> <span class="s2">&quot;solar&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
-</pre></div>
-</div>
-<img alt="_images/523f186f41b511ca3130a22da8a819ece0a541d8a60f6a9d389e7d3a09f5aafd.png" src="_images/523f186f41b511ca3130a22da8a819ece0a541d8a60f6a9d389e7d3a09f5aafd.png" />
 </div>
 </div>
 <p>A common operation is to change the resolution of a dataset by resampling in time, which Pandas exposes through the <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/timeseries.html#resampling">resample</a> function.</p>
@@ -1521,12 +756,6 @@ Name: capacity, dtype: bool
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="p">[</span><span class="s2">&quot;onwind&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
-</pre></div>
-</div>
-<img alt="_images/c94ac91edb19ec42be13dca68da234d7383ca259c7dee31b68af96f12d5b8eb3.png" src="_images/c94ac91edb19ec42be13dca68da234d7383ca259c7dee31b68af96f12d5b8eb3.png" />
 </div>
 </div>
 </section>
@@ -1548,135 +777,11 @@ Name: capacity, dtype: bool
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Name</th>
-      <th>Fueltype</th>
-      <th>Technology</th>
-      <th>Set</th>
-      <th>Country</th>
-      <th>Capacity</th>
-      <th>Efficiency</th>
-      <th>DateIn</th>
-      <th>DateRetrofit</th>
-      <th>DateOut</th>
-    </tr>
-    <tr>
-      <th>id</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Kernkraftwerk Emsland</td>
-      <td>Nuclear</td>
-      <td>Steam Turbine</td>
-      <td>PP</td>
-      <td>Germany</td>
-      <td>1336.0</td>
-      <td>0.33</td>
-      <td>1988.0</td>
-      <td>1988.0</td>
-      <td>2023.0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Brokdorf</td>
-      <td>Nuclear</td>
-      <td>Steam Turbine</td>
-      <td>PP</td>
-      <td>Germany</td>
-      <td>1410.0</td>
-      <td>0.33</td>
-      <td>1986.0</td>
-      <td>1986.0</td>
-      <td>2021.0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Borssele</td>
-      <td>Hard Coal</td>
-      <td>Steam Turbine</td>
-      <td>PP</td>
-      <td>Netherlands</td>
-      <td>485.0</td>
-      <td>NaN</td>
-      <td>1973.0</td>
-      <td>NaN</td>
-      <td>2034.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Gemeinschaftskernkraftwerk Neckarwestheim</td>
-      <td>Nuclear</td>
-      <td>Steam Turbine</td>
-      <td>PP</td>
-      <td>Germany</td>
-      <td>1310.0</td>
-      <td>0.33</td>
-      <td>1976.0</td>
-      <td>1989.0</td>
-      <td>2023.0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Isar</td>
-      <td>Nuclear</td>
-      <td>Steam Turbine</td>
-      <td>PP</td>
-      <td>Germany</td>
-      <td>1410.0</td>
-      <td>0.33</td>
-      <td>1979.0</td>
-      <td>1988.0</td>
-      <td>2023.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">Capacity</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">grouped</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Country
-Albania                    2370.400000
-Austria                   24643.200368
-Belgium                   21443.151009
-Bosnia and Herzegovina     4827.195964
-Bulgaria                  15699.186363
-Name: Capacity, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -1696,38 +801,11 @@ we might want to group the capacities by country <strong>and</strong> fuel type.
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Country         Fueltype     
-Albania         Hydro             1743.9
-                Other               98.0
-                Solar              294.5
-                Wind               234.0
-Austria         Hard Coal         1331.4
-                                  ...   
-United Kingdom  Other               55.0
-                Solar            11668.6
-                Solid Biomass     4919.0
-                Waste              288.9
-                Wind             38670.3
-Name: Capacity, Length: 242, dtype: float64
-</pre></div>
-</div>
-</div>
 </div>
 <p>By grouping by multiple attributes, our index becomes a <code class="docutils literal notranslate"><span class="pre">pd.MultiIndex</span></code> (a hierarchical index with multiple <em>levels</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">capacities</span><span class="o">.</span><span class="n">index</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MultiIndex([(&#39;Albania&#39;,     &#39;Hydro&#39;),
-            (&#39;Albania&#39;,     &#39;Other&#39;),
-            (&#39;Albania&#39;,     &#39;Solar&#39;),
-            (&#39;Albania&#39;,      &#39;Wind&#39;),
-            (&#39;Austria&#39;, &#39;Hard Coal&#39;)],
-           names=[&#39;Country&#39;, &#39;Fueltype&#39;])
 </pre></div>
 </div>
 </div>
@@ -1739,148 +817,6 @@ Name: Capacity, Length: 242, dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>Country</th>
-      <th>Spain</th>
-      <th>Sweden</th>
-      <th>Switzerland</th>
-      <th>Ukraine</th>
-      <th>United Kingdom</th>
-    </tr>
-    <tr>
-      <th>Fueltype</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Biogas</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>31.000000</td>
-    </tr>
-    <tr>
-      <th>Geothermal</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>Hard Coal</th>
-      <td>11904.878478</td>
-      <td>291.000000</td>
-      <td>NaN</td>
-      <td>24474.0</td>
-      <td>33823.617061</td>
-    </tr>
-    <tr>
-      <th>Hydro</th>
-      <td>26069.861248</td>
-      <td>14273.686625</td>
-      <td>20115.0408</td>
-      <td>6590.0</td>
-      <td>4576.175000</td>
-    </tr>
-    <tr>
-      <th>Lignite</th>
-      <td>1831.400000</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>Natural Gas</th>
-      <td>28394.244000</td>
-      <td>2358.000000</td>
-      <td>55.0000</td>
-      <td>4687.9</td>
-      <td>36366.400000</td>
-    </tr>
-    <tr>
-      <th>Nuclear</th>
-      <td>7733.200000</td>
-      <td>9859.000000</td>
-      <td>3355.0000</td>
-      <td>17635.0</td>
-      <td>19181.000000</td>
-    </tr>
-    <tr>
-      <th>Oil</th>
-      <td>1854.371000</td>
-      <td>1685.000000</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>100.000000</td>
-    </tr>
-    <tr>
-      <th>Other</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>55.000000</td>
-    </tr>
-    <tr>
-      <th>Solar</th>
-      <td>36998.200000</td>
-      <td>281.800000</td>
-      <td>96.8000</td>
-      <td>5628.7</td>
-      <td>11668.600000</td>
-    </tr>
-    <tr>
-      <th>Solid Biomass</th>
-      <td>563.000000</td>
-      <td>2432.600000</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4919.000000</td>
-    </tr>
-    <tr>
-      <th>Waste</th>
-      <td>388.054000</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>288.900000</td>
-    </tr>
-    <tr>
-      <th>Wind</th>
-      <td>34371.650000</td>
-      <td>16958.800000</td>
-      <td>55.0000</td>
-      <td>461.4</td>
-      <td>38670.300000</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 </section>
 <section id="exercises">
@@ -1894,13 +830,6 @@ Name: Capacity, Length: 242, dtype: float64
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Fueltype</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;Nuclear&#39;, &#39;Hard Coal&#39;, &#39;Hydro&#39;, &#39;Lignite&#39;, &#39;Natural Gas&#39;, &#39;Oil&#39;,
-       &#39;Solid Biomass&#39;, &#39;Wind&#39;, &#39;Solar&#39;, &#39;Other&#39;, &#39;Biogas&#39;, &#39;Waste&#39;,
-       &#39;Geothermal&#39;], dtype=object)
 </pre></div>
 </div>
 </div>
@@ -1919,302 +848,6 @@ Name: Capacity, Length: 242, dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Name</th>
-      <th>Fueltype</th>
-      <th>Technology</th>
-      <th>Set</th>
-      <th>Country</th>
-      <th>Capacity</th>
-      <th>Efficiency</th>
-      <th>DateIn</th>
-      <th>DateRetrofit</th>
-      <th>DateOut</th>
-      <th>lat</th>
-      <th>lon</th>
-      <th>Duration</th>
-      <th>Volume_Mm3</th>
-      <th>DamHeight_m</th>
-      <th>StorageCapacity_MWh</th>
-      <th>EIC</th>
-      <th>projectID</th>
-    </tr>
-    <tr>
-      <th>id</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2</th>
-      <td>Borssele</td>
-      <td>Hard Coal</td>
-      <td>Steam Turbine</td>
-      <td>PP</td>
-      <td>Netherlands</td>
-      <td>485.000000</td>
-      <td>NaN</td>
-      <td>1973.0</td>
-      <td>NaN</td>
-      <td>2034.0</td>
-      <td>51.433200</td>
-      <td>3.716000</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>{'49W000000000054X'}</td>
-      <td>{'BEYONDCOAL': {'BEYOND-NL-2'}, 'ENTSOE': {'49...</td>
-    </tr>
-    <tr>
-      <th>98</th>
-      <td>Didcot</td>
-      <td>Hard Coal</td>
-      <td>CCGT</td>
-      <td>PP</td>
-      <td>United Kingdom</td>
-      <td>1490.000000</td>
-      <td>0.550000</td>
-      <td>1970.0</td>
-      <td>1998.0</td>
-      <td>2013.0</td>
-      <td>51.622300</td>
-      <td>-1.260800</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>{'48WSTN0000DIDCBC'}</td>
-      <td>{'BEYONDCOAL': {'BEYOND-UK-22'}, 'ENTSOE': {'4...</td>
-    </tr>
-    <tr>
-      <th>129</th>
-      <td>Mellach</td>
-      <td>Hard Coal</td>
-      <td>Steam Turbine</td>
-      <td>CHP</td>
-      <td>Austria</td>
-      <td>200.000000</td>
-      <td>NaN</td>
-      <td>1986.0</td>
-      <td>1986.0</td>
-      <td>2020.0</td>
-      <td>46.911700</td>
-      <td>15.488300</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>{'14W-WML-KW-----0'}</td>
-      <td>{'BEYONDCOAL': {'BEYOND-AT-11'}, 'ENTSOE': {'1...</td>
-    </tr>
-    <tr>
-      <th>150</th>
-      <td>Emile Huchet</td>
-      <td>Hard Coal</td>
-      <td>CCGT</td>
-      <td>PP</td>
-      <td>France</td>
-      <td>596.493211</td>
-      <td>NaN</td>
-      <td>1958.0</td>
-      <td>2010.0</td>
-      <td>2022.0</td>
-      <td>49.152500</td>
-      <td>6.698100</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>{'17W100P100P0344D', '17W100P100P0345B'}</td>
-      <td>{'BEYONDCOAL': {'BEYOND-FR-67'}, 'ENTSOE': {'1...</td>
-    </tr>
-    <tr>
-      <th>151</th>
-      <td>Amercoeur</td>
-      <td>Hard Coal</td>
-      <td>CCGT</td>
-      <td>PP</td>
-      <td>Belgium</td>
-      <td>451.000000</td>
-      <td>0.187765</td>
-      <td>1968.0</td>
-      <td>NaN</td>
-      <td>2009.0</td>
-      <td>50.431000</td>
-      <td>4.395500</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>{'22WAMERCO000010Y'}</td>
-      <td>{'BEYONDCOAL': {'BEYOND-BE-27'}, 'ENTSOE': {'2...</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>29779</th>
-      <td>St</td>
-      <td>Hard Coal</td>
-      <td>NaN</td>
-      <td>CHP</td>
-      <td>Germany</td>
-      <td>21.645000</td>
-      <td>NaN</td>
-      <td>1982.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>49.976593</td>
-      <td>9.068953</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>{nan}</td>
-      <td>{'MASTR': {'MASTR-SEE971943692655'}}</td>
-    </tr>
-    <tr>
-      <th>29804</th>
-      <td>Uer</td>
-      <td>Hard Coal</td>
-      <td>NaN</td>
-      <td>CHP</td>
-      <td>Germany</td>
-      <td>15.200000</td>
-      <td>NaN</td>
-      <td>1964.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>51.368132</td>
-      <td>6.662350</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>{nan}</td>
-      <td>{'MASTR': {'MASTR-SEE988421065542'}}</td>
-    </tr>
-    <tr>
-      <th>29813</th>
-      <td>Walheim</td>
-      <td>Hard Coal</td>
-      <td>NaN</td>
-      <td>PP</td>
-      <td>Germany</td>
-      <td>244.000000</td>
-      <td>NaN</td>
-      <td>1964.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>49.017585</td>
-      <td>9.157690</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>{nan, nan}</td>
-      <td>{'MASTR': {'MASTR-SEE937157344278', 'MASTR-SEE...</td>
-    </tr>
-    <tr>
-      <th>29830</th>
-      <td>Wd Ffw</td>
-      <td>Hard Coal</td>
-      <td>NaN</td>
-      <td>CHP</td>
-      <td>Germany</td>
-      <td>123.000000</td>
-      <td>NaN</td>
-      <td>1990.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>50.099000</td>
-      <td>8.653000</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>{nan, nan}</td>
-      <td>{'MASTR': {'MASTR-SEE915289541482', 'MASTR-SEE...</td>
-    </tr>
-    <tr>
-      <th>29835</th>
-      <td>West</td>
-      <td>Hard Coal</td>
-      <td>NaN</td>
-      <td>CHP</td>
-      <td>Germany</td>
-      <td>277.000000</td>
-      <td>NaN</td>
-      <td>1985.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>52.442456</td>
-      <td>10.762681</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>{nan, nan}</td>
-      <td>{'MASTR': {'MASTR-SEE917432813484', 'MASTR-SEE...</td>
-    </tr>
-  </tbody>
-</table>
-<p>332 rows × 18 columns</p>
-</div></div></div>
 </details>
 </div>
 <p><strong>Task 3:</strong> Identify the three largest coal power plants. In which countries are they located? When were they built?</p>
@@ -2229,133 +862,6 @@ Name: Capacity, Length: 242, dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Name</th>
-      <th>Fueltype</th>
-      <th>Technology</th>
-      <th>Set</th>
-      <th>Country</th>
-      <th>Capacity</th>
-      <th>Efficiency</th>
-      <th>DateIn</th>
-      <th>DateRetrofit</th>
-      <th>DateOut</th>
-      <th>lat</th>
-      <th>lon</th>
-      <th>Duration</th>
-      <th>Volume_Mm3</th>
-      <th>DamHeight_m</th>
-      <th>StorageCapacity_MWh</th>
-      <th>EIC</th>
-      <th>projectID</th>
-    </tr>
-    <tr>
-      <th>id</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>194</th>
-      <td>Kozienice</td>
-      <td>Hard Coal</td>
-      <td>Steam Turbine</td>
-      <td>PP</td>
-      <td>Poland</td>
-      <td>3682.216205</td>
-      <td>NaN</td>
-      <td>1972.0</td>
-      <td>NaN</td>
-      <td>2042.0</td>
-      <td>51.6647</td>
-      <td>21.4667</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>{'19W000000000104I', '19W000000000095U'}</td>
-      <td>{'BEYONDCOAL': {'BEYOND-PL-96'}, 'ENTSOE': {'1...</td>
-    </tr>
-    <tr>
-      <th>3652</th>
-      <td>Vuglegirska</td>
-      <td>Hard Coal</td>
-      <td>CCGT</td>
-      <td>PP</td>
-      <td>Ukraine</td>
-      <td>3600.000000</td>
-      <td>NaN</td>
-      <td>1972.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>48.4652</td>
-      <td>38.2027</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>{nan}</td>
-      <td>{'GPD': {'WRI1005107'}, 'GEO': {'GEO-43001'}}</td>
-    </tr>
-    <tr>
-      <th>767</th>
-      <td>Opole</td>
-      <td>Hard Coal</td>
-      <td>Steam Turbine</td>
-      <td>PP</td>
-      <td>Poland</td>
-      <td>3071.893939</td>
-      <td>NaN</td>
-      <td>1993.0</td>
-      <td>NaN</td>
-      <td>2020.0</td>
-      <td>50.7518</td>
-      <td>17.8820</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>{'19W0000000001292'}</td>
-      <td>{'BEYONDCOAL': {'BEYOND-PL-16'}, 'ENTSOE': {'1...</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </details>
 </div>
 <p><strong>Task 4:</strong> What is the average “DateIn” of each “Fueltype”? Which type of power plants is the oldest on average?</p>
@@ -2367,25 +873,6 @@ Name: Capacity, Length: 242, dtype: float64
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="mi">2024</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Fueltype&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">DateIn</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fueltype
-Hard Coal        52.092593
-Hydro            51.232471
-Nuclear          48.214953
-Lignite          47.184211
-Other            31.543103
-Waste            26.845588
-Geothermal       23.857143
-Oil              23.410138
-Solid Biomass    22.516588
-Natural Gas      22.081505
-Wind             14.483789
-Biogas           11.415730
-Solar             8.584491
-Name: DateIn, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -2403,16 +890,6 @@ Name: DateIn, dtype: float64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>load       54.736992
-onwind      0.205556
-offwind     0.362993
-solar       0.122621
-prices     31.835717
-dtype: float64
-</pre></div>
-</div>
-</div>
 </details>
 </div>
 <p><strong>Task 6:</strong> In the time series provided, calculate and plot the monthly average electricity price.</p>
@@ -2426,12 +903,6 @@ dtype: float64
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="p">[</span><span class="s2">&quot;prices&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;ME&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
-</pre></div>
-</div>
-<img alt="_images/94b059656e200f1190238f66ae5e7427d3060988722760834784990035181e44.png" src="_images/94b059656e200f1190238f66ae5e7427d3060988722760834784990035181e44.png" />
 </div>
 </details>
 </div>
@@ -2447,16 +918,16 @@ dtype: float64
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: ""
         },
         kernelOptions: {
-            name: "python3",
+            name: "",
             path: "./."
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = ''</script>
 
                 </article>
               
