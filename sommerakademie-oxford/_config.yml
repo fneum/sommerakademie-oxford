@@ -53,4 +53,4 @@ sphinx:
     - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
     html_static_path: ["_static"]
     html_css_files:
-      - custom.css
+    - custom.css
