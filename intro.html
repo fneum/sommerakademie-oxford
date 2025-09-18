@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>PyPSA Introduction &#8212; PyPSA Introduction</title>
+    <title>Overview &#8212; PyPSA Introduction</title>
   
   
   
@@ -180,16 +180,24 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1 current active">
                 <a class="reference internal" href="#">
-                    PyPSA Introduction
+                    Overview
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introductions</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="01-python-introduction.html">Basics <code class="docutils literal notranslate"><span class="pre">Python</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="02-pandas-introduction.html">Basics <code class="docutils literal notranslate"><span class="pre">pandas</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-pypsa-dispatch.html">Electricity Markets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04-pypsa-investment.html">Capacity Expansion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-pypsa-sectors.html">Sector Coupling</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Exploration Topics</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="A-exploration-single-node.html">Models without Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="B-exploration-networks.html">Models with Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="C-exploration-household.html">Models for Households</a></li>
+<li class="toctree-l1"><a class="reference internal" href="D-exploration-green-fuels.html">Models for E-Fuel Production</a></li>
 </ul>
 
     </div>
@@ -375,7 +383,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>PyPSA Introduction</h1>
+    <h1>Overview</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -403,19 +411,24 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="pypsa-introduction">
-<h1>PyPSA Introduction<a class="headerlink" href="#pypsa-introduction" title="Link to this heading">#</a></h1>
-<p>PyPSA stands for <strong>Python for Power System Analysis</strong>.</p>
-<p>PyPSA is an open-source Python framework for optimising and simulating modern
-power and energy systems that include features such as conventional generators
-with operational constraints, variable wind and solar generation,
-hydro-electricity, storage, coupling to other energy sectors, and linearised
-power flow with loss approximations.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h1>
+<p>This website introduces you to the basics of using PyPSA for energy system modelling.</p>
+<p>PyPSA is an open-source Python framework and stands for <strong>Python for Power
+System Analysis</strong>.</p>
+<p>PyPSA is made for optimising and simulating modern power and energy systems that
+include features such as conventional generators with operational constraints,
+variable wind and solar generation, hydro-electricity, storage, coupling to
+other energy sectors, and linearised power flow with loss approximations.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Checkout the <a class="reference external" href="https://pypsa--1250.org.readthedocs.build/en/1250/">documentation</a>
 for more details.</p>
 </div>
+<p>For working with PyPSA, we will need to cover some Python and <code class="docutils literal notranslate"><span class="pre">pandas</span></code> basics.
+Python is a programming language that is widely used in scientific computing and
+data analysis. <code class="docutils literal notranslate"><span class="pre">pandas</span></code> is the core library for handling tabular data in Python.
+Think of it as Excel but with code.</p>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
 <p>Below you can find three installation options. You only need one!</p>
@@ -426,6 +439,10 @@ for more details.</p>
 environment. This requires a Google account.  Click on the rocket in the top
 right corner and launch “Colab”. If that doesn’t work download the <code class="docutils literal notranslate"><span class="pre">.ipynb</span></code> file
 and import it in <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is the easiest option for Python beginners!</p>
+</div>
 </section>
 <section id="conda">
 <h3>conda<a class="headerlink" href="#conda" title="Link to this heading">#</a></h3>
@@ -434,11 +451,11 @@ and import it in <a class="reference external" href="https://colab.research.goog
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://github.com/fneum/sommerakademie-oxford/blob/main/environment.yaml
 </pre></div>
 </div>
-<p>Run</p>
+<p>Navigate to the directory containing the <code class="docutils literal notranslate"><span class="pre">environment.yaml</span></code> file and run:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda env create -f environment.yaml
 </pre></div>
 </div>
-<p>Activate</p>
+<p>Activate the environment with:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda activate oxford
 </pre></div>
 </div>
@@ -450,7 +467,7 @@ and import it in <a class="reference external" href="https://colab.research.goog
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://github.com/fneum/sommerakademie-oxford/blob/main/requirements.txt
 </pre></div>
 </div>
-<p>Run:</p>
+<p>Navigate to the directory containing the <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file and run:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>uv venv
 source .venv/bin/activate
 uv pip install -r requirements.txt
@@ -462,7 +479,7 @@ uv pip install -r requirements.txt
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
 <p>If you chose Google Colab, you can run the notebook cells directly without any additional setup.</p>
 <p>If you chose a local installation, you can run the notebooks in the terminal with:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># first navigate to the notebook directory with cd
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># first navigate to the notebook directory with cd (stands for change directory)
 cd path/to/your/notebook
 
 # then start jupyter lab
@@ -472,6 +489,8 @@ jupyter lab
 <p>This will open the Jupyter Lab interface in your web browser, where you can interact with the notebooks.
 If the browser does not open automatically, you can manually navigate to <code class="docutils literal notranslate"><span class="pre">http://localhost:8888</span></code>.</p>
 </section>
+<div class="toctree-wrapper compound">
+</div>
 <div class="toctree-wrapper compound">
 </div>
 </section>
