@@ -3,9 +3,17 @@
 
 format: jb-book
 root: intro
-chapters:
-- file: 01-python-introduction
-- file: 02-pandas-introduction
-- file: 03-pypsa-dispatch
-- file: 04-pypsa-investment
-- file: 05-pypsa-sectors
+parts:
+- caption: Introductions
+  chapters:
+  - file: 01-python-introduction
+  - file: 02-pandas-introduction
+  - file: 03-pypsa-dispatch
+  - file: 04-pypsa-investment
+  - file: 05-pypsa-sectors
+- caption: Exploration Topics
+  chapters:
+  - file: A-exploration-single-node.ipynb
+  - file: B-exploration-networks.ipynb
+  - file: C-exploration-household.ipynb
+  - file: D-exploration-green-fuels.ipynb
