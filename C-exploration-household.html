@@ -398,7 +398,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -414,6 +416,23 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-foundation">Model Foundation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-assumptions">Cost Assumptions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heat-and-electricity-demand">Heat and Electricity Demand</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wind-and-solar-time-series">Wind and Solar Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#electricity-price-time-series">Electricity Price Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">Model Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-clustering">Temporal Clustering</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploration">Exploration</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -425,8 +444,467 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="models-for-households">
 <h1>Models for Households<a class="headerlink" href="#models-for-households" title="Link to this heading">#</a></h1>
-<p>This section builds the foundation of an electricity and hydrogen model with power lines and pipelines connecting different countries. The goal is to assess different balancing mechanisms for the large-scale integration of variable renewables and identifying trade-offs between balancing them spatially with networks or temporally with storage.</p>
+<p>This section builds the foundation of a household energy system model to explore the household-level integration of sector coupling technologies such as heat pumps, batteries and electric vehicles and interactions with the electricity grid.</p>
 <p><img alt="network-model" src="_images/households.png" /></p>
+<section id="model-foundation">
+<h2>Model Foundation<a class="headerlink" href="#model-foundation" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">demandlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">bdew</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pypsa</span>
+
+<span class="n">RESOLUTION</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># 3-hourly</span>
+<span class="n">SOLVER</span> <span class="o">=</span> <span class="s2">&quot;gurobi&quot;</span>  <span class="c1"># or &#39;gurobi&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">from</span><span class="w"> </span><span class="nn">demandlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">bdew</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;demandlib&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="cost-assumptions">
+<h3>Cost Assumptions<a class="headerlink" href="#cost-assumptions" title="Link to this heading">#</a></h3>
+<p>We take techno-economic assumptions from the <a class="reference external" href="https://github.com/PyPSA/technology-data">technology-data</a> repository which collects assumptions on costs and efficiencies:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">YEAR</span> <span class="o">=</span> <span class="mi">2030</span>
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://raw.githubusercontent.com/PyPSA/technology-data/master/outputs/costs_</span><span class="si">{</span><span class="n">YEAR</span><span class="si">}</span><span class="s2">.csv&quot;</span>
+<span class="n">costs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">costs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">costs</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;/kW&quot;</span><span class="p">),</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">*=</span> <span class="mf">1e3</span>
+<span class="n">costs</span> <span class="o">=</span> <span class="n">costs</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">fillna</span><span class="p">({</span><span class="s2">&quot;discount rate&quot;</span><span class="p">:</span> <span class="mf">0.07</span><span class="p">,</span> <span class="s2">&quot;lifetime&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;FOM&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We calculate the capital costs (i.e. annualised investment costs, €/MW/a or €/MWh/a for storage), using the discount rate and lifetime.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">annuity</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">r</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">**</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">costs</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">annuity</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;discount rate&quot;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;lifetime&quot;</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">costs</span><span class="p">[</span><span class="s2">&quot;capital_cost&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">costs</span><span class="p">[</span><span class="s2">&quot;FOM&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span> <span class="o">*</span> <span class="n">costs</span><span class="p">[</span><span class="s2">&quot;investment&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;../ninja-weather-DE30-2013.csv&quot;</span>
+<span class="n">temperature</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">temperature</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>DE30</th>
+    </tr>
+    <tr>
+      <th>time</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2013-01-01 00:00:00</th>
+      <td>3.162</td>
+    </tr>
+    <tr>
+      <th>2013-01-01 01:00:00</th>
+      <td>3.041</td>
+    </tr>
+    <tr>
+      <th>2013-01-01 02:00:00</th>
+      <td>2.659</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="heat-and-electricity-demand">
+<h3>Heat and Electricity Demand<a class="headerlink" href="#heat-and-electricity-demand" title="Link to this heading">#</a></h3>
+<p>Hourly demand and electricity demand time series are generated using the <a class="reference external" href="https://demandlib.readthedocs.io/en/latest/bdew.html#">demandlib</a> tool, which uses standard load profiles. Let’s assume an electricity demand of 3000 kWh per year and heat demand of 15,000 kWh per year.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">HOLIDAYS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="s2">&quot;New Year&#39;s Day&quot;</span><span class="p">,</span>
+    <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span> <span class="s2">&quot;Epiphany&quot;</span><span class="p">,</span>
+    <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">29</span><span class="p">):</span> <span class="s2">&quot;Good Friday&quot;</span><span class="p">,</span>
+    <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="s2">&quot;Easter Monday&quot;</span><span class="p">,</span>
+    <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="s2">&quot;Labour Day&quot;</span><span class="p">,</span>
+    <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span> <span class="s2">&quot;Ascension Day&quot;</span><span class="p">,</span>
+    <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">):</span> <span class="s2">&quot;Whit Monday&quot;</span><span class="p">,</span>
+    <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">30</span><span class="p">):</span> <span class="s2">&quot;Corpus Christi&quot;</span><span class="p">,</span>
+    <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="s2">&quot;Day of German Unity&quot;</span><span class="p">,</span>
+    <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">31</span><span class="p">):</span> <span class="s2">&quot;Reformation Day&quot;</span><span class="p">,</span>
+    <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">25</span><span class="p">):</span> <span class="s2">&quot;Christmas Day&quot;</span><span class="p">,</span>
+    <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">26</span><span class="p">):</span> <span class="s2">&quot;St. Stephen&#39;s Day&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e_slp</span> <span class="o">=</span> <span class="n">bdew</span><span class="o">.</span><span class="n">ElecSlp</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2013</span><span class="p">,</span> <span class="n">holidays</span><span class="o">=</span><span class="n">HOLIDAYS</span><span class="p">)</span>
+<span class="n">elec</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">e_slp</span><span class="o">.</span><span class="n">get_scaled_power_profiles</span><span class="p">({</span><span class="s2">&quot;h0&quot;</span><span class="p">:</span> <span class="mi">3000</span><span class="p">})</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">elec</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s2">&quot;2013-01-01&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">8760</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">)</span>
+
+<span class="n">heat</span> <span class="o">=</span> <span class="n">bdew</span><span class="o">.</span><span class="n">HeatBuilding</span><span class="p">(</span>
+    <span class="n">index</span><span class="p">,</span>
+    <span class="n">holidays</span><span class="o">=</span><span class="n">HOLIDAYS</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span>
+    <span class="n">shlp_type</span><span class="o">=</span><span class="s2">&quot;EFH&quot;</span><span class="p">,</span>
+    <span class="n">building_class</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+    <span class="n">wind_class</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">annual_heat_demand</span><span class="o">=</span><span class="mi">15000</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;EFH&quot;</span><span class="p">,</span>
+    <span class="n">ww_incl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">get_bdew_profile</span><span class="p">()</span>
+<span class="n">heat</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="wind-and-solar-time-series">
+<h3>Wind and Solar Time Series<a class="headerlink" href="#wind-and-solar-time-series" title="Link to this heading">#</a></h3>
+<p>Capacity factor time series for wind and solar we take again from <a class="reference external" href="https://model.energy">model.energy</a> for a location around Berlin.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://model.energy/data/time-series-77710a0d1997bc060695fbe92f4c55c3.csv&quot;</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>solar</th>
+      <th>onwind</th>
+    </tr>
+    <tr>
+      <th>time</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2013-01-01 00:00:00</th>
+      <td>0.0</td>
+      <td>0.792</td>
+    </tr>
+    <tr>
+      <th>2013-01-01 01:00:00</th>
+      <td>0.0</td>
+      <td>0.758</td>
+    </tr>
+    <tr>
+      <th>2013-01-01 02:00:00</th>
+      <td>0.0</td>
+      <td>0.735</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="electricity-price-time-series">
+<h3>Electricity Price Time Series<a class="headerlink" href="#electricity-price-time-series" title="Link to this heading">#</a></h3>
+<p>Hourly wholesale electricity price time series for the German bidding zone we take from the <a class="reference external" href="https://data.open-power-system-data.org/time_series/2019-06-05">OPSD Platform</a>. We will not use these time series directly, but add 30 €ct/kWh of static charges and levies to approximate household electricity tariffs with some dynamic component.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;../price-time-series-DE-2013.csv&quot;</span>
+<span class="n">prices</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">)[</span><span class="s2">&quot;DE_price_day_ahead&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span> <span class="c1"># €/kWh</span>
+<span class="n">prices</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
+<span class="n">prices</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2013-01-01 00:00:00    0.01403
+2013-01-01 01:00:00    0.01106
+2013-01-01 02:00:00    0.00850
+Freq: h, Name: DE_price_day_ahead, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="model-setup">
+<h3>Model Setup<a class="headerlink" href="#model-setup" title="Link to this heading">#</a></h3>
+<p>Let’s start by initialising the network with buses for electricity, heat and an electric vehicle and hourly snapshots.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="n">pypsa</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span>
+
+<span class="n">buses_i</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span> <span class="s2">&quot;heat&quot;</span><span class="p">,</span> <span class="s2">&quot;vehicle&quot;</span><span class="p">]</span>
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Bus&quot;</span><span class="p">,</span> <span class="n">buses_i</span><span class="p">,</span> <span class="n">carrier</span><span class="o">=</span><span class="n">buses_i</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;kW&quot;</span><span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">set_snapshots</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+<span class="n">CARRIERS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="s2">&quot;gold&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;battery storage 1h&quot;</span><span class="p">:</span> <span class="s2">&quot;magenta&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;battery storage 3h&quot;</span><span class="p">:</span> <span class="s2">&quot;magenta&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;battery storage 6h&quot;</span><span class="p">:</span> <span class="s2">&quot;magenta&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;electricity demand&quot;</span><span class="p">:</span> <span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heat demand&quot;</span><span class="p">:</span> <span class="s2">&quot;indianred&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gas boiler&quot;</span><span class="p">:</span> <span class="s2">&quot;brown&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ground heat pump&quot;</span><span class="p">:</span> <span class="s2">&quot;forestgreen&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;air heat pump&quot;</span><span class="p">:</span> <span class="s2">&quot;lightgreen&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;resistive heater&quot;</span><span class="p">:</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hot water storage&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from grid&quot;</span><span class="p">:</span> <span class="s2">&quot;steelblue&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to grid&quot;</span><span class="p">:</span> <span class="s2">&quot;steelblue&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;electricity&quot;</span><span class="p">:</span> <span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heat&quot;</span><span class="p">:</span> <span class="s2">&quot;indianred&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;vehicle&quot;</span><span class="p">:</span> <span class="s2">&quot;purple&quot;</span><span class="p">,</span> 
+<span class="p">}</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Carrier&quot;</span><span class="p">,</span>
+    <span class="n">CARRIERS</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+    <span class="n">color</span><span class="o">=</span><span class="n">CARRIERS</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we add the electricity demand, the option to build up to 10 kW of rooftop PV, the option to import from the grid at 30 €ct/kWh plus the dynamic wholesale electricity price, the option to export to the grid for a feed-in tariff of 4 €ct/kWh. Batteries can be built with an energy-to-power ratio of 1h, 3h and 6h.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Load&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;electricity demand&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">p_set</span><span class="o">=</span><span class="n">elec</span><span class="p">,</span> <span class="c1"># kW</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;electricity demand&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Generator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;solar&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;solar-rooftop&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="n">p_max_pu</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">solar</span><span class="p">,</span>
+    <span class="n">p_nom_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="c1"># kW</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;solar&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Generator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from grid&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">marginal_cost</span><span class="o">=</span><span class="n">prices</span> <span class="o">+</span> <span class="mf">0.3</span><span class="p">,</span> <span class="c1"># €/kWh</span>
+    <span class="n">p_nom</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="c1"># kW</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;from grid&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Generator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to grid&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;to grid&quot;</span><span class="p">,</span>
+    <span class="n">p_nom</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="c1"># kW</span>
+    <span class="n">marginal_cost</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="c1"># €/kWh feed-in tariff</span>
+    <span class="n">p_min_pu</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">p_max_pu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">for</span> <span class="n">max_hours</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]:</span>
+    <span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+        <span class="s2">&quot;StorageUnit&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;battery storage </span><span class="si">{</span><span class="n">max_hours</span><span class="si">}</span><span class="s2">h&quot;</span><span class="p">,</span>
+        <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+        <span class="n">carrier</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;battery storage </span><span class="si">{</span><span class="n">max_hours</span><span class="si">}</span><span class="s2">h&quot;</span><span class="p">,</span>
+        <span class="n">max_hours</span><span class="o">=</span><span class="n">max_hours</span><span class="p">,</span>
+        <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;battery inverter&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span>
+        <span class="o">+</span> <span class="n">max_hours</span> <span class="o">*</span> <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;battery storage&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">efficiency_store</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;battery inverter&quot;</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">],</span>
+        <span class="n">efficiency_dispatch</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;battery inverter&quot;</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">],</span>
+        <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">cyclic_state_of_charge</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we add the heat demand as well as several technologies to supply heat. This includes a fossil gas boiler option at a cost of 9 €ct/kWh. The gas boiler must follow the heat load profile and cannot be mixed with the heat pump (no hybrid setup allowed). We have two heat pump options: a ground-sourced heat pump with a constant higher coefficient of performance (but higher cost) and an air-sourced heat pump with time-varying coefficient of performance depending on ambient weather conditions (but lower cost). Additionally, there is a cheap resistive heater option and the option to build a small hot water storage tank for buffering heat supply.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Load&quot;</span><span class="p">,</span> <span class="s2">&quot;heat demand&quot;</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;heat&quot;</span><span class="p">,</span> <span class="n">p_set</span><span class="o">=</span><span class="n">heat</span><span class="p">,</span> <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;heat demand&quot;</span><span class="p">)</span>
+
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Generator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gas boiler&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;heat&quot;</span><span class="p">,</span>
+    <span class="n">marginal_cost</span><span class="o">=</span><span class="mf">0.09</span><span class="p">,</span> <span class="c1"># €/kWh</span>
+    <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;decentral gas boiler&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="c1"># €/kW/a</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s1">&#39;gas boiler&#39;</span><span class="p">,</span>
+    <span class="n">p_min_pu</span><span class="o">=</span><span class="n">heat</span> <span class="o">/</span> <span class="n">heat</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="c1"># load-following</span>
+<span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Link&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ground heat pump&quot;</span><span class="p">,</span>
+    <span class="n">bus0</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">bus1</span><span class="o">=</span><span class="s2">&quot;heat&quot;</span><span class="p">,</span>
+    <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;decentral ground-sourced heat pump&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="n">efficiency</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;decentral ground-sourced heat pump&quot;</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">],</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;ground heat pump&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cop</span><span class="p">(</span><span class="n">t_source</span><span class="p">,</span> <span class="n">t_sink</span><span class="o">=</span><span class="mi">55</span><span class="p">):</span>
+    <span class="n">delta_t</span> <span class="o">=</span> <span class="n">t_sink</span> <span class="o">-</span> <span class="n">t_source</span>
+    <span class="k">return</span> <span class="mf">1.3</span> <span class="o">*</span> <span class="p">(</span><span class="mf">6.81</span> <span class="o">-</span> <span class="mf">0.121</span> <span class="o">*</span> <span class="n">delta_t</span> <span class="o">+</span> <span class="mf">0.000630</span> <span class="o">*</span> <span class="n">delta_t</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Link&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;air heat pump&quot;</span><span class="p">,</span>
+    <span class="n">bus0</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">bus1</span><span class="o">=</span><span class="s2">&quot;heat&quot;</span><span class="p">,</span>
+    <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;decentral air-sourced heat pump&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="n">efficiency</span><span class="o">=</span><span class="n">cop</span><span class="p">(</span><span class="n">temperature</span><span class="o">.</span><span class="n">squeeze</span><span class="p">())</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;air heat pump&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Link&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;resitive heater&quot;</span><span class="p">,</span>
+    <span class="n">bus0</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">bus1</span><span class="o">=</span><span class="s2">&quot;heat&quot;</span><span class="p">,</span>
+    <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;decentral resistive heater&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="n">efficiency</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;decentral resistive heater&quot;</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">],</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;resistive heater&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Store&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hot water storage&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;heat&quot;</span><span class="p">,</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;hot water storage&quot;</span><span class="p">,</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;decentral water tank storage&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="n">standing_loss</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;decentral water tank storage&quot;</span><span class="p">,</span> <span class="s2">&quot;standing losses&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">e_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="temporal-clustering">
+<h3>Temporal Clustering<a class="headerlink" href="#temporal-clustering" title="Link to this heading">#</a></h3>
+<p>To save some computation time, we only sample every third snapshot, which corresponds to a temporal resolution of 3 hours. Note that the snapshot weightings (the duration each time step represents) have to be adjusted accordingly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">set_snapshots</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">snapshots</span><span class="p">[::</span><span class="n">RESOLUTION</span><span class="p">])</span>
+<span class="n">n</span><span class="o">.</span><span class="n">snapshot_weightings</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">RESOLUTION</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="exploration">
+<h2>Exploration<a class="headerlink" href="#exploration" title="Link to this heading">#</a></h2>
+<p>We could now already run the optimisation and look at a first set of results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># n.optimize(</span>
+<span class="c1">#     solver_name=SOLVER,</span>
+<span class="c1">#     log_to_console=False,</span>
+<span class="c1">#     method=2, # Use barrier method to solve model (faster)</span>
+<span class="c1"># )</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>But the exploration is left to you! Here are some ideas for sensitivities to explore and metrics to look at:</p>
+<p><strong>Metrics:</strong></p>
+<ul class="simple">
+<li><p>Total annual energy cost for the household and breakdown by technology (billion €/a and % of total cost). This can be built from <code class="docutils literal notranslate"><span class="pre">n.statistics.opex(groupby=[&quot;bus&quot;,</span> <span class="pre">&quot;carrier&quot;])</span></code> and <code class="docutils literal notranslate"><span class="pre">n.statistics.capex(groupby=[&quot;bus&quot;,</span> <span class="pre">&quot;carrier&quot;])</span></code>.</p></li>
+<li><p>Energy balances of the household. This can be accessed from <code class="docutils literal notranslate"><span class="pre">n.statistics.energy_balance(groupby=[&quot;bus&quot;,</span> <span class="pre">&quot;carrier&quot;],</span> <span class="pre">bus_carrier='electricity')</span></code> and plotted intereactively with <code class="docutils literal notranslate"><span class="pre">n.statistics.energy_balance.iplot.area(bus_carrier=&quot;electricity&quot;)</span></code>.</p></li>
+</ul>
+<p><strong>Sensitivities:</strong></p>
+<ul class="simple">
+<li><p>Disable ground water heat pumps.</p></li>
+<li><p>Make battery storage cheaper.</p></li>
+<li><p>Do not allow exports to the grid.</p></li>
+<li><p>Reduce feed-in tariff to zero, but still allow exports to the grid (for zero compensation).</p></li>
+<li><p>Make the household autarkic and disconnect it from the grid (both import and export).</p></li>
+<li><p>Reduce the gas price.</p></li>
+<li><p>Reduce the heat demand to mimic building renovation measure for higher energy efficiency.</p></li>
+<li><p>Remove the battery electric vehicle.</p></li>
+<li><p>Allow hybrid heat supply with heat pumps and a gas boiler as a backup by removing the <code class="docutils literal notranslate"><span class="pre">p_min_pu</span></code> attribute for the gas boiler.</p></li>
+</ul>
+<p><strong>Feel free to explore other ideas as well!</strong></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -483,6 +961,30 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-foundation">Model Foundation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-assumptions">Cost Assumptions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heat-and-electricity-demand">Heat and Electricity Demand</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wind-and-solar-time-series">Wind and Solar Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#electricity-price-time-series">Electricity Price Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">Model Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-clustering">Temporal Clustering</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploration">Exploration</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
