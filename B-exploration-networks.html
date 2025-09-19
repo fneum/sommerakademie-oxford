@@ -421,9 +421,15 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-assumptions">Cost Assumptions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series">Time Series</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">Model Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-foundation">Model Foundation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-assumptions">Cost Assumptions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series">Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#electricity-components">Electricity Components</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#storage">Storage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transmission-and-pipelines">Transmission and Pipelines</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-clustering">Temporal Clustering</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploration">Exploration</a></li>
 </ul>
             </nav>
@@ -438,6 +444,10 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="models-with-networks">
 <h1>Models with Networks<a class="headerlink" href="#models-with-networks" title="Link to this heading">#</a></h1>
+<p>This section builds the foundation of an electricity and hydrogen model with power lines and pipelines connecting different countries. The goal is to assess different balancing mechanisms for the large-scale integration of variable renewables and identifying trade-offs between balancing them spatially with networks or temporally with storage.</p>
+<p><img alt="network-model" src="_images/networks.png" /></p>
+<section id="model-foundation">
+<h2>Model Foundation<a class="headerlink" href="#model-foundation" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -452,7 +462,7 @@ document.write(`
 </div>
 </div>
 <section id="cost-assumptions">
-<h2>Cost Assumptions<a class="headerlink" href="#cost-assumptions" title="Link to this heading">#</a></h2>
+<h3>Cost Assumptions<a class="headerlink" href="#cost-assumptions" title="Link to this heading">#</a></h3>
 <p>We take techno-economic assumptions from the <a class="reference external" href="https://github.com/PyPSA/technology-data">technology-data</a> repository which collects assumptions on costs and efficiencies:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -476,7 +486,7 @@ document.write(`
 </div>
 </section>
 <section id="time-series">
-<h2>Time Series<a class="headerlink" href="#time-series" title="Link to this heading">#</a></h2>
+<h3>Time Series<a class="headerlink" href="#time-series" title="Link to this heading">#</a></h3>
 <p>The wind and solar capacity factor time series have been retrieved from <a class="reference external" href="https://model.energy">model.energy</a>. Go there to find more time series for other countries and plug them in here.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -691,8 +701,8 @@ document.write(`
 </div></div></div>
 </div>
 </section>
-<section id="model-setup">
-<h2>Model Setup<a class="headerlink" href="#model-setup" title="Link to this heading">#</a></h2>
+<section id="electricity-components">
+<h3>Electricity Components<a class="headerlink" href="#electricity-components" title="Link to this heading">#</a></h3>
 <p>In a fresh PyPSA network instance, we set the coordinates of each country as the coordinates of the electricity buses.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -797,6 +807,9 @@ document.write(`
 </div>
 </div>
 </div>
+</section>
+<section id="storage">
+<h3>Storage<a class="headerlink" href="#storage" title="Link to this heading">#</a></h3>
 <p>Now, we add some storage options to each model region:</p>
 <ul class="simple">
 <li><p>For <strong>hydrogen storage</strong>, we model the electrolyser, the hydrogen storage, and the turbine for re-electrification separately, so that these components can be independently sized. We also include some constant hydrogen demand at a rate of half of each regions’ average electricity demand.</p></li>
@@ -907,6 +920,9 @@ This is not done automatically by PyPSA, so we have to add an extra constraint, 
 </div>
 </div>
 </div>
+</section>
+<section id="transmission-and-pipelines">
+<h3>Transmission and Pipelines<a class="headerlink" href="#transmission-and-pipelines" title="Link to this heading">#</a></h3>
 <p>As the next modelling step, we will now add transmission links and hydrogen pipelines between the regions as expansion options. By modelling the interconnectors as bidirectional links, we will assume that they are controllable point-to-point HVDC connections. They are also assumed to be lossless, otherwise a similar workaround with two unidirectional links as for battery inverters has to be implemented. The cost of grids and pipelines is length-dependent.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -967,6 +983,9 @@ This is not done automatically by PyPSA, so we have to add an extra constraint, 
 </div>
 </div>
 </div>
+</section>
+<section id="temporal-clustering">
+<h3>Temporal Clustering<a class="headerlink" href="#temporal-clustering" title="Link to this heading">#</a></h3>
 <p>To save some computation time, we only sample every third snapshot, which corresponds to a temporal resolution of 3 hours. Note that the snapshot weightings (the duration each time step represents) have to be adjusted accordingly.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -976,6 +995,7 @@ This is not done automatically by PyPSA, so we have to add an extra constraint, 
 </div>
 </div>
 </div>
+</section>
 </section>
 <section id="exploration">
 <h2>Exploration<a class="headerlink" href="#exploration" title="Link to this heading">#</a></h2>
@@ -996,15 +1016,15 @@ This is not done automatically by PyPSA, so we have to add an extra constraint, 
 <p><strong>Metrics:</strong></p>
 <ul class="simple">
 <li><p>Installed capacities of wind, solar, electrolysers, hydrogen storage, etc. (MW or MWh)</p></li>
-<li><p>Total annual system costs and breakdown by technology (billion €/a and % of total cost). This can be built from <code class="docutils literal notranslate"><span class="pre">n.statistics.opex(groupby=[&quot;location&quot;,</span> <span class="pre">&quot;carrire&quot;])</span></code> and <code class="docutils literal notranslate"><span class="pre">n.statistics.capex(groupby=[&quot;location&quot;,</span> <span class="pre">&quot;carrier&quot;])</span></code>.</p></li>
+<li><p>Total annual system costs and breakdown by technology (billion €/a and % of total cost). This can be built from <code class="docutils literal notranslate"><span class="pre">n.statistics.opex(groupby=[&quot;location&quot;,</span> <span class="pre">&quot;carrier&quot;])</span></code> and <code class="docutils literal notranslate"><span class="pre">n.statistics.capex(groupby=[&quot;location&quot;,</span> <span class="pre">&quot;carrier&quot;])</span></code>.</p></li>
 <li><p>Energy balances of different carrier as time series (electricity, hydrogen) to identify key operational patterns. This can be accessed from <code class="docutils literal notranslate"><span class="pre">n.statistics.energy_balance(groupby=[&quot;bus&quot;,</span> <span class="pre">&quot;carrier&quot;])</span></code> and plotted intereactively with <code class="docutils literal notranslate"><span class="pre">n.statistics.energy_balance.iplot.area(bus_carrier=&quot;AC&quot;)</span></code>.</p></li>
 <li><p>Electricity and hydrogen prices in each country. These can be accessed under <code class="docutils literal notranslate"><span class="pre">n.buses_t.marginal_price</span></code>.</p></li>
-<li><p>Net imports of electricity and hydrogen by country and size of transmission/pipeline capacities. This can be accessed from <code class="docutils literal notranslate"><span class="pre">n.links_t.p0</span></code> and <code class="docutils literal notranslate"><span class="pre">n.links.p_nom_opt</span></code>. Hydrogen imports from outside the model scope can be accessed from ``n.statistics.energy_balance(groupby=[“bus”, “carrier”])`</p></li>
+<li><p>Net imports of electricity and hydrogen by country and size of transmission/pipeline capacities. This can be accessed from <code class="docutils literal notranslate"><span class="pre">n.links_t.p0</span></code> and <code class="docutils literal notranslate"><span class="pre">n.links.p_nom_opt</span></code>. Hydrogen imports from outside the model scope can be accessed from <code class="docutils literal notranslate"><span class="pre">n.statistics.energy_balance(groupby=[&quot;bus&quot;,</span> <span class="pre">&quot;carrier&quot;])</span></code>.</p></li>
 <li><p>Storage filling levels per region over time. This can be accessed from <code class="docutils literal notranslate"><span class="pre">n.stores_t.e</span></code>.</p></li>
 </ul>
 <p><strong>Sensitivities:</strong></p>
 <ul class="simple">
-<li><p>Choose a different triplet of countries (e.g. Belgium, Netherlands, Germany) and</p></li>
+<li><p>Choose a different triplet of countries (e.g. Belgium, Netherlands, Germany) and see how it affects the level of electricity and hydrogen trade. This can be done by retrieving alternative wind and solar time series form <a class="reference external" href="https://model.energy">model.energy</a>, changing the coordinates of the buses, and accessing different columns in the <code class="docutils literal notranslate"><span class="pre">demand</span></code> dataframe.</p></li>
 <li><p>Omit the option to build transmission or hydrogen pipelines or both. This can be done by removing the respective <code class="docutils literal notranslate"><span class="pre">Link</span></code> components with <code class="docutils literal notranslate"><span class="pre">n.remove(&quot;Link&quot;,</span> <span class="pre">...)</span></code>.</p></li>
 <li><p>Vary the cost assumptions by changing the overall projection year (e.g. 2030, 2040, 2050). This can be done when loading the cost data.</p></li>
 <li><p>Vary the import costs for hydrogen and observe the impact on domestic electrolysis and storage. This can be done by changing <code class="docutils literal notranslate"><span class="pre">n.generators.loc[&quot;hydrogen</span> <span class="pre">import&quot;,</span> <span class="pre">&quot;marginal_cost&quot;]</span> <span class="pre">*=</span> <span class="pre">0.7</span></code> (to reduce import costs by 30%).</p></li>
@@ -1080,9 +1100,15 @@ This is not done automatically by PyPSA, so we have to add an extra constraint, 
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-assumptions">Cost Assumptions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series">Time Series</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">Model Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-foundation">Model Foundation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-assumptions">Cost Assumptions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series">Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#electricity-components">Electricity Components</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#storage">Storage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transmission-and-pipelines">Transmission and Pipelines</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-clustering">Temporal Clustering</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploration">Exploration</a></li>
 </ul>
   </nav></div>
