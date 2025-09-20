@@ -458,7 +458,9 @@ The model can optimise investment and operation of wind and solar, electrolysers
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pypsa</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pypsa.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">annuity</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">annuity</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">r</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">**</span> <span class="n">n</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

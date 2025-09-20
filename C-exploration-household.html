@@ -501,7 +501,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;../ninja-weather-DE30-2013.csv&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://tubcloud.tu-berlin.de/s/QWWKYrgMbpHAXEX/download/ninja-weather-DE30-2013.csv&quot;</span>
 <span class="n">temperature</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">temperature</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
@@ -584,6 +584,14 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2013-01-01 00:00:00    0.234655
+2013-01-01 01:00:00    0.169026
+2013-01-01 02:00:00    0.135311
+Freq: h, Name: h0, dtype: float64
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -601,6 +609,14 @@ document.write(`
     <span class="n">ww_incl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span><span class="o">.</span><span class="n">get_bdew_profile</span><span class="p">()</span>
 <span class="n">heat</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2013-01-01 00:00:00    1.537562
+2013-01-01 01:00:00    1.584357
+2013-01-01 02:00:00    1.624467
+Freq: h, Name: temperature_geo, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -671,7 +687,7 @@ document.write(`
 <p>Hourly wholesale electricity price time series for the German bidding zone we take from the <a class="reference external" href="https://data.open-power-system-data.org/time_series/2019-06-05">OPSD Platform</a>. We will not use these time series directly, but add 30 €ct/kWh of static charges and levies to approximate household electricity tariffs with some dynamic component.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;../price-time-series-DE-2013.csv&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://tubcloud.tu-berlin.de/s/osPQXnBYk4RrNSR/download/price-time-series-DE-2013.csv&quot;</span>
 <span class="n">prices</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">)[</span><span class="s2">&quot;DE_price_day_ahead&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span> <span class="c1"># €/kWh</span>
 <span class="n">prices</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
 <span class="n">prices</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>

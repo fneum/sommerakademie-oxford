@@ -453,7 +453,6 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pypsa</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pypsa.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">annuity</span>
 
 <span class="n">RESOLUTION</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># 3-hourly</span>
 <span class="n">SOLVER</span> <span class="o">=</span> <span class="s2">&quot;highs&quot;</span>  <span class="c1"># or &#39;gurobi&#39;</span>
@@ -478,7 +477,10 @@ document.write(`
 <p>We calculate the capital costs (i.e. annualised investment costs, €/MW/a or €/MWh/a for storage), using the discount rate and lifetime.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">costs</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">annuity</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;discount rate&quot;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;lifetime&quot;</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">annuity</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">r</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">**</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">costs</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">annuity</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;discount rate&quot;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;lifetime&quot;</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">costs</span><span class="p">[</span><span class="s2">&quot;capital_cost&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">costs</span><span class="p">[</span><span class="s2">&quot;FOM&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span> <span class="o">*</span> <span class="n">costs</span><span class="p">[</span><span class="s2">&quot;investment&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
