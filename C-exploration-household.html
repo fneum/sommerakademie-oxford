@@ -882,23 +882,18 @@ Freq: h, Name: DE_price_day_ahead, dtype: float64
 </section>
 <section id="electric-vehicles">
 <h3>Electric Vehicles<a class="headerlink" href="#electric-vehicles" title="Link to this heading">#</a></h3>
-<p>Here, we add an electric vehicle (EV) as previously shown in the sector-coupling tutorial, just narrowed down to a single vehicle. The vehicle has an availability profile for when it is connected to the grid, and a requirement profile for the minimum state of charge it should have at certain times of the day (e.g. 75% at 6 AM). The charging power is assumed to be 11 kW and the battery size is assumed to be 50 kWh.</p>
+<p>Here, we add an electric vehicle (EV) as previously shown in the sector-coupling tutorial, just narrowed down to a single vehicle. The vehicle has an availability profile for when it is connected to the grid, and a requirement profile for the minimum state of charge it should have at certain times of the day (e.g. 75% at 6 AM). The charging power is assumed to be 11 kW and the battery size is assumed to be 50 kWh. We assume an annual consumption of 3,000 kWh.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">number_cars</span> <span class="o">=</span> <span class="mf">40e6</span>  <span class="c1">#  number of EV cars</span>
-<span class="n">bev_charger_rate</span> <span class="o">=</span> <span class="mi">11</span>  <span class="c1"># 3-phase EV charger with 11 kW</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bev_charger_rate</span> <span class="o">=</span> <span class="mi">11</span>  <span class="c1"># 3-phase EV charger with 11 kW</span>
 <span class="n">bev_energy</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># EV battery size in kWh</span>
+<span class="n">annual_consumption</span> <span class="o">=</span> <span class="mi">3000</span> <span class="c1"># kWh</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://tubcloud.tu-berlin.de/s/9r5bMSbzzQiqG7H/download/electric-vehicle-profile-example.csv&quot;</span>
-<span class="n">p_set</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">number_cars</span><span class="p">)</span>
+<span class="n">p_set</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
 <span class="n">p_set</span> <span class="o">=</span> <span class="n">p_set</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;1h&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
 <span class="n">p_set</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">p_set</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">365</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
 <span class="n">p_set</span> <span class="o">=</span> <span class="n">p_set</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">snapshots</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.network.io:The following buses are already defined and will be skipped (use overwrite=True to overwrite): EV
 </pre></div>
 </div>
 </div>
@@ -919,6 +914,21 @@ Freq: h, Name: DE_price_day_ahead, dtype: float64
 <span class="n">available</span><span class="p">[(</span><span class="n">hours</span> <span class="o">&gt;=</span> <span class="mi">23</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">hours</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>   <span class="c1"># always at home 23–05</span>
 <span class="n">available</span><span class="p">[(</span><span class="n">hours</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">hours</span> <span class="o">&lt;</span> <span class="mi">15</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">weekday</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># always away 10–15</span>
 <span class="n">available</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;2013-01-01&quot;</span><span class="p">:</span><span class="s2">&quot;2013-01-07&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;snapshot&#39;&gt;
+</pre></div>
+</div>
+<img alt="_images/36f8ad2bdfb072ce6ee1e40697dc23836d6351ef96e50e08594bdfaae5a55fa8.png" src="_images/36f8ad2bdfb072ce6ee1e40697dc23836d6351ef96e50e08594bdfaae5a55fa8.png" />
+</div>
+</div>
+<p>We will also rescale the fleet-level EV load profile to a single electric vehicle.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_set</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">available</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">p_set</span> <span class="o">=</span> <span class="n">p_set</span> <span class="o">/</span> <span class="n">p_set</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="n">annual_consumption</span>
 </pre></div>
 </div>
 </div>
@@ -989,6 +999,35 @@ Freq: h, Name: DE_price_day_ahead, dtype: float64
 <span class="c1">#     solver_name=SOLVER,</span>
 <span class="c1">#     log_to_console=False,</span>
 <span class="c1"># )</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:Encountered nan&#39;s in varying data &#39;marginal_cost&#39; for columns [&#39;from grid&#39;] of component &#39;Generator&#39;.
+INFO:linopy.model: Solve problem using Highs solver
+INFO:linopy.model:Solver options:
+ - log_to_console: False
+INFO:linopy.io:Writing objective.
+Writing constraints.: 100%|██████████| 29/29 [00:00&lt;00:00, 29.95it/s]
+Writing continuous variables.: 100%|██████████| 11/11 [00:00&lt;00:00, 74.30it/s]
+INFO:linopy.io: Writing time: 1.15s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running HiGHS 1.11.0 (git hash: 364c83a): Copyright (c) 2025 HiGHS under MIT licence terms
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.constants: Optimization successful: 
+Status: ok
+Termination condition: optimal
+Solution: 96369 primals, 210250 duals
+Objective: 2.24e+03
+Solver model: available
+Solver message: Optimal
+
+INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Generator-ext-p-lower, Generator-ext-p-upper, Link-fix-p-lower, Link-fix-p-upper, Link-ext-p-lower, Link-ext-p-upper, Store-fix-e-lower, Store-fix-e-upper, Store-ext-e-lower, Store-ext-e-upper, StorageUnit-ext-p_dispatch-lower, StorageUnit-ext-p_dispatch-upper, StorageUnit-ext-p_store-lower, StorageUnit-ext-p_store-upper, StorageUnit-ext-state_of_charge-lower, StorageUnit-ext-state_of_charge-upper, StorageUnit-energy_balance, Store-energy_balance were not assigned to the network.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;ok&#39;, &#39;optimal&#39;)
 </pre></div>
 </div>
 </div>
