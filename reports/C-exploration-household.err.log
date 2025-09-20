@@ -39,10 +39,11 @@ nbclient.exceptions.CellExecutionError: An error occurred while executing the fo
 from demandlib import bdew
 import datetime
 import pandas as pd
+import numpy as np
 import pypsa
 
 RESOLUTION = 2  # 3-hourly
-SOLVER = "gurobi"  # or 'gurobi'
+SOLVER = "highs"  # or 'gurobi'
 ------------------
 
 

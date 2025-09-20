@@ -427,6 +427,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wind-and-solar-time-series">Wind and Solar Time Series</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#electricity-price-time-series">Electricity Price Time Series</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">Model Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#electric-vehicles">Electric Vehicles</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-clustering">Temporal Clustering</a></li>
 </ul>
 </li>
@@ -453,10 +454,11 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">demandlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">bdew</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pypsa</span>
 
 <span class="n">RESOLUTION</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># 3-hourly</span>
-<span class="n">SOLVER</span> <span class="o">=</span> <span class="s2">&quot;gurobi&quot;</span>  <span class="c1"># or &#39;gurobi&#39;</span>
+<span class="n">SOLVER</span> <span class="o">=</span> <span class="s2">&quot;highs&quot;</span>  <span class="c1"># or &#39;gurobi&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -711,7 +713,7 @@ Freq: h, Name: DE_price_day_ahead, dtype: float64
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="n">pypsa</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span>
 
-<span class="n">buses_i</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span> <span class="s2">&quot;heat&quot;</span><span class="p">,</span> <span class="s2">&quot;vehicle&quot;</span><span class="p">]</span>
+<span class="n">buses_i</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span> <span class="s2">&quot;heat&quot;</span><span class="p">,</span> <span class="s2">&quot;EV&quot;</span><span class="p">]</span>
 <span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Bus&quot;</span><span class="p">,</span> <span class="n">buses_i</span><span class="p">,</span> <span class="n">carrier</span><span class="o">=</span><span class="n">buses_i</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;kW&quot;</span><span class="p">)</span>
 
 <span class="n">n</span><span class="o">.</span><span class="n">set_snapshots</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
@@ -732,7 +734,11 @@ Freq: h, Name: DE_price_day_ahead, dtype: float64
     <span class="s2">&quot;to grid&quot;</span><span class="p">:</span> <span class="s2">&quot;steelblue&quot;</span><span class="p">,</span>
     <span class="s2">&quot;electricity&quot;</span><span class="p">:</span> <span class="s2">&quot;grey&quot;</span><span class="p">,</span>
     <span class="s2">&quot;heat&quot;</span><span class="p">:</span> <span class="s2">&quot;indianred&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;vehicle&quot;</span><span class="p">:</span> <span class="s2">&quot;purple&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;EV&quot;</span><span class="p">:</span> <span class="s2">&quot;cadetblue&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EV demand&quot;</span><span class="p">:</span> <span class="s2">&quot;cadetblue&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EV charger&quot;</span><span class="p">:</span> <span class="s2">&quot;limegreen&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;V2G&quot;</span><span class="p">:</span> <span class="s2">&quot;limegreen&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EV battery&quot;</span><span class="p">:</span> <span class="s2">&quot;teal&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
@@ -874,6 +880,93 @@ Freq: h, Name: DE_price_day_ahead, dtype: float64
 </div>
 </div>
 </section>
+<section id="electric-vehicles">
+<h3>Electric Vehicles<a class="headerlink" href="#electric-vehicles" title="Link to this heading">#</a></h3>
+<p>Here, we add an electric vehicle (EV) as previously shown in the sector-coupling tutorial, just narrowed down to a single vehicle. The vehicle has an availability profile for when it is connected to the grid, and a requirement profile for the minimum state of charge it should have at certain times of the day (e.g. 75% at 6 AM). The charging power is assumed to be 11 kW and the battery size is assumed to be 50 kWh.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">number_cars</span> <span class="o">=</span> <span class="mf">40e6</span>  <span class="c1">#  number of EV cars</span>
+<span class="n">bev_charger_rate</span> <span class="o">=</span> <span class="mi">11</span>  <span class="c1"># 3-phase EV charger with 11 kW</span>
+<span class="n">bev_energy</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># EV battery size in kWh</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://tubcloud.tu-berlin.de/s/9r5bMSbzzQiqG7H/download/electric-vehicle-profile-example.csv&quot;</span>
+<span class="n">p_set</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">number_cars</span><span class="p">)</span>
+<span class="n">p_set</span> <span class="o">=</span> <span class="n">p_set</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;1h&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
+<span class="n">p_set</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">p_set</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">365</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
+<span class="n">p_set</span> <span class="o">=</span> <span class="n">p_set</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">snapshots</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.network.io:The following buses are already defined and will be skipped (use overwrite=True to overwrite): EV
+</pre></div>
+</div>
+</div>
+</div>
+<p>For the availability time series, with a single vehicle, we now have to work with discrete values. We can achieve this by using a binomial distribution to simulate the availability of the vehicle over time, taking into account the hours of the day and the day of the week and implement some additional hard constraints.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://tubcloud.tu-berlin.de/s/E3PBWPfYaWwCq7a/download/electric-vehicle-availability-example.csv&quot;</span>
+<span class="n">available</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">available</span> <span class="o">=</span> <span class="n">available</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;1h&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
+<span class="n">available</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">available</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">365</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
+<span class="n">available</span> <span class="o">=</span> <span class="n">available</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">snapshots</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># seed for reproducibility</span>
+<span class="n">available</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">available</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="n">available</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">hours</span> <span class="o">=</span> <span class="n">available</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span>
+<span class="n">weekday</span> <span class="o">=</span> <span class="n">available</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">weekday</span>
+<span class="n">available</span><span class="p">[(</span><span class="n">hours</span> <span class="o">&gt;=</span> <span class="mi">23</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">hours</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>   <span class="c1"># always at home 23–05</span>
+<span class="n">available</span><span class="p">[(</span><span class="n">hours</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">hours</span> <span class="o">&lt;</span> <span class="mi">15</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">weekday</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># always away 10–15</span>
+<span class="n">available</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;2013-01-01&quot;</span><span class="p">:</span><span class="s2">&quot;2013-01-07&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then, we can add the PyPSA components just as before:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Load&quot;</span><span class="p">,</span> <span class="s2">&quot;EV demand&quot;</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;EV&quot;</span><span class="p">,</span> <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;EV demand&quot;</span><span class="p">,</span> <span class="n">p_set</span><span class="o">=</span><span class="n">p_set</span><span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Link&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EV charger&quot;</span><span class="p">,</span>
+    <span class="n">bus0</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">bus1</span><span class="o">=</span><span class="s2">&quot;EV&quot;</span><span class="p">,</span>
+    <span class="n">p_nom</span><span class="o">=</span><span class="n">bev_charger_rate</span><span class="p">,</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;EV charger&quot;</span><span class="p">,</span>
+    <span class="n">p_max_pu</span><span class="o">=</span><span class="n">available</span><span class="p">,</span>
+    <span class="n">efficiency</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Link&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;V2G&quot;</span><span class="p">,</span>
+    <span class="n">bus0</span><span class="o">=</span><span class="s2">&quot;EV&quot;</span><span class="p">,</span>
+    <span class="n">bus1</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">p_nom</span><span class="o">=</span><span class="n">bev_charger_rate</span><span class="p">,</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;V2G&quot;</span><span class="p">,</span>
+    <span class="n">p_max_pu</span><span class="o">=</span><span class="n">available</span><span class="p">,</span>
+    <span class="n">efficiency</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">requirement</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">n</span><span class="o">.</span><span class="n">snapshots</span><span class="p">)</span>
+<span class="n">requirement</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">requirement</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span> <span class="o">!=</span> <span class="mi">6</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Store&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EV battery&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;EV&quot;</span><span class="p">,</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;EV battery&quot;</span><span class="p">,</span>
+    <span class="n">e_cyclic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># state of charge at beginning = state of charge at the end</span>
+    <span class="n">e_nom</span><span class="o">=</span><span class="n">bev_energy</span><span class="p">,</span>
+    <span class="n">e_min_pu</span><span class="o">=</span><span class="n">requirement</span><span class="p">,</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="temporal-clustering">
 <h3>Temporal Clustering<a class="headerlink" href="#temporal-clustering" title="Link to this heading">#</a></h3>
 <p>To save some computation time, we only sample every third snapshot, which corresponds to a temporal resolution of 3 hours. Note that the snapshot weightings (the duration each time step represents) have to be adjusted accordingly.</p>
@@ -895,7 +988,6 @@ Freq: h, Name: DE_price_day_ahead, dtype: float64
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># n.optimize(</span>
 <span class="c1">#     solver_name=SOLVER,</span>
 <span class="c1">#     log_to_console=False,</span>
-<span class="c1">#     method=2, # Use barrier method to solve model (faster)</span>
 <span class="c1"># )</span>
 </pre></div>
 </div>
@@ -993,6 +1085,7 @@ Freq: h, Name: DE_price_day_ahead, dtype: float64
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wind-and-solar-time-series">Wind and Solar Time Series</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#electricity-price-time-series">Electricity Price Time Series</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">Model Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#electric-vehicles">Electric Vehicles</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-clustering">Temporal Clustering</a></li>
 </ul>
 </li>
