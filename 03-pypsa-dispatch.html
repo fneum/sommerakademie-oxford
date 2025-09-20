@@ -613,7 +613,7 @@ Then install the following packages by executing the following command in a Jupy
       <th>sub_network</th>
     </tr>
     <tr>
-      <th>name</th>
+      <th>Bus</th>
       <th></th>
       <th></th>
       <th></th>
@@ -721,7 +721,7 @@ Then install the following packages by executing the following command in a Jupy
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>name
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generator
 B hydro      0.000000
 A coal      24.242424
 A wind       0.000000
@@ -792,7 +792,7 @@ Name: marginal_cost, dtype: float64
       <th>active</th>
     </tr>
     <tr>
-      <th>name</th>
+      <th>Load</th>
       <th></th>
       <th></th>
       <th></th>
@@ -891,7 +891,7 @@ Name: marginal_cost, dtype: float64
       <th>s_nom_opt</th>
     </tr>
     <tr>
-      <th>name</th>
+      <th>Line</th>
       <th></th>
       <th></th>
       <th></th>
@@ -963,11 +963,11 @@ Name: marginal_cost, dtype: float64
 </summary>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following buses have carriers which are not defined:
-Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;Bus&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Line&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
@@ -977,7 +977,7 @@ Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
  - log_to_console: False
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.io: Writing time: 0.11s
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.io: Writing time: 0.02s
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.constants: Optimization successful: 
@@ -1024,7 +1024,7 @@ Solver message: Optimal
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th>name</th>
+      <th>Generator</th>
       <th>B hydro</th>
       <th>A coal</th>
       <th>A wind</th>
@@ -1078,7 +1078,7 @@ Solver message: Optimal
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th>name</th>
+      <th>Generator</th>
       <th>B hydro</th>
       <th>A coal</th>
       <th>A wind</th>
@@ -1133,7 +1133,7 @@ Solver message: Optimal
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th>name</th>
+      <th>Line</th>
       <th>A-B</th>
     </tr>
     <tr>
@@ -1174,7 +1174,7 @@ Solver message: Optimal
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th>name</th>
+      <th>Line</th>
       <th>A-B</th>
     </tr>
     <tr>
@@ -1217,7 +1217,7 @@ Solver message: Optimal
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th>name</th>
+      <th>Bus</th>
       <th>A</th>
       <th>B</th>
     </tr>
@@ -1296,7 +1296,7 @@ Solver message: Optimal
       <th>v_nom</th>
     </tr>
     <tr>
-      <th>name</th>
+      <th>Line</th>
       <th></th>
       <th></th>
       <th></th>
@@ -1362,16 +1362,16 @@ Solver message: Optimal
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
-Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following buses have carriers which are not defined:
+Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;Bus&#39;)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following buses have carriers which are not defined:
-Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
+Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;SubNetwork&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Line&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
@@ -1393,7 +1393,7 @@ Solver message: Optimal
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running HiGHS 1.11.0 (git hash: 364c83a): Copyright (c) 2025 HiGHS under MIT licence terms
-LP   linopy-problem-8uq_f2rt has 14 rows; 6 cols; 19 nonzeros
+LP   linopy-problem-_hzebi1m has 14 rows; 6 cols; 19 nonzeros
 Coefficient ranges:
   Matrix [1e+00, 1e+00]
   Cost   [2e+01, 2e+02]
@@ -1404,12 +1404,12 @@ Presolving model
 0 rows, 0 cols, 0 nonzeros  0s
 Presolve : Reductions: rows 0(-14); columns 0(-6); elements 0(-19) - Reduced to empty
 Solving the original LP from the solution after postsolve
-Model name          : linopy-problem-8uq_f2rt
+Model name          : linopy-problem-_hzebi1m
 Model status        : Optimal
 Objective value     :  1.3986326317e+06
 P-D objective error :  1.6647013314e-16
 HiGHS run time      :          0.00
-Writing the solution to /tmp/linopy-solve-qgricxzv.sol
+Writing the solution to /tmp/linopy-solve-609xy4ww.sol
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;ok&#39;, &#39;optimal&#39;)
@@ -1443,7 +1443,7 @@ Writing the solution to /tmp/linopy-solve-qgricxzv.sol
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th>name</th>
+      <th>Generator</th>
       <th>B hydro</th>
       <th>A coal</th>
       <th>A wind</th>
@@ -1487,16 +1487,16 @@ Writing the solution to /tmp/linopy-solve-qgricxzv.sol
 
 Variables:
 ----------
- * Generator-p (snapshot, name)
- * Line-s (snapshot, name)
+ * Generator-p (snapshot, Generator)
+ * Line-s (snapshot, Line)
 
 Constraints:
 ------------
- * Generator-fix-p-lower (snapshot, name)
- * Generator-fix-p-upper (snapshot, name)
- * Line-fix-s-lower (snapshot, name)
- * Line-fix-s-upper (snapshot, name)
- * Bus-nodal_balance (name, snapshot)
+ * Generator-fix-p-lower (snapshot, Generator-fix)
+ * Generator-fix-p-upper (snapshot, Generator-fix)
+ * Line-fix-s-lower (snapshot, Line-fix)
+ * Line-fix-s-upper (snapshot, Line-fix)
+ * Bus-nodal_balance (Bus, snapshot)
 
 Status:
 -------
@@ -1512,8 +1512,8 @@ ok
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Constraint `Generator-fix-p-upper` [snapshot: 1, name: 5]:
-----------------------------------------------------------
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Constraint `Generator-fix-p-upper` [snapshot: 1, Generator-fix: 5]:
+-------------------------------------------------------------------
 [now, B hydro]: +1 Generator-p[now, B hydro] ≤ 1200.0
 [now, A coal]: +1 Generator-p[now, A coal]   ≤ 35000.0
 [now, A wind]: +1 Generator-p[now, A wind]   ≤ 3000.0
@@ -1530,8 +1530,8 @@ ok
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Constraint `Bus-nodal_balance` [name: 2, snapshot: 1]:
-------------------------------------------------------
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Constraint `Bus-nodal_balance` [Bus: 2, snapshot: 1]:
+-----------------------------------------------------
 [A, now]: +1 Generator-p[now, A coal] + 1 Generator-p[now, A wind] + 1 Generator-p[now, A gas] + 1 Generator-p[now, A oil] - 1 Line-s[now, A-B] = 42000.0
 [B, now]: +1 Generator-p[now, B hydro] + 1 Line-s[now, A-B]                                                                                     = 650.0
 </pre></div>
@@ -1547,7 +1547,7 @@ ok
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Objective:
 ----------
-LinearExpression: +0 Generator-p[now, B hydro] + 24.24 Generator-p[now, A coal] + 0 Generator-p[now, A wind] + 172.4 Generator-p[now, A gas] + 137.1 Generator-p[now, A oil]
+LinearExpression: +24.24 Generator-p[now, A coal] + 172.4 Generator-p[now, A gas] + 137.1 Generator-p[now, A oil]
 Sense: min
 Value: 1398632.6317348
 </pre></div>
@@ -1572,16 +1572,16 @@ Value: 1398632.6317348
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
-Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following buses have carriers which are not defined:
+Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;Bus&#39;)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following buses have carriers which are not defined:
-Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
+Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;SubNetwork&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Line&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
@@ -1623,7 +1623,7 @@ Solver message: Optimal
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th>name</th>
+      <th>Generator</th>
       <th>B hydro</th>
       <th>A coal</th>
       <th>A wind</th>
@@ -1668,16 +1668,16 @@ Solver message: Optimal
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
-Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following buses have carriers which are not defined:
+Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;Bus&#39;)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following buses have carriers which are not defined:
-Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
+Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;SubNetwork&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Line&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
@@ -1719,7 +1719,7 @@ Solver message: Optimal
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th>name</th>
+      <th>Bus</th>
       <th>A</th>
       <th>B</th>
     </tr>
@@ -1762,20 +1762,20 @@ Solver message: Optimal
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following generators have carriers which are not defined:
-Index([&#39;A nuclear&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following buses have carriers which are not defined:
+Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;Bus&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
-Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;SubNetwork&#39;)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following buses have carriers which are not defined:
-Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following generators have carriers which are not defined:
+Index([&#39;A nuclear&#39;], dtype=&#39;object&#39;, name=&#39;Generator&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;name&#39;)
+Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Line&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
@@ -1817,7 +1817,7 @@ Solver message: Optimal
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th>name</th>
+      <th>Bus</th>
       <th>A</th>
       <th>B</th>
     </tr>
