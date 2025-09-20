@@ -613,6 +613,7 @@ Name: DE, dtype: float64
     <span class="s2">&quot;wind&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
     <span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
     <span class="s2">&quot;AC&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;electricity demand&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
     <span class="s2">&quot;electrified heating&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
     <span class="s2">&quot;oil&quot;</span><span class="p">:</span> <span class="mf">0.257</span><span class="p">,</span>
     <span class="s2">&quot;coal&quot;</span><span class="p">:</span> <span class="mf">0.336</span><span class="p">,</span>
@@ -636,72 +637,6 @@ Name: DE, dtype: float64
     <span class="s2">&quot;EV battery&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">}</span>
 <span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Carrier&quot;</span><span class="p">,</span> <span class="n">carriers</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">carriers</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">co2_emissions</span><span class="o">=</span><span class="n">emissions</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="nn">File /opt/hostedtoolcache/Python/3.13.7/x64/lib/python3.13/site-packages/pypsa/network/transform.py:203,</span> in <span class="ni">NetworkTransformMixin.add</span><span class="nt">(self, class_name, name, suffix, overwrite, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">202</span>         <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">203</span>             <span class="n">v</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">names</span>
-<span class="g g-Whitespace">    </span><span class="mi">204</span> <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.13.7/x64/lib/python3.13/site-packages/pandas/core/generic.py:6332,</span> in <span class="ni">NDFrame.__setattr__</span><span class="nt">(self, name, value)</span>
-<span class="g g-Whitespace">   </span><span class="mi">6331</span>     <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">6332</span>     <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">6333</span> <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-
-<span class="nn">File pandas/_libs/properties.pyx:69,</span> in <span class="ni">pandas._libs.properties.AxisProperty.__set__</span><span class="nt">()</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.13.7/x64/lib/python3.13/site-packages/pandas/core/generic.py:814,</span> in <span class="ni">NDFrame._set_axis</span><span class="nt">(self, axis, labels)</span>
-<span class="g g-Whitespace">    </span><span class="mi">813</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">ensure_index</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">814</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mgr</span><span class="o">.</span><span class="n">set_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">815</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clear_item_cache</span><span class="p">()</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.13.7/x64/lib/python3.13/site-packages/pandas/core/internals/managers.py:238,</span> in <span class="ni">BaseBlockManager.set_axis</span><span class="nt">(self, axis, new_labels)</span>
-<span class="g g-Whitespace">    </span><span class="mi">236</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="n">AxisInt</span><span class="p">,</span> <span class="n">new_labels</span><span class="p">:</span> <span class="n">Index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">237</span>     <span class="c1"># Caller is responsible for ensuring we have an Index object.</span>
-<span class="ne">--&gt; </span><span class="mi">238</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_validate_set_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">new_labels</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">239</span>     <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_labels</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.13.7/x64/lib/python3.13/site-packages/pandas/core/internals/base.py:98,</span> in <span class="ni">DataManager._validate_set_axis</span><span class="nt">(self, axis, new_labels)</span>
-<span class="g g-Whitespace">     </span><span class="mi">97</span> <span class="k">elif</span> <span class="n">new_len</span> <span class="o">!=</span> <span class="n">old_len</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">98</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">99</span>         <span class="sa">f</span><span class="s2">&quot;Length mismatch: Expected axis has </span><span class="si">{</span><span class="n">old_len</span><span class="si">}</span><span class="s2"> elements, new &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">100</span>         <span class="sa">f</span><span class="s2">&quot;values have </span><span class="si">{</span><span class="n">new_len</span><span class="si">}</span><span class="s2"> elements&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">101</span>     <span class="p">)</span>
-
-<span class="ne">ValueError</span>: Length mismatch: Expected axis has 24 elements, new values have 25 elements
-
-<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
-
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">60</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">carriers</span> <span class="o">=</span> <span class="p">{</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="s2">&quot;wind&quot;</span><span class="p">:</span> <span class="s2">&quot;dodgerblue&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="s2">&quot;gold&quot;</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>     <span class="mi">31</span>     <span class="s2">&quot;EV battery&quot;</span><span class="p">:</span> <span class="s2">&quot;teal&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">32</span> <span class="p">}</span>
-<span class="g g-Whitespace">     </span><span class="mi">34</span> <span class="n">emissions</span> <span class="o">=</span> <span class="p">{</span>
-<span class="g g-Whitespace">     </span><span class="mi">35</span>     <span class="s2">&quot;wind&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">36</span>     <span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>     <span class="mi">58</span>     <span class="s2">&quot;EV battery&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">59</span> <span class="p">}</span>
-<span class="ne">---&gt; </span><span class="mi">60</span> <span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Carrier&quot;</span><span class="p">,</span> <span class="n">carriers</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">carriers</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">co2_emissions</span><span class="o">=</span><span class="n">emissions</span><span class="p">);</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.13.7/x64/lib/python3.13/site-packages/pypsa/network/transform.py:211,</span> in <span class="ni">NetworkTransformMixin.add</span><span class="nt">(self, class_name, name, suffix, overwrite, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">205</span>         <span class="n">expec_str</span> <span class="o">=</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">206</span>             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">snapshots</span><span class="p">)</span><span class="si">}</span><span class="s2"> for each snapshot.&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">207</span>             <span class="k">if</span> <span class="n">single_component</span>
-<span class="g g-Whitespace">    </span><span class="mi">208</span>             <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span><span class="si">}</span><span class="s2"> for each component name.&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">209</span>         <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">210</span>         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Data for </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> has length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2"> but expected </span><span class="si">{</span><span class="n">expec_str</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">211</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
-<span class="g g-Whitespace">    </span><span class="mi">212</span> <span class="c1"># Convert 2-dim array to pandas.DataFrame</span>
-<span class="g g-Whitespace">    </span><span class="mi">213</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-
-<span class="ne">ValueError</span>: Data for co2_emissions has length 24 but expected 25 for each component name.
 </pre></div>
 </div>
 </div>
@@ -1047,149 +982,36 @@ Name: DE, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following links have carriers which are not defined:
-Index([&#39;turbine&#39;], dtype=&#39;object&#39;, name=&#39;Link&#39;)
-WARNING:pypsa.consistency:The following loads have carriers which are not defined:
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following loads have carriers which are not defined:
 Index([&#39;electricity demand&#39;], dtype=&#39;object&#39;, name=&#39;Load&#39;)
-INFO:linopy.model: Solve problem using Gurobi solver
-INFO:linopy.model:Solver options:
- - log_to_console: False
-INFO:linopy.io:Writing objective.
-Writing constraints.: 100%|██████████| 30/30 [00:01&lt;00:00, 17.84it/s]
-Writing continuous variables.: 100%|██████████| 11/11 [00:00&lt;00:00, 40.87it/s]
-INFO:linopy.io: Writing time: 2.04s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Set parameter TokenServer to value &quot;gurobi-license.pypsa.org&quot;
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Gurobi solver
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:gurobipy:Set parameter TokenServer to value &quot;gurobi-license.pypsa.org&quot;
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Read LP format model from file /tmp/linopy-problem-9gzyf0qc.lp
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:gurobipy:Read LP format model from file /tmp/linopy-problem-9gzyf0qc.lp
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading time = 0.44 seconds
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:gurobipy:Reading time = 0.44 seconds
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>obj: 169376 rows, 78855 columns, 340188 nonzeros
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:gurobipy:obj: 169376 rows, 78855 columns, 340188 nonzeros
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Set parameter LogToConsole to value 0
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:gurobipy:Set parameter LogToConsole to value 0
-INFO:gurobipy:Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (linux64 - &quot;Ubuntu 24.10&quot;)
-INFO:gurobipy:
-INFO:gurobipy:CPU model: AMD Ryzen 7 PRO 7840U w/ Radeon 780M Graphics, instruction set [SSE2|AVX|AVX2|AVX512]
-INFO:gurobipy:Thread count: 8 physical cores, 16 logical processors, using up to 16 threads
-INFO:gurobipy:
-INFO:gurobipy:Non-default parameters:
-INFO:gurobipy:LogToConsole  0
-INFO:gurobipy:
-INFO:gurobipy:Optimize a model with 169376 rows, 78855 columns and 340188 nonzeros
-INFO:gurobipy:Model fingerprint: 0x23ccacb3
-INFO:gurobipy:Coefficient statistics:
-INFO:gurobipy:  Matrix range     [1e-03, 6e+00]
-INFO:gurobipy:  Objective range  [4e+01, 8e+05]
-INFO:gurobipy:  Bounds range     [0e+00, 0e+00]
-INFO:gurobipy:  RHS range        [2e+03, 5e+07]
-INFO:gurobipy:Presolve removed 94922 rows and 10227 columns
-INFO:gurobipy:Presolve time: 0.46s
-INFO:gurobipy:Presolved: 74454 rows, 68628 columns, 232119 nonzeros
-INFO:gurobipy:
-INFO:gurobipy:Concurrent LP optimizer: primal simplex, dual simplex, and barrier
-INFO:gurobipy:Showing barrier log only...
-INFO:gurobipy:
-INFO:gurobipy:Ordering time: 0.07s
-INFO:gurobipy:
-INFO:gurobipy:Barrier statistics:
-INFO:gurobipy: Dense cols : 15
-INFO:gurobipy: AA&#39; NZ     : 1.869e+05
-INFO:gurobipy: Factor NZ  : 8.790e+05 (roughly 70 MB of memory)
-INFO:gurobipy: Factor Ops : 1.732e+07 (less than 1 second per iteration)
-INFO:gurobipy: Threads    : 6
-INFO:gurobipy:
-INFO:gurobipy:                  Objective                Residual
-INFO:gurobipy:Iter       Primal          Dual         Primal    Dual     Compl     Time
-INFO:gurobipy:   0   9.18909941e+12 -5.29509868e+13  5.52e+09 1.20e+02  2.01e+10     1s
-INFO:gurobipy:   1   9.06240463e+12 -4.63210919e+13  5.05e+09 1.58e+03  7.57e+09     1s
-INFO:gurobipy:   2   1.12636667e+13 -3.97834184e+13  7.00e+08 4.37e+02  1.87e+09     1s
-INFO:gurobipy:   3   7.83211937e+12 -8.91560047e+12  3.44e+05 8.16e+00  1.40e+08     1s
-INFO:gurobipy:   4   2.31674373e+12 -1.71552242e+12  6.52e+04 1.45e+00  3.13e+07     1s
-INFO:gurobipy:   5   1.08122715e+12 -5.69832892e+11  2.83e+04 4.80e-01  1.24e+07     1s
-INFO:gurobipy:   6   4.79952709e+11 -2.70749040e+11  1.17e+04 2.19e-01  5.56e+06     2s
-INFO:gurobipy:   7   3.04605266e+11 -9.83505819e+10  6.98e+03 8.18e-02  2.96e+06     2s
-INFO:gurobipy:   8   2.35036540e+11 -2.50041013e+10  4.91e+03 3.66e-02  1.90e+06     2s
-INFO:gurobipy:   9   1.26922340e+11  3.26379625e+10  1.51e+03 1.14e-13  6.89e+05     2s
-INFO:gurobipy:  10   8.99083008e+10  5.45864776e+10  5.43e+02 1.14e-13  2.58e+05     2s
-INFO:gurobipy:  11   7.99663920e+10  5.82200377e+10  3.25e+02 1.14e-13  1.59e+05     2s
-INFO:gurobipy:  12   7.44201607e+10  6.06103761e+10  2.11e+02 1.14e-13  1.01e+05     2s
-INFO:gurobipy:  13   7.01571523e+10  6.16981393e+10  1.22e+02 1.14e-13  6.17e+04     2s
-INFO:gurobipy:  14   6.82657683e+10  6.25628306e+10  8.29e+01 1.14e-13  4.16e+04     3s
-INFO:gurobipy:  15   6.71069172e+10  6.29803163e+10  5.82e+01 1.14e-13  3.01e+04     3s
-INFO:gurobipy:  16   6.62162277e+10  6.34123137e+10  3.93e+01 1.14e-13  2.04e+04     3s
-INFO:gurobipy:  17   6.54971142e+10  6.37474804e+10  2.43e+01 1.14e-13  1.28e+04     3s
-INFO:gurobipy:  18   6.50745946e+10  6.39603171e+10  1.53e+01 1.14e-13  8.12e+03     3s
-INFO:gurobipy:  19   6.48273371e+10  6.40431940e+10  1.01e+01 1.14e-13  5.71e+03     3s
-INFO:gurobipy:  20   6.46321778e+10  6.41301083e+10  6.03e+00 1.14e-13  3.66e+03     3s
-INFO:gurobipy:  21   6.44953015e+10  6.41679172e+10  3.22e+00 6.82e-14  2.39e+03     3s
-INFO:gurobipy:  22   6.44040054e+10  6.42790848e+10  1.43e+00 1.14e-13  9.10e+02     3s
-INFO:gurobipy:  23   6.43876232e+10  6.42876546e+10  1.13e+00 1.14e-13  7.29e+02     4s
-INFO:gurobipy:  24   6.43609830e+10  6.42985455e+10  6.38e-01 1.14e-13  4.55e+02     4s
-INFO:gurobipy:  25   6.43456311e+10  6.43038100e+10  3.61e-01 1.14e-13  3.05e+02     4s
-INFO:gurobipy:  26   6.43375516e+10  6.43126877e+10  2.23e-01 1.14e-13  1.81e+02     4s
-INFO:gurobipy:  27   6.43318167e+10  6.43195810e+10  1.24e-01 1.14e-13  8.92e+01     4s
-INFO:gurobipy:  28   6.43307689e+10  6.43230062e+10  1.07e-01 1.14e-13  5.66e+01     4s
-INFO:gurobipy:  29   6.43259191e+10  6.43239595e+10  2.89e-02 1.14e-13  1.43e+01     4s
-INFO:gurobipy:  30   6.43241075e+10  6.43241053e+10  5.99e-06 1.82e-10  1.55e-02     4s
-INFO:gurobipy:  31   6.43241056e+10  6.43241056e+10  5.96e-08 3.20e-10  1.56e-05     4s
-INFO:gurobipy:  32   6.43241056e+10  6.43241056e+10  8.94e-08 1.28e-09  1.56e-08     5s
-INFO:gurobipy:  33   6.43241056e+10  6.43241056e+10  2.31e-07 8.73e-10  3.91e-13     5s
-INFO:gurobipy:
-INFO:gurobipy:Barrier solved model in 33 iterations and 4.59 seconds (1.17 work units)
-INFO:gurobipy:Optimal objective 6.43241056e+10
-INFO:gurobipy:
-INFO:gurobipy:Crossover log...
-INFO:gurobipy:
-INFO:gurobipy:   45265 DPushes remaining with DInf 0.0000000e+00                 5s
-INFO:gurobipy:       0 DPushes remaining with DInf 0.0000000e+00                 5s
-INFO:gurobipy:Warning: Markowitz tolerance tightened to 0.5
-INFO:gurobipy:
-INFO:gurobipy:    4228 PPushes remaining with PInf 0.0000000e+00                 5s
-INFO:gurobipy:    1444 PPushes remaining with PInf 0.0000000e+00                 5s
-INFO:gurobipy:       0 PPushes remaining with PInf 0.0000000e+00                 5s
-INFO:gurobipy:
-INFO:gurobipy:  Push phase complete: Pinf 0.0000000e+00, Dinf 1.0349524e-08      5s
-INFO:gurobipy:
-INFO:gurobipy:
-INFO:gurobipy:Solved with barrier
-INFO:gurobipy:Iteration    Objective       Primal Inf.    Dual Inf.      Time
-INFO:gurobipy:   22200    6.4324106e+10   0.000000e+00   0.000000e+00      5s
-INFO:gurobipy:
-INFO:gurobipy:Solved in 22200 iterations and 5.49 seconds (2.06 work units)
-INFO:gurobipy:Optimal objective  6.432410565e+10
-INFO:linopy.constants: Optimization successful: 
-Status: ok
-Termination condition: optimal
-Solution: 78855 primals, 169376 duals
-Objective: 6.43e+10
-Solver model: available
-Solver message: 2
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AssertionError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">18</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">n</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">solver_name</span><span class="o">=</span><span class="n">SOLVER</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">log_to_console</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="p">)</span>
 
-INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Generator-ext-p-lower, Generator-ext-p-upper, Link-fix-p-lower, Link-fix-p-upper, Link-ext-p-lower, Link-ext-p-upper, Store-fix-e-lower, Store-fix-e-upper, Store-ext-e-lower, Store-ext-e-upper, StorageUnit-ext-p_dispatch-lower, StorageUnit-ext-p_dispatch-upper, StorageUnit-ext-p_store-lower, StorageUnit-ext-p_store-upper, StorageUnit-ext-state_of_charge-lower, StorageUnit-ext-state_of_charge-upper, StorageUnit-energy_balance, Store-energy_balance were not assigned to the network.
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;ok&#39;, &#39;optimal&#39;)
+<span class="nn">File /opt/hostedtoolcache/Python/3.13.7/x64/lib/python3.13/site-packages/pypsa/optimization/optimize.py:383,</span> in <span class="ni">OptimizationAccessor.__call__</span><span class="nt">(self, snapshots, multi_investment_periods, transmission_losses, linearized_unit_commitment, model_kwargs, extra_functionality, assign_all_duals, solver_name, solver_options, compute_infeasibilities, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">381</span> <span class="k">if</span> <span class="n">extra_functionality</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">382</span>     <span class="n">extra_functionality</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="n">sns</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">383</span> <span class="n">status</span><span class="p">,</span> <span class="n">condition</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver_name</span><span class="o">=</span><span class="n">solver_name</span><span class="p">,</span> <span class="o">**</span><span class="n">solver_options</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">385</span> <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;ok&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">386</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">assign_solution</span><span class="p">()</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.13.7/x64/lib/python3.13/site-packages/linopy/model.py:1176,</span> in <span class="ni">Model.solve</span><span class="nt">(self, solver_name, io_api, explicit_coordinate_names, problem_fn, solution_fn, log_fn, basis_fn, warmstart_fn, keep_files, env, sanitize_zeros, sanitize_infinities, slice_size, remote, progress, **solver_options)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1173</span>     <span class="n">solver_name</span> <span class="o">=</span> <span class="n">available_solvers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1175</span> <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Solve problem using </span><span class="si">{</span><span class="n">solver_name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s2"> solver&quot;</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1176</span> <span class="k">assert</span> <span class="n">solver_name</span> <span class="ow">in</span> <span class="n">available_solvers</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Solver </span><span class="si">{</span><span class="n">solver_name</span><span class="si">}</span><span class="s2"> not installed&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1178</span> <span class="c1"># reset result</span>
+<span class="g g-Whitespace">   </span><span class="mi">1179</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_solution</span><span class="p">()</span>
+
+<span class="ne">AssertionError</span>: Solver gurobi not installed
 </pre></div>
 </div>
 </div>
