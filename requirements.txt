@@ -2,7 +2,7 @@ numpy
 pandas>=2
 pyyaml
 netcdf4
-pypsa==1.0.0rc1
+pypsa==0.35
 ipython
 jupyterlab
 tabula-py
