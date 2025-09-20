@@ -421,10 +421,23 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploration">Exploration</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensions">Dimensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-foundation">Model Foundation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-assumptions">Cost Assumptions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series">Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-initialisation">Model Initialisation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demand">Demand</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fossil-power-plants">Fossil Power Plants</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nuclear-power-plant">Nuclear Power Plant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#biomass-power-plant">Biomass Power Plant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wind-and-solar">Wind and Solar</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#batteries">Batteries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hydrogen">Hydrogen</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#emission-limit">Emission Limit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#electrified-heating">Electrified Heating</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-clustering">Temporal Clustering</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploration">Exploration</a></li>
 </ul>
             </nav>
         </div>
@@ -438,15 +451,490 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="models-without-networks">
 <h1>Models without Networks<a class="headerlink" href="#models-without-networks" title="Link to this heading">#</a></h1>
+<p>This section builds a simple country-scale energy system model without any networks (“copperplate”) to explore the role of different generation, conversion, storage and flexibility technologies, as well as the impact of different policy constraints, such as carbon budgets, carbon pricing, and/or renewable capacity targets.</p>
+<p><img alt="network-model" src="_images/single-node.png" /></p>
+<section id="model-foundation">
+<h2>Model Foundation<a class="headerlink" href="#model-foundation" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pypsa</span>
+
+<span class="n">RESOLUTION</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># hours</span>
+<span class="n">SOLVER</span> <span class="o">=</span> <span class="s2">&quot;gurobi&quot;</span> <span class="c1"># or &#39;gurobi&#39;</span>
+<span class="n">CO2_PRICE</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="cost-assumptions">
+<h3>Cost Assumptions<a class="headerlink" href="#cost-assumptions" title="Link to this heading">#</a></h3>
+<p>We take techno-economic assumptions from the <a class="reference external" href="https://github.com/PyPSA/technology-data">technology-data</a> repository which collects assumptions on costs and efficiencies:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">YEAR</span> <span class="o">=</span> <span class="mi">2030</span>
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://raw.githubusercontent.com/PyPSA/technology-data/master/outputs/costs_</span><span class="si">{</span><span class="n">YEAR</span><span class="si">}</span><span class="s2">.csv&quot;</span>
+<span class="n">costs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">costs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">costs</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;/kW&quot;</span><span class="p">),</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">*=</span> <span class="mf">1e3</span>
+<span class="n">costs</span> <span class="o">=</span> <span class="n">costs</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">fillna</span><span class="p">({</span><span class="s2">&quot;discount rate&quot;</span><span class="p">:</span> <span class="mf">0.07</span><span class="p">,</span> <span class="s2">&quot;lifetime&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;FOM&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<span class="n">costs</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s2">&quot;OCGT&quot;</span><span class="p">,</span> <span class="s2">&quot;CCGT&quot;</span><span class="p">],</span> <span class="s2">&quot;CO2 intensity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;gas&quot;</span><span class="p">,</span> <span class="s2">&quot;CO2 intensity&quot;</span><span class="p">]</span>
+<span class="n">costs</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s2">&quot;OCGT&quot;</span><span class="p">,</span> <span class="s2">&quot;CCGT&quot;</span><span class="p">],</span> <span class="s2">&quot;fuel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;gas&quot;</span><span class="p">,</span> <span class="s2">&quot;fuel&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We calculate the capital costs (i.e. annualised investment costs, €/MW/a or €/MWh/a for storage), using the discount rate and lifetime.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">annuity</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">r</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">**</span> <span class="n">n</span><span class="p">)</span>
+
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">costs</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">annuity</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;discount rate&quot;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;lifetime&quot;</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">costs</span><span class="p">[</span><span class="s2">&quot;capital_cost&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">costs</span><span class="p">[</span><span class="s2">&quot;FOM&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span> <span class="o">*</span> <span class="n">costs</span><span class="p">[</span><span class="s2">&quot;investment&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="time-series">
+<h3>Time Series<a class="headerlink" href="#time-series" title="Link to this heading">#</a></h3>
+<p>The wind and solar capacity factor time series have been retrieved from <a class="reference external" href="https://model.energy">model.energy</a>. Go there to find more time series for other countries and plug them in here.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://model.energy/data/time-series-dd07c6bb61a102ba3399f062230a24fc.csv&quot;</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>onwind</th>
+      <th>solar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2013-01-01 00:00:00</th>
+      <td>0.848</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2013-01-01 01:00:00</th>
+      <td>0.846</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2013-01-01 02:00:00</th>
+      <td>0.831</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The demand time series are exported from the <a class="reference external" href="https://transparency.entsoe.eu/">ENTSO-E Transparency Platform</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://tubcloud.tu-berlin.de/s/5ZcfnfC7mEwEGWt/download/electricity-demand.csv&quot;</span>
+<span class="n">demand</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s2">&quot;DE&quot;</span><span class="p">]</span>
+<span class="n">demand</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2013-01-01 00:00:00    38617.5824
+2013-01-01 01:00:00    37058.2418
+2013-01-01 02:00:00    35576.9231
+Name: DE, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="model-initialisation">
+<h3>Model Initialisation<a class="headerlink" href="#model-initialisation" title="Link to this heading">#</a></h3>
+<p>Add buses, carriers with their associated emissions and set snapshots.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="n">pypsa</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span>
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Bus&quot;</span><span class="p">,</span> <span class="s2">&quot;electricity&quot;</span><span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">set_snapshots</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+<span class="n">carriers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;wind&quot;</span><span class="p">:</span> <span class="s2">&quot;dodgerblue&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="s2">&quot;gold&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AC&quot;</span><span class="p">:</span> <span class="s2">&quot;navy&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;electrified heating&quot;</span><span class="p">:</span> <span class="s2">&quot;steelblue&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;oil&quot;</span><span class="p">:</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;coal&quot;</span><span class="p">:</span> <span class="s2">&quot;darkgray&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lignite&quot;</span><span class="p">:</span> <span class="s2">&quot;sienna&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OCGT&quot;</span><span class="p">:</span> <span class="s2">&quot;indianred&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CCGT&quot;</span><span class="p">:</span> <span class="s2">&quot;firebrick&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;biomass&quot;</span><span class="p">:</span> <span class="s2">&quot;olivedrab&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nuclear&quot;</span><span class="p">:</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;battery storage 1h&quot;</span><span class="p">:</span> <span class="s2">&quot;lightgreen&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;battery storage 3h&quot;</span><span class="p">:</span> <span class="s2">&quot;lightgreen&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;battery storage 6h&quot;</span><span class="p">:</span> <span class="s2">&quot;lightgreen&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hydrogen turbine&quot;</span><span class="p">:</span> <span class="s2">&quot;blueviolet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hydrogen import&quot;</span><span class="p">:</span> <span class="s2">&quot;lavenderblush&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;electrolysis&quot;</span><span class="p">:</span> <span class="s2">&quot;orchid&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hydrogen storage&quot;</span><span class="p">:</span> <span class="s2">&quot;hotpink&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hydrogen&quot;</span><span class="p">:</span> <span class="s2">&quot;hotpink&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">emissions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;wind&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;AC&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;electrified heating&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;oil&quot;</span><span class="p">:</span> <span class="mf">0.257</span><span class="p">,</span>
+    <span class="s2">&quot;coal&quot;</span><span class="p">:</span> <span class="mf">0.336</span><span class="p">,</span>
+    <span class="s2">&quot;lignite&quot;</span><span class="p">:</span> <span class="mf">0.407</span><span class="p">,</span>
+    <span class="s2">&quot;OCGT&quot;</span><span class="p">:</span> <span class="mf">0.198</span><span class="p">,</span>
+    <span class="s2">&quot;CCGT&quot;</span><span class="p">:</span> <span class="mf">0.198</span><span class="p">,</span>
+    <span class="s2">&quot;biomass&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;nuclear&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;battery storage 1h&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;battery storage 3h&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;battery storage 6h&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;hydrogen import&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;hydrogen turbine&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;electrolysis&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;hydrogen storage&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;hydrogen&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Carrier&quot;</span><span class="p">,</span> <span class="n">carriers</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">carriers</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">co2_emissions</span><span class="o">=</span><span class="n">emissions</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="demand">
+<h3>Demand<a class="headerlink" href="#demand" title="Link to this heading">#</a></h3>
+<p>We add an electricity demand time series with a total annual demand of around 500 TWh/a for Germany.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Load&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;electricity demand&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">p_set</span><span class="o">=</span><span class="n">demand</span><span class="p">,</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="fossil-power-plants">
+<h3>Fossil Power Plants<a class="headerlink" href="#fossil-power-plants" title="Link to this heading">#</a></h3>
+<p>Here, we add fossil power plants with their respective investment costs, marginal costs, efficiencies, and CO2 emissions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">fossil</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;coal&quot;</span><span class="p">,</span> <span class="s2">&quot;lignite&quot;</span><span class="p">,</span> <span class="s2">&quot;OCGT&quot;</span><span class="p">,</span> <span class="s2">&quot;CCGT&quot;</span><span class="p">,</span> <span class="s2">&quot;oil&quot;</span><span class="p">]:</span>
+
+    <span class="n">marginal_cost</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">fossil</span><span class="p">,</span> <span class="s2">&quot;fuel&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">fossil</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">fossil</span><span class="p">,</span> <span class="s2">&quot;VOM&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">CO2_PRICE</span> <span class="o">*</span> <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">fossil</span><span class="p">,</span> <span class="s2">&quot;CO2 intensity&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">fossil</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+        <span class="s2">&quot;Generator&quot;</span><span class="p">,</span>
+        <span class="n">fossil</span><span class="p">,</span>
+        <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+        <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">efficiency</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">fossil</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">],</span>
+        <span class="n">marginal_cost</span><span class="o">=</span><span class="n">marginal_cost</span><span class="p">,</span>
+        <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">fossil</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">],</span>
+        <span class="n">carrier</span><span class="o">=</span><span class="n">fossil</span><span class="p">,</span>
+    <span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="nuclear-power-plant">
+<h3>Nuclear Power Plant<a class="headerlink" href="#nuclear-power-plant" title="Link to this heading">#</a></h3>
+<p>Here, we set <code class="docutils literal notranslate"><span class="pre">p_min_pu=1</span></code> to force the plant to always run at full capacity. This is a simplification, as in reality nuclear plants can be ramped down, but not very flexibly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">marginal_cost</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;nuclear&quot;</span><span class="p">,</span> <span class="s2">&quot;fuel&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;nuclear&quot;</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">]</span>
+    <span class="o">+</span> <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;nuclear&quot;</span><span class="p">,</span> <span class="s2">&quot;VOM&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Generator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nuclear&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">efficiency</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;nuclear&quot;</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">],</span>
+    <span class="n">marginal_cost</span><span class="o">=</span><span class="n">marginal_cost</span><span class="p">,</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;nuclear&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">],</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;nuclear&quot;</span><span class="p">,</span>
+    <span class="n">p_min_pu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># forced baseload operation</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="biomass-power-plant">
+<h3>Biomass Power Plant<a class="headerlink" href="#biomass-power-plant" title="Link to this heading">#</a></h3>
+<p>Here, we limit the total energy output of the biomass plant by setting <code class="docutils literal notranslate"><span class="pre">e_sum_max</span></code> to represent a limited sustainable biomass potential, e.g. 50 TWh/a.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">marginal_cost</span> <span class="o">=</span> <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;biomass&quot;</span><span class="p">,</span> <span class="s2">&quot;fuel&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;biomass&quot;</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">]</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Generator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;biomass&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">efficiency</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;biomass&quot;</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">],</span>
+    <span class="n">marginal_cost</span><span class="o">=</span><span class="n">marginal_cost</span><span class="p">,</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;biomass&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">],</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;biomass&quot;</span><span class="p">,</span>
+    <span class="n">e_sum_max</span><span class="o">=</span><span class="mf">50e6</span><span class="p">,</span> <span class="c1"># limit</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="wind-and-solar">
+<h3>Wind and Solar<a class="headerlink" href="#wind-and-solar" title="Link to this heading">#</a></h3>
+<p>Here, we set <code class="docutils literal notranslate"><span class="pre">p_max_pu</span></code> to the time series of the renewable capacity factors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Generator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wind&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;wind&quot;</span><span class="p">,</span>
+    <span class="n">p_max_pu</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">onwind</span><span class="p">,</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;onwind&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">],</span>
+    <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Generator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;solar&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;solar&quot;</span><span class="p">,</span>
+    <span class="n">p_max_pu</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">solar</span><span class="p">,</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;solar&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">],</span>
+    <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="batteries">
+<h3>Batteries<a class="headerlink" href="#batteries" title="Link to this heading">#</a></h3>
+<p>Here, we add batteries with energy-to-power ratios of 1, 3, and 6 hours.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">max_hours</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]:</span>
+    <span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+        <span class="s2">&quot;StorageUnit&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;battery storage </span><span class="si">{</span><span class="n">max_hours</span><span class="si">}</span><span class="s2">h&quot;</span><span class="p">,</span>
+        <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+        <span class="n">carrier</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;battery storage </span><span class="si">{</span><span class="n">max_hours</span><span class="si">}</span><span class="s2">h&quot;</span><span class="p">,</span>
+        <span class="n">max_hours</span><span class="o">=</span><span class="n">max_hours</span><span class="p">,</span>
+        <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;battery inverter&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">max_hours</span> <span class="o">*</span> <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;battery storage&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">],</span>
+        <span class="n">efficiency_store</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;battery inverter&quot;</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">],</span>
+        <span class="n">efficiency_dispatch</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;battery inverter&quot;</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">],</span>
+        <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">cyclic_state_of_charge</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="hydrogen">
+<h3>Hydrogen<a class="headerlink" href="#hydrogen" title="Link to this heading">#</a></h3>
+<p>Here, we add a hydrogen storage system with electrolysers, underground storage, and a hydrogen turbine. Additionally, there is a constant hydrogen demand in the order of 50% of the average electricity demand. There is also the option to import hydrogen at high cost.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Bus&quot;</span><span class="p">,</span> <span class="s2">&quot;hydrogen&quot;</span><span class="p">,</span> <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;hydrogen&quot;</span><span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Load&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hydrogen demand&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;hydrogen&quot;</span><span class="p">,</span>
+    <span class="n">p_set</span><span class="o">=</span><span class="n">demand</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;hydrogen&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Link&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;electrolysis&quot;</span><span class="p">,</span>
+    <span class="n">bus0</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">bus1</span><span class="o">=</span><span class="s2">&quot;hydrogen&quot;</span><span class="p">,</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;electrolysis&quot;</span><span class="p">,</span>
+    <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">efficiency</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;electrolysis&quot;</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">],</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;electrolysis&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Link&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;turbine&quot;</span><span class="p">,</span>
+    <span class="n">bus0</span><span class="o">=</span><span class="s2">&quot;hydrogen&quot;</span><span class="p">,</span>
+    <span class="n">bus1</span><span class="o">=</span><span class="s2">&quot;electricity&quot;</span><span class="p">,</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;turbine&quot;</span><span class="p">,</span>
+    <span class="n">p_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">efficiency</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;OCGT&quot;</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">],</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;OCGT&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;OCGT&quot;</span><span class="p">,</span> <span class="s2">&quot;efficiency&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">tech</span> <span class="o">=</span> <span class="s2">&quot;hydrogen storage tank type 1 including compressor&quot;</span>
+<span class="n">tech</span> <span class="o">=</span> <span class="s2">&quot;hydrogen storage underground&quot;</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Store&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hydrogen storage&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;hydrogen&quot;</span><span class="p">,</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;hydrogen storage&quot;</span><span class="p">,</span>
+    <span class="n">capital_cost</span><span class="o">=</span><span class="n">costs</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">tech</span><span class="p">,</span> <span class="s2">&quot;capital_cost&quot;</span><span class="p">],</span>
+    <span class="n">e_nom_extendable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">e_cyclic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">);</span>
+
+<span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="s2">&quot;Generator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hydrogen import&quot;</span><span class="p">,</span>
+    <span class="n">bus</span><span class="o">=</span><span class="s2">&quot;hydrogen&quot;</span><span class="p">,</span>
+    <span class="n">p_nom</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span>  <span class="c1"># large value</span>
+    <span class="n">marginal_cost</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">carrier</span><span class="o">=</span><span class="s2">&quot;hydrogen import&quot;</span><span class="p">,</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="emission-limit">
+<h3>Emission Limit<a class="headerlink" href="#emission-limit" title="Link to this heading">#</a></h3>
+<p>Here, we could set a CO2 emission limit for the whole system, e.g. 100 MtCO2/a.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># n.add(</span>
+<span class="c1">#     &quot;GlobalConstraint&quot;,</span>
+<span class="c1">#     &quot;emission_limit&quot;,</span>
+<span class="c1">#     carrier_attribute=&quot;co2_emissions&quot;,</span>
+<span class="c1">#     sense=&quot;&lt;=&quot;,</span>
+<span class="c1">#     constant=0,</span>
+<span class="c1"># );</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="electrified-heating">
+<h3>Electrified Heating<a class="headerlink" href="#electrified-heating" title="Link to this heading">#</a></h3>
+<p>Here, we could add an additional load representing electricity demand from electrified heating (e.g. heat pumps) with a seasonal profile.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># url = &quot;https://tubcloud.tu-berlin.de/s/8KWqTAHEM9m8dFj/download/heat-demand.csv&quot;</span>
+<span class="c1"># p_set = pd.read_csv(url, index_col=0, parse_dates=True).squeeze()</span>
+<span class="c1"># p_set = p_set / p_set.max() * demand.mean() / 2</span>
+<span class="c1"># n.add(</span>
+<span class="c1">#     &quot;Load&quot;,</span>
+<span class="c1">#     &quot;electrified heating&quot;,</span>
+<span class="c1">#     bus=&quot;electricity&quot;,</span>
+<span class="c1">#     p_set=p_set,</span>
+<span class="c1">#     carrier=&quot;electrified heating&quot;,</span>
+<span class="c1"># );</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="temporal-clustering">
+<h3>Temporal Clustering<a class="headerlink" href="#temporal-clustering" title="Link to this heading">#</a></h3>
+<p>To save some computation time, we only sample every third snapshot, which corresponds to a temporal resolution of 3 hours. Note that the snapshot weightings (the duration each time step represents) have to be adjusted accordingly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">set_snapshots</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">snapshots</span><span class="p">[::</span><span class="n">RESOLUTION</span><span class="p">])</span>
+<span class="n">n</span><span class="o">.</span><span class="n">snapshot_weightings</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">RESOLUTION</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
 <section id="exploration">
 <h2>Exploration<a class="headerlink" href="#exploration" title="Link to this heading">#</a></h2>
+<p>We could now already run the optimisation and look at a first set of results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># n.optimize(</span>
+<span class="c1">#     solver_name=SOLVER,</span>
+<span class="c1">#     log_to_console=False,</span>
+<span class="c1">#     method=2, # Use barrier method to solve model (faster)</span>
+<span class="c1">#     crossover=0, # no crossover (solver setting)</span>
+<span class="c1"># )</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>But the exploration is left to you! Here are some ideas for sensitivities to explore and metrics to look at:</p>
 <p><strong>Metrics:</strong></p>
-<section id="dimensions">
-<h3>Dimensions<a class="headerlink" href="#dimensions" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li></li>
+<li><p>Total annual system costs and breakdown by technology (billion €/a and % of total cost). This can be built from <code class="docutils literal notranslate"><span class="pre">n.statistics.opex()</span></code> and <code class="docutils literal notranslate"><span class="pre">n.statistics.capex()</span></code>.</p></li>
+<li><p>Installed capacities of the different technologies (fossil power plants, wind, solar, battery, electrolysis, etc.). This can be accessed from <code class="docutils literal notranslate"><span class="pre">n.statistics.optimal_capacity()</span></code>.</p></li>
+<li><p>Energy mix and balances of different carrier as time series. This can be accessed from <code class="docutils literal notranslate"><span class="pre">n.statistics.energy_balance(groupby=[&quot;bus&quot;,</span> <span class="pre">&quot;carrier&quot;])</span></code> and plotted intereactively with <code class="docutils literal notranslate"><span class="pre">n.statistics.energy_balance.iplot.area(bus_carrier=&quot;AC&quot;)</span></code>.</p></li>
+<li><p>Electricity prices (average and duration curve). These can be accessed under <code class="docutils literal notranslate"><span class="pre">n.buses_t.marginal_price</span></code>.</p></li>
+<li><p>Level of CO2 emissions. This can be calculated using <code class="docutils literal notranslate"><span class="pre">n.generators_t.p</span> <span class="pre">/</span> <span class="pre">n.generators.efficiency</span> <span class="pre">*</span> <span class="pre">n.generators.carrier.map(n.carriers.co2_emissions)</span></code>.</p></li>
+<li><p>Storage filling levels per technology over time. This can be accessed from <code class="docutils literal notranslate"><span class="pre">n.stores_t.e</span></code>.</p></li>
 </ul>
-</section>
+<p><strong>Sensitivities:</strong></p>
+<ul class="simple">
+<li><p>Choose a different country for demand and renewables time series. This can be done by exchanging the data inputs at the top.</p></li>
+<li><p>Vary the cost assumptions by changing the overall projection year (e.g. 2030, 2040, 2050). This can be done when loading the cost data.</p></li>
+<li><p>Successively increase/decrease the investment cost of nuclear power. This can be done by modifying <code class="docutils literal notranslate"><span class="pre">n.generators.loc[&quot;nuclear&quot;,</span> <span class="pre">&quot;capital_cost&quot;]</span></code>.</p></li>
+<li><p>Limit the flexibility of nuclear power plants, e.g. by requiring a minimum part load of 90%. This can be done by setting <code class="docutils literal notranslate"><span class="pre">n.generators.loc[&quot;nuclear&quot;,</span> <span class="pre">&quot;p_min_pu&quot;]</span> <span class="pre">=</span> <span class="pre">0.9</span></code>. You can also set ramp limits for other fossil generators (<code class="docutils literal notranslate"><span class="pre">ramp_limit_up</span></code> and <code class="docutils literal notranslate"><span class="pre">ramp_limit_down</span></code>).</p></li>
+<li><p>Vary the cost of individual technologies along their learning curves (solar, battery, electrolysis, hydrogen storage, etc.). This can be done by changing their <code class="docutils literal notranslate"><span class="pre">capital_cost</span></code> attribute and/or their <code class="docutils literal notranslate"><span class="pre">efficiency</span></code> attribute.</p></li>
+<li><p>Add a new storage technology with cost, efficiency and loss parameters.  This can be done with <code class="docutils literal notranslate"><span class="pre">n.add(&quot;StorageUnit&quot;,</span> <span class="pre">...)</span></code>. Look how it’s done for batteries.</p></li>
+<li><p>Successively increase the CO2 price and observe the emissions. This can be done by modifying the marginal cost of emitting generators, <code class="docutils literal notranslate"><span class="pre">n.generators.loc[&quot;hard</span> <span class="pre">coal&quot;,</span> <span class="pre">&quot;marginal_cost&quot;]</span></code>.</p></li>
+<li><p>Successively constrain the CO2 emission limit. This can be done by modifying the constant in <code class="docutils literal notranslate"><span class="pre">n.global_constraints</span></code>. The endogenous CO2 price can be found under <code class="docutils literal notranslate"><span class="pre">n.global_constraints.mu</span></code> (negative).</p></li>
+<li><p>Enforce renewable capacity targets for wind and/or solar. This can be done by setting the <code class="docutils literal notranslate"><span class="pre">p_nom_min</span></code> attribute of the respective generators, e.g. <code class="docutils literal notranslate"><span class="pre">n.generators.loc[&quot;wind&quot;,</span> <span class="pre">&quot;p_nom&quot;]</span> <span class="pre">=</span> <span class="pre">100e3</span></code> for 100 GW.</p></li>
+<li><p>Vary the gas price. This can be done by modifying the marginal cost of gas generators, <code class="docutils literal notranslate"><span class="pre">n.generators.loc[&quot;OCGT&quot;,</span> <span class="pre">&quot;marginal_cost&quot;]</span></code> and <code class="docutils literal notranslate"><span class="pre">n.generators.loc[&quot;CCGT&quot;,</span> <span class="pre">&quot;marginal_cost&quot;]</span></code>.</p></li>
+<li><p>Constrain the availability of sustainable biomass. This can be done by setting the <code class="docutils literal notranslate"><span class="pre">e_sum_max</span></code> attribute of the biomass generator <code class="docutils literal notranslate"><span class="pre">n.generators.loc[&quot;biomass&quot;,</span> <span class="pre">&quot;e_sum_max&quot;]</span></code>.</p></li>
+<li><p>Add upstream emissions for the biomass (so that it is not fully carbon-neutral). You can set this in <code class="docutils literal notranslate"><span class="pre">n.carriers.loc[&quot;biomass&quot;,</span> <span class="pre">&quot;co2_emissions&quot;]</span></code>.</p></li>
+<li><p>Allow the import of green hydrogen at a given price, e.g. 100 €/MWh. You can also set a volume limit be setting <code class="docutils literal notranslate"><span class="pre">e_sum_max</span></code> (as for the biomass generator).</p></li>
+<li><p>Vary the hydrogen demand relative to the electricity demand. This can be done by modifying <code class="docutils literal notranslate"><span class="pre">n.loads.loc[&quot;hydrogen</span> <span class="pre">demand&quot;,</span> <span class="pre">&quot;p_set&quot;]</span></code>.</p></li>
+<li><p>Add electricity demand from the electrification of heating with strong seasonal demand variation. This can be done with the commented-out code cell above.</p></li>
+<li><p>Vary the charging power of the electric vehicles.</p></li>
+<li><p>Vary the battery size of the electric vehicles.</p></li>
+<li><p>Vary the electric vehicle state-of-charge requirements for the mornings.</p></li>
+<li><p>Run the optimisation for different weather years. You can retrieve 44 years of wind and solar capacity factor time series for European countries from <a class="reference external" href="https://renewables.ninja">renewables.ninja</a>.</p></li>
+</ul>
+<p><strong>Feel free to explore other ideas as well!</strong></p>
 </section>
 </section>
 
@@ -514,10 +1002,23 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploration">Exploration</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensions">Dimensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-foundation">Model Foundation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-assumptions">Cost Assumptions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series">Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-initialisation">Model Initialisation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demand">Demand</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fossil-power-plants">Fossil Power Plants</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nuclear-power-plant">Nuclear Power Plant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#biomass-power-plant">Biomass Power Plant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wind-and-solar">Wind and Solar</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#batteries">Batteries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hydrogen">Hydrogen</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#emission-limit">Emission Limit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#electrified-heating">Electrified Heating</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-clustering">Temporal Clustering</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploration">Exploration</a></li>
 </ul>
   </nav></div>
 
