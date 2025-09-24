@@ -827,17 +827,16 @@ Name: marginal_cost, dtype: float64
 </table>
 </div></div></div>
 </div>
-<p>Finally, we add the connection between Region B and Region A with a 500 MW line:</p>
+<p>Finally, we add the connection between Region B and Region A with a 500 MW transmission line, modelled as a link:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-    <span class="s2">&quot;Line&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Link&quot;</span><span class="p">,</span>
     <span class="s2">&quot;A-B&quot;</span><span class="p">,</span>
     <span class="n">bus0</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
     <span class="n">bus1</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span>
-    <span class="n">s_nom</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-    <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">r</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">p_min_pu</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">p_nom</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
 <span class="p">);</span>
 </pre></div>
 </div>
@@ -845,7 +844,7 @@ Name: marginal_cost, dtype: float64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">lines</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">links</span>
 </pre></div>
 </div>
 </div>
@@ -871,27 +870,27 @@ Name: marginal_cost, dtype: float64
       <th>bus0</th>
       <th>bus1</th>
       <th>type</th>
-      <th>x</th>
-      <th>r</th>
-      <th>g</th>
-      <th>b</th>
-      <th>s_nom</th>
-      <th>s_nom_mod</th>
-      <th>s_nom_extendable</th>
+      <th>carrier</th>
+      <th>efficiency</th>
+      <th>active</th>
+      <th>build_year</th>
+      <th>lifetime</th>
+      <th>p_nom</th>
+      <th>p_nom_mod</th>
       <th>...</th>
-      <th>v_ang_min</th>
-      <th>v_ang_max</th>
-      <th>sub_network</th>
-      <th>x_pu</th>
-      <th>r_pu</th>
-      <th>g_pu</th>
-      <th>b_pu</th>
-      <th>x_pu_eff</th>
-      <th>r_pu_eff</th>
-      <th>s_nom_opt</th>
+      <th>shut_down_cost</th>
+      <th>min_up_time</th>
+      <th>min_down_time</th>
+      <th>up_time_before</th>
+      <th>down_time_before</th>
+      <th>ramp_limit_up</th>
+      <th>ramp_limit_down</th>
+      <th>ramp_limit_start_up</th>
+      <th>ramp_limit_shut_down</th>
+      <th>p_nom_opt</th>
     </tr>
     <tr>
-      <th>Line</th>
+      <th>Link</th>
       <th></th>
       <th></th>
       <th></th>
@@ -921,28 +920,28 @@ Name: marginal_cost, dtype: float64
       <td>A</td>
       <td>B</td>
       <td></td>
+      <td></td>
       <td>1.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
+      <td>True</td>
+      <td>0</td>
+      <td>inf</td>
       <td>500.0</td>
       <td>0.0</td>
-      <td>False</td>
       <td>...</td>
-      <td>-inf</td>
-      <td>inf</td>
-      <td></td>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1.0</td>
+      <td>1.0</td>
       <td>0.0</td>
     </tr>
   </tbody>
 </table>
-<p>1 rows × 31 columns</p>
+<p>1 rows × 34 columns</p>
 </div></div></div>
 </div>
 </section>
@@ -966,8 +965,8 @@ Name: marginal_cost, dtype: float64
 Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;Bus&#39;)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Line&#39;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following links have carriers which are not defined:
+Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Link&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
@@ -977,7 +976,7 @@ Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Line&#39;)
  - log_to_console: False
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.io: Writing time: 0.03s
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.io: Writing time: 0.02s
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.constants: Optimization successful: 
@@ -989,7 +988,7 @@ Solver model: available
 Solver message: Optimal
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Line-fix-s-lower, Line-fix-s-upper were not assigned to the network.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Link-fix-p-lower, Link-fix-p-upper were not assigned to the network.
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;ok&#39;, &#39;optimal&#39;)
@@ -1134,17 +1133,14 @@ Solver message: Optimal
   <thead>
     <tr style="text-align: right;">
       <th>Line</th>
-      <th>A-B</th>
     </tr>
     <tr>
       <th>snapshot</th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>now</th>
-      <td>-500.0</td>
     </tr>
   </tbody>
 </table>
@@ -1175,17 +1171,14 @@ Solver message: Optimal
   <thead>
     <tr style="text-align: right;">
       <th>Line</th>
-      <th>A-B</th>
     </tr>
     <tr>
       <th>snapshot</th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>now</th>
-      <td>500.0</td>
     </tr>
   </tbody>
 </table>
@@ -1243,14 +1236,14 @@ Solver message: Optimal
 <p>Modifying data of components in an existing PyPSA network can be done by modifying the entries of a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>. For instance, if we want to reduce the cross-border transmission capacity between Region A and Region B, we’d run:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;A-B&quot;</span><span class="p">,</span> <span class="s2">&quot;s_nom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">400</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;A-B&quot;</span><span class="p">,</span> <span class="s2">&quot;p_nom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">400</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">lines</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="o">.</span><span class="n">links</span>
 </pre></div>
 </div>
 </div>
@@ -1276,27 +1269,27 @@ Solver message: Optimal
       <th>bus0</th>
       <th>bus1</th>
       <th>type</th>
-      <th>x</th>
-      <th>r</th>
-      <th>g</th>
-      <th>b</th>
-      <th>s_nom</th>
-      <th>s_nom_mod</th>
-      <th>s_nom_extendable</th>
+      <th>carrier</th>
+      <th>efficiency</th>
+      <th>active</th>
+      <th>build_year</th>
+      <th>lifetime</th>
+      <th>p_nom</th>
+      <th>p_nom_mod</th>
       <th>...</th>
-      <th>v_ang_max</th>
-      <th>sub_network</th>
-      <th>x_pu</th>
-      <th>r_pu</th>
-      <th>g_pu</th>
-      <th>b_pu</th>
-      <th>x_pu_eff</th>
-      <th>r_pu_eff</th>
-      <th>s_nom_opt</th>
-      <th>v_nom</th>
+      <th>shut_down_cost</th>
+      <th>min_up_time</th>
+      <th>min_down_time</th>
+      <th>up_time_before</th>
+      <th>down_time_before</th>
+      <th>ramp_limit_up</th>
+      <th>ramp_limit_down</th>
+      <th>ramp_limit_start_up</th>
+      <th>ramp_limit_shut_down</th>
+      <th>p_nom_opt</th>
     </tr>
     <tr>
-      <th>Line</th>
+      <th>Link</th>
       <th></th>
       <th></th>
       <th></th>
@@ -1326,28 +1319,28 @@ Solver message: Optimal
       <td>A</td>
       <td>B</td>
       <td></td>
+      <td>AC</td>
       <td>1.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
+      <td>True</td>
+      <td>0</td>
+      <td>inf</td>
       <td>400.0</td>
       <td>0.0</td>
-      <td>False</td>
       <td>...</td>
-      <td>inf</td>
+      <td>0.0</td>
       <td>0</td>
-      <td>0.000007</td>
-      <td>0.000007</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.000007</td>
-      <td>0.000007</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1.0</td>
+      <td>1.0</td>
       <td>500.0</td>
-      <td>380.0</td>
     </tr>
   </tbody>
 </table>
-<p>1 rows × 32 columns</p>
+<p>1 rows × 34 columns</p>
 </div></div></div>
 </div>
 <div class="cell tag_hide-output docutils container">
@@ -1366,12 +1359,8 @@ Solver message: Optimal
 Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;Bus&#39;)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Line&#39;)
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
-Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;SubNetwork&#39;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following links have carriers which are not defined:
+Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Link&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
@@ -1389,11 +1378,11 @@ Solver model: available
 Solver message: Optimal
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Line-fix-s-lower, Line-fix-s-upper were not assigned to the network.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Link-fix-p-lower, Link-fix-p-upper were not assigned to the network.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running HiGHS 1.11.0 (git hash: 364c83a): Copyright (c) 2025 HiGHS under MIT licence terms
-LP   linopy-problem-k1vij6ym has 14 rows; 6 cols; 19 nonzeros
+LP   linopy-problem-_64p4ga5 has 14 rows; 6 cols; 19 nonzeros
 Coefficient ranges:
   Matrix [1e+00, 1e+00]
   Cost   [2e+01, 2e+02]
@@ -1404,12 +1393,12 @@ Presolving model
 0 rows, 0 cols, 0 nonzeros  0s
 Presolve : Reductions: rows 0(-14); columns 0(-6); elements 0(-19) - Reduced to empty
 Solving the original LP from the solution after postsolve
-Model name          : linopy-problem-k1vij6ym
+Model name          : linopy-problem-_64p4ga5
 Model status        : Optimal
 Objective value     :  1.3986326317e+06
 P-D objective error :  1.6647013314e-16
 HiGHS run time      :          0.00
-Writing the solution to /tmp/linopy-solve-x39g9z5a.sol
+Writing the solution to /tmp/linopy-solve-pru9vlix.sol
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;ok&#39;, &#39;optimal&#39;)
@@ -1488,14 +1477,14 @@ Writing the solution to /tmp/linopy-solve-x39g9z5a.sol
 Variables:
 ----------
  * Generator-p (snapshot, Generator)
- * Line-s (snapshot, Line)
+ * Link-p (snapshot, Link)
 
 Constraints:
 ------------
  * Generator-fix-p-lower (snapshot, Generator-fix)
  * Generator-fix-p-upper (snapshot, Generator-fix)
- * Line-fix-s-lower (snapshot, Line-fix)
- * Line-fix-s-upper (snapshot, Line-fix)
+ * Link-fix-p-lower (snapshot, Link-fix)
+ * Link-fix-p-upper (snapshot, Link-fix)
  * Bus-nodal_balance (Bus, snapshot)
 
 Status:
@@ -1532,8 +1521,8 @@ ok
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Constraint `Bus-nodal_balance` [Bus: 2, snapshot: 1]:
 -----------------------------------------------------
-[A, now]: +1 Generator-p[now, A coal] + 1 Generator-p[now, A wind] + 1 Generator-p[now, A gas] + 1 Generator-p[now, A oil] - 1 Line-s[now, A-B] = 42000.0
-[B, now]: +1 Generator-p[now, B hydro] + 1 Line-s[now, A-B]                                                                                     = 650.0
+[A, now]: +1 Generator-p[now, A coal] + 1 Generator-p[now, A wind] + 1 Generator-p[now, A gas] + 1 Generator-p[now, A oil] - 1 Link-p[now, A-B] = 42000.0
+[B, now]: +1 Generator-p[now, B hydro] + 1 Link-p[now, A-B]                                                                                     = 650.0
 </pre></div>
 </div>
 </div>
@@ -1576,12 +1565,8 @@ Value: 1398632.6317348
 Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;Bus&#39;)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Line&#39;)
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
-Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;SubNetwork&#39;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following links have carriers which are not defined:
+Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Link&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
@@ -1598,12 +1583,12 @@ Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;SubNetwork&#39;)
 Status: ok
 Termination condition: optimal
 Solution: 6 primals, 14 duals
-Objective: 1.47e+06
+Objective: 1.40e+06
 Solver model: available
 Solver message: Optimal
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Line-fix-s-lower, Line-fix-s-upper were not assigned to the network.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Link-fix-p-lower, Link-fix-p-upper were not assigned to the network.
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1642,10 +1627,10 @@ Solver message: Optimal
   <tbody>
     <tr>
       <th>now</th>
-      <td>650.0</td>
+      <td>1050.0</td>
       <td>35000.0</td>
       <td>3000.0</td>
-      <td>2000.0</td>
+      <td>1600.0</td>
       <td>2000.0</td>
     </tr>
   </tbody>
@@ -1672,12 +1657,8 @@ Solver message: Optimal
 Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;Bus&#39;)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Line&#39;)
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
-Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;SubNetwork&#39;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following links have carriers which are not defined:
+Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Link&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
@@ -1694,12 +1675,12 @@ Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;SubNetwork&#39;)
 Status: ok
 Termination condition: optimal
 Solution: 6 primals, 14 duals
-Objective: 9.86e+05
+Objective: 9.31e+05
 Solver model: available
 Solver message: Optimal
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Line-fix-s-lower, Line-fix-s-upper were not assigned to the network.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Link-fix-p-lower, Link-fix-p-upper were not assigned to the network.
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1762,20 +1743,16 @@ Solver message: Optimal
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following buses have carriers which are not defined:
-Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;Bus&#39;)
-</pre></div>
-</div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following generators have carriers which are not defined:
 Index([&#39;A nuclear&#39;], dtype=&#39;object&#39;, name=&#39;Generator&#39;)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following lines have carriers which are not defined:
-Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Line&#39;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following buses have carriers which are not defined:
+Index([&#39;A&#39;, &#39;B&#39;], dtype=&#39;object&#39;, name=&#39;Bus&#39;)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following sub_networks have carriers which are not defined:
-Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;SubNetwork&#39;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:pypsa.consistency:The following links have carriers which are not defined:
+Index([&#39;A-B&#39;], dtype=&#39;object&#39;, name=&#39;Link&#39;)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:linopy.model: Solve problem using Highs solver
@@ -1792,12 +1769,12 @@ Index([&#39;0&#39;], dtype=&#39;object&#39;, name=&#39;SubNetwork&#39;)
 Status: ok
 Termination condition: optimal
 Solution: 7 primals, 16 duals
-Objective: 8.68e+05
+Objective: 8.59e+05
 Solver model: available
 Solver message: Optimal
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Line-fix-s-lower, Line-fix-s-upper were not assigned to the network.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:pypsa.optimization.optimize:The shadow-prices of the constraints Generator-fix-p-lower, Generator-fix-p-upper, Link-fix-p-lower, Link-fix-p-upper were not assigned to the network.
 </pre></div>
 </div>
 <div class="output text_html"><div>
